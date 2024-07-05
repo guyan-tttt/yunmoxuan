@@ -1,0 +1,85 @@
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const JWT = require('./utils/JWT')
+
+
+// 路由导入
+const userRouter = require('./routes/admin/userRouter');
+const tagsRouter = require('./routes/admin/tagsRouter');
+
+// 路由导入
+
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 路由挂载区域
+app.use((req,res,next) => {
+
+  // 判断是否带有token
+  if(req.url === "/api/admin/user/login" && req.method === "POST") {
+    next();
+  } else {
+    const token = req.headers['authorization'].split(" ")[1]
+    if(token) {
+      // jwt校验
+      JWT.verify(token,(err,data) => {
+        if(err) {
+          res.status(401).send({
+            code: 401,
+            msg: "token失效"
+          })
+        } else  {
+          console.log(data);
+          // 生成新token
+          const newToken = JWT.generate({
+            id: data.id,
+            username: data.username
+          },"48h")
+          res.setHeader("token",newToken)
+          // 继续向下执行
+          next()
+        }
+      })
+    }  else {
+      res.status(401).send({
+        code: 401,
+        msg: "token不存在"
+      })
+    }
+  }
+})
+// 后台接口
+app.use('/api/admin/user', userRouter);
+app.use('/api/admin/tag',tagsRouter)
+// 路由挂载区域
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
