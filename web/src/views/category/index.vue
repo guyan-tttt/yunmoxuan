@@ -1,41 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import type { AddCategory } from "@/types/admin/category"
+import { ref, onMounted } from "vue"
 import { Edit, DeleteFilled } from "@element-plus/icons-vue"
 import type { Page } from "@/types/admin/tags"
-import { type FormInstance } from "element-plus"
+import { ElMessage, type FormInstance } from "element-plus"
+import { addCategoryAPI, getCategoryListAPI, updateCategoryAPI, deleteCategoryAPI } from "@/api/admin/category"
+import { CategoryItem } from "@/types/admin/category"
 
 // 分类数据
-const categoryList = [
-  {
-    id: 1,
-    name: "前端",
-    desc: "前端相关"
-  },
-  {
-    id: 1,
-    name: "前端",
-    desc: "前端相关"
-  },
-  {
-    id: 1,
-    name: "前端",
-    desc: "前端相关"
-  },
-  {
-    id: 1,
-    name: "前端",
-    desc: "前端相关"
-  },
-  {
-    id: 1,
-    name: "前端",
-    desc: "前端相关"
-  }
-]
+const categoryList = ref<CategoryItem[]>()
 
 // 表单数据
-const categoryForm = ref<AddCategory>({
+const categoryForm = ref<CategoryItem>({
   name: "",
   desc: ""
 })
@@ -64,7 +39,7 @@ const formRef = ref<FormInstance>()
 // 分页数据
 const pageData = ref<Page>({
   page: 1,
-  pageSize: 10,
+  pageSize: 5,
   total: 0
 })
 
@@ -73,6 +48,7 @@ const categoryDialog = ref<boolean>(false)
 
 // 添加分类
 const addCategory = () => {
+  title.value = "添加分类"
   categoryDialog.value = true
 }
 
@@ -80,7 +56,21 @@ const addCategory = () => {
 const submit = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      console.log("提交成功")
+      // 判断是否为添加
+      if (title.value === "添加分类") {
+        // 发送请求
+        const res = await addCategoryAPI(categoryForm.value)
+        if (res.code === 200) {
+          ElMessage.success("添加成功")
+        }
+      } else {
+        const res = await updateCategoryAPI(categoryForm.value)
+        if (res.code === 200) {
+          ElMessage.success("更新成功")
+        }
+      }
+      cancel()
+      getCategoryList()
     }
   })
 }
@@ -93,6 +83,52 @@ const cancel = () => {
     desc: ""
   }
 }
+
+// 获取分类列表
+const getCategoryList = async () => {
+  const res = await getCategoryListAPI(pageData.value.page, pageData.value.pageSize)
+  if (res.code === 200) {
+    // console.log(res)
+    categoryList.value = res.data
+    pageData.value.total = res.total
+  }
+}
+
+// 切换页码
+const changePage = (page: number) => {
+  pageData.value.page = page
+  getCategoryList()
+}
+
+// 切换每页数量
+const changeSize = (page: number) => {
+  pageData.value.pageSize = page
+  getCategoryList()
+}
+
+// 弹框标题
+const title = ref<string>("添加分类")
+
+// 更新分类数据
+const updateCategory = (row: CategoryItem) => {
+  title.value = "更新分类"
+  categoryDialog.value = true
+  categoryForm.value = Object.assign({}, row)
+}
+
+// 删除分类
+const deleteCategory = async (id: string) => {
+  const res = await deleteCategoryAPI(id)
+  if (res.code === 200) {
+    ElMessage.success("删除成功")
+    getCategoryList()
+  }
+}
+
+// 初始化
+onMounted(() => {
+  getCategoryList()
+})
 </script>
 <template>
   <div class="category">
@@ -111,8 +147,12 @@ const cancel = () => {
 
         <el-table-column prop="desc" align="center" label="操作">
           <template v-slot="{ row }">
-            <el-button type="primary" :name="row" :icon="Edit" circle />
-            <el-button type="danger" :icon="DeleteFilled" circle />
+            <el-button @click="updateCategory(row)" type="primary" :name="row" :icon="Edit" circle />
+            <el-popconfirm title="你确定要删除该条分类码?" content="删除不可恢复" @confirm="deleteCategory(row._id)">
+              <template #reference>
+                <el-button type="danger" :icon="DeleteFilled" circle />
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -126,11 +166,11 @@ const cancel = () => {
         :background="false"
         layout="prev, pager, next, jumper ,-> ,total, sizes"
         :total="pageData.total"
-        @size-change="() => {}"
-        @current-change="() => {}"
+        @size-change="changeSize"
+        @current-change="changePage"
       />
     </el-card>
-    <el-dialog v-model="categoryDialog" title="添加分类" width="30%" center>
+    <el-dialog v-model="categoryDialog" :title="title" width="30%" center>
       <el-form ref="formRef" :model="categoryForm" :rules="rules">
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="categoryForm.name" placeholder="请输入分类名称" type="text" size="small" />
