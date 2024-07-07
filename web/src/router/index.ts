@@ -119,9 +119,22 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
-        //@ts-expect-error
         component: () => import("@/views/userInfo/index.vue"),
         name: "UserInfo",
+        meta: {
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/article-add",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/article/addArticle.vue"),
+        name: "AddArticle",
         meta: {
           hidden: true
         }

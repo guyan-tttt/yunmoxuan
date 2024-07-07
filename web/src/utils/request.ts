@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useUserStore } from "@/store/modules/user"
 import { ElMessage } from "element-plus"
+import router from "@/router/index"
 
 const request = axios.create({
   baseURL: "/api",
@@ -33,10 +34,10 @@ request.interceptors.response.use(
     if (response.status === 401) {
       ElMessage.warning("登录状态已过期，请重新登录")
       userStore.resetToken()
-      window.location.href = "/login"
+      router.push("/login")
     }
     // 提取token
-    const token = response.headers.authorization
+    const token = response.headers.token
     if (token) {
       userStore.setUserToken(token)
     }

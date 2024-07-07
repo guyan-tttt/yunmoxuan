@@ -19,3 +19,8 @@ export const updateCategoryAPI = (data: CategoryItem) => {
 export const deleteCategoryAPI = (id: string) => {
   return request.delete<any, ResponseData>(`/admin/category/del?id=${id}`)
 }
+
+// 获取全部分类数据
+export const getCategoryAllAPI = () => {
+  return request.get<any, GetCategoryListResponse>("/admin/category/all")
+}

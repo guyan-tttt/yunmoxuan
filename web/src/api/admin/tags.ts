@@ -20,3 +20,8 @@ export const updateTagAPI = (data: FormData) => {
 export const deleteTagAPI = (id: string) => {
   return request.delete<any, AddTagResponseData>(`/admin/tag/del?id=${id}`)
 }
+
+// 获取全部标签数据
+export const getAllTagsAPI = () => {
+  return request.get<any, GetTagsResponseData>("/admin/tag/all")
+}
