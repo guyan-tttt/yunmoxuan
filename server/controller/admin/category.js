@@ -44,11 +44,22 @@ const categoryController = {
     },
     delCategory: async(req,res) => {
         const result = await categoryService.delCategory(req.query.id)
+        
         res.send({
             code: 200,
             message: '删除分类成功'
         })
+    },
+    getAllCategory: async(req,res) => {
+        const result = await categoryService.getAllCategory()
+        
+        res.send({
+            code: 200,
+            message: '获取所有分类成功',
+            data: result
+        })
     }
+
    
 }
 

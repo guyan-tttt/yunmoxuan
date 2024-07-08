@@ -18,4 +18,6 @@ router.put('/update',upload.single("file"),tagsController.updateTag)
 // 删除标签
 router.delete('/del',tagsController.delTag)
 
+// 获取全部标签
+router.get('/all',tagsController.getAllTag)
 module.exports = router;

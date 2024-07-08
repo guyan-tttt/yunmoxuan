@@ -1,45 +1,28 @@
 <script lang="ts" setup>
-import { QuillEditor, type modulesOptions } from "@vueup/vue-quill"
+import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import "@vueup/vue-quill/dist/vue-quill.bubble.css"
 import hljs from "highlight.js"
 import "highlight.js/styles/monokai-sublime.css"
 import { ref, onMounted } from "vue"
-import BlotFormatter from "quill-blot-formatter"
 import { getCategoryAllAPI } from "@/api/admin/category"
 import { getAllTagsAPI } from "@/api/admin/tags"
 import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
-import { ElMessage } from "element-plus"
+import { ElMessage, type UploadFile, type FormInstance } from "element-plus"
 import { useUserStore } from "@/store/modules/user"
+import { addArticleAPI } from "@/api/admin/article"
+import { useRouter } from "vue-router"
+import type { AddArticleData } from "@/types/admin/article"
 
-// 图片调节工具
-const modules: modulesOptions = {
-  name: "blotFormatter",
-  module: BlotFormatter,
-  blotFormatter: {
-    // 图片大小调节
-    imageResize: {
-      displayStyles: {
-        backgroundColor: "black",
-        border: "none",
-        color: "white"
-      },
-      modules: ["Resize", "DisplaySize", "Toolbar"]
-    }
-  },
-  syntax: {
-    highlight: (text) => {
-      return hljs.highlightAuto(text).value // 这里就是代码高亮需要配置的地方
-    }
-  }
-}
+// 全局路由对象
+const router = useRouter()
 
 // 用户仓库对象
 const userStore = useUserStore()
 
 // 富文本对象
-const quillRef = ref<QuillEditor>(null)
+const quillRef = ref<any>(null)
 
 // 富文本编辑器配置
 const Options = {
@@ -65,7 +48,7 @@ const Options = {
       ]
     },
     syntax: {
-      highlight: (text) => {
+      highlight: (text: string) => {
         return hljs.highlightAuto(text).value // 这里就是代码高亮需要配置的地方
       }
     }
@@ -73,7 +56,7 @@ const Options = {
 }
 
 // 表单对象
-const articleForm = ref({
+const articleForm = ref<AddArticleData>({
   title: "", // 文章标题
   content: "", // 文章内容
   categoryID: "", // 文章分类ID
@@ -106,26 +89,88 @@ const getTagsList = async () => {
 }
 
 // 图片上传
-const imageUpload = (file: File) => {
+const imageUpload = (file: UploadFile) => {
   // 判断是否符合要求格式
-  if (file.raw.type !== "image/png" && file.raw.type !== "image/jpeg") {
+  if (file.raw?.type !== "image/png" && file.raw?.type !== "image/jpeg") {
     ElMessage.error("请上传png或jpg格式的图片")
     return
   }
   // 判断文件大小
-  if (file.raw.size / 1024 / 1014 > 5) {
+  if (file.raw?.size / 1024 / 1014 > 5) {
     ElMessage.error("请上传小于5MB的图片")
     return
   }
   // 获取图片地址
   const url = URL.createObjectURL(file.raw)
   articleForm.value.cover = url
+  //@ts-ignore
   articleForm.value.file = file.raw
 }
 
+// 表单校验
+const rules = {
+  title: [{ required: true, message: "请输入文章标题", trigger: "blur" }],
+  content: [{ required: true, message: "请输入文章内容", trigger: "blur" }],
+  categoryID: [{ required: true, message: "请选择文章分类", trigger: "blur" }],
+  tags: [{ required: true, message: "请选择文章标签", trigger: "blur" }],
+  desc: [{ required: true, message: "请输入文章描述", trigger: "blur" }],
+  cover: [
+    {
+      validator: (rule: any, value: any, callback: any) => {
+        if (articleForm.value.cover === "") {
+          callback(new Error("请上传文章封面"))
+        } else {
+          callback()
+        }
+      }
+    }
+  ],
+  authorID: [{ required: true, message: "请选择作者", trigger: "blur" }]
+}
+
+// 表单对象
+const formRef = ref<FormInstance>()
+
 // 提交
 const onSubmit = () => {
-  console.log(articleForm.value)
+  formRef.value?.validate(async (valid: boolean) => {
+    if (valid) {
+      // 将表单参数转为formData
+      const formData = new FormData()
+      for (const key in articleForm.value) {
+        //@ts-ignore
+        formData.append(key, articleForm.value[key])
+      }
+      // 调用接口
+      const res = await addArticleAPI(formData)
+      if (res.code === 200) {
+        ElMessage.success("添加成功")
+        cancel()
+      }
+    }
+  })
+}
+
+// 取消
+const cancel = () => {
+  articleForm.value = {
+    title: "", // 文章标题
+    content: "", // 文章内容
+    categoryID: "", // 文章分类ID
+    tags: [], // 文章标签ID
+    desc: "", // 文章描述
+    cover: "", // 文章封面
+    authorID: "", // 作者ID
+    isPublish: true, // 是否发布
+    isTop: true, // 是否置顶
+    isOriginal: true, // 是否原创
+    file: null // 封面文件
+  }
+
+  formRef.value?.resetFields()
+  //@ts-ignore
+  quillRef.value?.setHTML("")
+  router.push("/article")
 }
 onMounted(() => {
   getCategoryList()
@@ -137,16 +182,22 @@ onMounted(() => {
   <div>
     <el-card>
       <el-row justify="center"> <el-check-tag checked>添加文章分类</el-check-tag></el-row>
-      <el-form :model="articleForm" label-width="auto" style="max-width: 800px; margin: 20px auto">
-        <el-form-item label="文章标题">
+      <el-form
+        ref="formRef"
+        :rules="rules"
+        :model="articleForm"
+        label-width="auto"
+        style="max-width: 800px; margin: 20px auto"
+      >
+        <el-form-item label="文章标题" prop="title">
           <el-input v-model="articleForm.title" placeholder="请输入文章标题" />
         </el-form-item>
-        <el-form-item label="文章分类">
+        <el-form-item label="文章分类" prop="categoryID">
           <el-select v-model="articleForm.categoryID" placeholder="请选择文章分类">
-            <el-option v-for="item in categoryList" :key="item._id" :label="item.name" :value="item._id" />
+            <el-option v-for="item in categoryList" :key="item._id" :label="item.name" :value="item._id as any" />
           </el-select>
         </el-form-item>
-        <el-form-item label="文章标签">
+        <el-form-item label="文章标签" prop="tags">
           <el-checkbox-group v-model="articleForm.tags" @change="() => {}">
             <el-checkbox v-for="item in tagsList" :key="item._id" :label="item.name" :value="item._id">
               <el-row>
@@ -156,10 +207,10 @@ onMounted(() => {
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="文章描述">
+        <el-form-item label="文章描述" prop="desc">
           <el-input type="textarea" v-model="articleForm.desc" placeholder="请输入文章描述" />
         </el-form-item>
-        <el-form-item label="文章内容">
+        <el-form-item label="文章内容" prop="content">
           <QuillEditor
             v-model:content="articleForm.content"
             ref="quillRef"
@@ -168,7 +219,7 @@ onMounted(() => {
             :options="Options"
           />
         </el-form-item>
-        <el-form-item label="文章封面">
+        <el-form-item label="文章封面" prop="cover">
           <el-upload
             class="avatar-uploader"
             action=""
@@ -186,8 +237,6 @@ onMounted(() => {
             class="mt-2"
             style="margin-left: 24px"
             inline-prompt
-            :active-icon="Check"
-            :inactive-icon="Close"
             active-text="原创"
             inactive-text="转载"
           />
@@ -196,8 +245,6 @@ onMounted(() => {
             class="mt-2"
             style="margin-left: 24px"
             inline-prompt
-            :active-icon="Check"
-            :inactive-icon="Close"
             active-text="置顶"
             inactive-text="默认"
           />
@@ -206,13 +253,11 @@ onMounted(() => {
             class="mt-2"
             style="margin-left: 24px"
             inline-prompt
-            :active-icon="Check"
-            :inactive-icon="Close"
             active-text="发布"
             inactive-text="草稿"
           />
         </el-form-item>
-        <el-form-item label="文章作者">
+        <el-form-item label="文章作者" prop="authorID">
           <el-select v-model="articleForm.authorID" placeholder="请选择文章作者">
             <el-option :label="userStore.userInfo.nickname" :value="userStore.userInfo._id" />
           </el-select>
@@ -220,7 +265,7 @@ onMounted(() => {
         <el-form-item>
           <el-row justify="center" style="width: 100%">
             <el-button type="primary" size="large" @click="onSubmit">提交</el-button>
-            <el-button style="margin-left: 40px" size="large">取消</el-button>
+            <el-button style="margin-left: 40px" size="large" @click="cancel">取消</el-button>
           </el-row>
         </el-form-item>
       </el-form>

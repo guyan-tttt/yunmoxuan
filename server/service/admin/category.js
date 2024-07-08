@@ -20,6 +20,10 @@ const categoryService = {
     delCategory: async(id) => {
         const category = await CategoryModel.findByIdAndDelete(id)
         return category
+    },
+    getAllCategory: async() => {
+        const categoryList = await CategoryModel.find()
+        return categoryList
     }
 }
 

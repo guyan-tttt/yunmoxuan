@@ -14,5 +14,7 @@ router.put('/update',categoryController.updateCategory)
 // 删除分类
 router.delete('/del',categoryController.delCategory)
 
+// 获取全部分类
+router.get('/all',categoryController.getAllCategory)
 
 module.exports = router;

@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { Plus } from "@element-plus/icons-vue"
+import { getArticleListAPI } from "@/api/admin/article"
+import { InfoFilled, DeleteFilled, Edit } from "@element-plus/icons-vue"
+import { getCategoryAllAPI } from "@/api/admin/category"
+import { getAllTagsAPI } from "@/api/admin/tags"
+import type { CategoryItem } from "@/types/admin/category"
+import type { Tag } from "@/types/admin/tags"
 
 // 全局路由对象
 const router = useRouter()
@@ -9,33 +15,88 @@ const router = useRouter()
 // 分页数据
 const pageData = ref({
   page: 1,
-  pageSize: 10,
+  pageSize: 5,
   total: 0
 })
+
+// 文章数据
+const articleList = ref<any[]>([])
 
 // 添加文章
 const addArticle = () => {
   router.push("/article-add")
 }
+
+// 获取文章列表数据
+const getArticleList = async () => {
+  const res = await getArticleListAPI(pageData.value.page, pageData.value.pageSize)
+  console.log(res)
+  articleList.value = res.data
+  pageData.value.total = res.total
+}
+
+// 切换页码
+const changePage = (page: number) => {
+  pageData.value.page = page
+  getArticleList()
+}
+
+// 切换分页数
+const changePageSize = (pageSize: number) => {
+  pageData.value.pageSize = pageSize
+  getArticleList()
+}
+
+// 分类数据
+const categoryList = ref<CategoryItem[]>()
+// 获取所有分类数据
+const getCategoryAll = async () => {
+  const res = await getCategoryAllAPI()
+  categoryList.value = res.data
+}
+// 标签数据
+const tagList = ref<Tag[]>()
+
+// 获取标签数据
+const getTagsAll = async () => {
+  const res = await getAllTagsAPI()
+  tagList.value = res.data
+}
+
+// 搜索信息
+const searchInfo = ref({
+  categoryID: "",
+  tagID: ""
+})
+
+// 初始化
+onMounted(() => {
+  getArticleList()
+  getCategoryAll()
+  getTagsAll()
+})
 </script>
 <template>
   <div class="tag">
     <el-card class="container">
       <el-row justify="space-between">
         <div class="role-operate" style="margin-bottom: 20px">
-          <el-button size="default" type="primary" @click="addArticle" :icon="Plus" circle />
+          <el-button size="default" type="primary" @click="addArticle" :icon="Plus">添加文章</el-button>
         </div>
         <el-form class="demo-form-inline" inline>
           <el-form-item label="标签名称">
-            <el-select placeholder="请选择标签" clearable>
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
+            <el-select v-model="searchInfo.tagID" placeholder="请选择标签" clearable>
+              <el-option v-for="item in tagList" :key="item._id" :label="item.name" :value="item._id as string">
+                <el-row align="middle">
+                  <el-image style="width: 20px; height: 20px; margin-right: 5px" :src="item.icon" fit="fill" />
+                  <span>{{ item.name }}</span>
+                </el-row>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="分类名称">
-            <el-select placeholder="请选择分类" clearable>
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
+            <el-select v-model="searchInfo.categoryID" placeholder="请选择分类" clearable>
+              <el-option v-for="item in categoryList" :key="item._id" :label="item.name" :value="item._id as string" />
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -44,28 +105,40 @@ const addArticle = () => {
         </el-form>
       </el-row>
 
-      <!-- <el-table  border>
-        <el-table-column align="center" width="200" label="序号" type="index" />
-        <el-table-column prop="name" align="center" width="200" label="标签名" />
-        <el-table-column prop="icon" align="center" width="200" label="标签图标">
+      <el-table :data="articleList" border>
+        <el-table-column align="center" width="100" label="序号" type="index" />
+        <el-table-column prop="title" align="center" width="200" label="文章标题" />
+        <el-table-column align="center" width="200" label="文章标签">
           <template v-slot="{ row }">
-            <el-image :src="row.icon" style="width: 40px; height: 40px" />
+            <span v-for="item in row.tags" :key="item._id">
+              <el-image style="width: 30px; height: 30px; margin-right: 5px" :src="item.icon" fit="fill" />
+            </span>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip prop="desc" align="center" label="标签描述">
+        <el-table-column prop="cover" align="center" width="200" label="文章封面">
           <template v-slot="{ row }">
-            <div class="desc"  />
+            <el-image :src="row.cover" style="width: 100px; border-radius: 5px" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip prop="desc" align="center" label="文章描述">
+          <template v-slot="{ row }">
+            <div class="desc">{{ row.desc }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column width="100" prop="desc" align="center" label="状态">
+          <template v-slot="{ row }">
+            <el-switch v-model="row.isPublish" active-text="发布" inactive-text="草稿" inline-prompt />
           </template>
         </el-table-column>
 
         <el-table-column prop="desc" align="center" label="操作">
           <template v-slot="{ row }">
-            <el-button  type="success" :icon="InfoFilled" circle />
-            <el-button  type="primary" :icon="Edit" circle />
-            <el-button  type="danger" :icon="DeleteFilled" circle />
+            <el-button type="success" :name="row" :icon="InfoFilled" circle />
+            <el-button type="primary" :icon="Edit" circle />
+            <el-button type="danger" :icon="DeleteFilled" circle />
           </template>
         </el-table-column>
-      </el-table> -->
+      </el-table>
       <el-pagination
         style="margin-top: 20px"
         v-model:current-page="pageData.page"
@@ -76,8 +149,8 @@ const addArticle = () => {
         :background="false"
         layout="prev, pager, next, jumper ,-> ,total, sizes"
         :total="pageData.total"
-        @size-change="() => {}"
-        @current-change="() => {}"
+        @size-change="changePageSize"
+        @current-change="changePage"
       />
     </el-card>
   </div>

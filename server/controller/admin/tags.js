@@ -59,6 +59,19 @@ const tagsController = {
             code: 200,
             message: '删除标签成功',
         })
+    },
+    getAllTag: async(req,res) => {
+        const result = await tagsService.getAllTag()
+        if(result.length > 0) {
+            result.forEach(item => {
+                item.icon = "http://localhost:3000" + item.icon
+            })
+        }
+        res.send({
+            code: 200,
+            message: '获取所有标签成功',
+            data: result
+        })
     }
    
 }

@@ -10,6 +10,7 @@ const JWT = require('./utils/JWT')
 const userRouter = require('./routes/admin/userRouter');
 const tagsRouter = require('./routes/admin/tagsRouter');
 const categoryRouter = require('./routes/admin/categoryRouter')
+const articleRouter = require('./routes/admin/articleRouter')
 
 // 路由导入
 
@@ -26,6 +27,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由挂载区域
+
+// token校验
 app.use((req,res,next) => {
 
   // 判断是否带有token
@@ -66,6 +69,7 @@ app.use((req,res,next) => {
 app.use('/api/admin/user', userRouter);
 app.use('/api/admin/tag',tagsRouter)
 app.use('/api/admin/category',categoryRouter)
+app.use('/api/admin/article',articleRouter)
 // 路由挂载区域
 
 // catch 404 and forward to error handler

@@ -45,6 +45,10 @@ const tagsService = {
     delTag: async(query) => {
         const res = await TagModel.deleteOne({_id: query.id})
         return res
+    },
+    getAllTag: async() => {
+        const data = await TagModel.find({})
+        return data
     }
 }
 
