@@ -141,6 +141,20 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: "/article-detail",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/article/detail.vue"),
+        name: "ArticleDetail",
+        meta: {
+          hidden: true
+        }
+      }
+    ]
+  },
   // 前台
   {
     path: "/",

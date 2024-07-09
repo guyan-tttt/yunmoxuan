@@ -11,15 +11,21 @@ import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
 import { ElMessage, type UploadFile, type FormInstance } from "element-plus"
 import { useUserStore } from "@/store/modules/user"
-import { addArticleAPI } from "@/api/admin/article"
-import { useRouter } from "vue-router"
-import type { AddArticleData } from "@/types/admin/article"
+import { addArticleAPI, getArticleDetailAPI, updateArticleAPI } from "@/api/admin/article"
+import { useRouter, useRoute } from "vue-router"
+import type { AddArticleData, ArticleItem } from "@/types/admin/article"
 
 // 全局路由对象
 const router = useRouter()
 
+// 页面路有对
+const route = useRoute()
+
 // 用户仓库对象
 const userStore = useUserStore()
+
+// 页面标题
+const title = ref(route.query.id ? "更新文章" : "新增文章")
 
 // 富文本对象
 const quillRef = ref<any>(null)
@@ -56,7 +62,7 @@ const Options = {
 }
 
 // 表单对象
-const articleForm = ref<AddArticleData>({
+const articleForm = ref<AddArticleData | ArticleItem>({
   title: "", // 文章标题
   content: "", // 文章内容
   categoryID: "", // 文章分类ID
@@ -141,11 +147,22 @@ const onSubmit = () => {
         //@ts-ignore
         formData.append(key, articleForm.value[key])
       }
-      // 调用接口
-      const res = await addArticleAPI(formData)
-      if (res.code === 200) {
-        ElMessage.success("添加成功")
-        cancel()
+      // 判断此时是新增还是修改
+      if (!route.query.id) {
+        // 调用接口
+        const res = await addArticleAPI(formData)
+        if (res.code === 200) {
+          ElMessage.success("添加成功")
+          cancel()
+        }
+      } else {
+        const res = await updateArticleAPI(formData)
+        console.log(res)
+
+        if (res.code === 200) {
+          ElMessage.success("修改成功")
+          cancel()
+        }
       }
     }
   })
@@ -172,16 +189,31 @@ const cancel = () => {
   quillRef.value?.setHTML("")
   router.push("/article")
 }
+
+// 获取文章详情
+const getArticleDetail = async () => {
+  const res = await getArticleDetailAPI(route.query.id as string)
+  // console.log(res)
+  if (res.code === 200) {
+    articleForm.value = res.data
+  }
+}
+
 onMounted(() => {
   getCategoryList()
   getTagsList()
+  if (route.query.id) {
+    getArticleDetail()
+  }
 })
 </script>
 
 <template>
   <div>
     <el-card>
-      <el-row justify="center"> <el-check-tag checked>添加文章分类</el-check-tag></el-row>
+      <el-row justify="center">
+        <el-check-tag checked>{{ title }}</el-check-tag></el-row
+      >
       <el-form
         ref="formRef"
         :rules="rules"
@@ -198,7 +230,7 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="文章标签" prop="tags">
-          <el-checkbox-group v-model="articleForm.tags" @change="() => {}">
+          <el-checkbox-group v-model="articleForm.tags as any" @change="() => {}">
             <el-checkbox v-for="item in tagsList" :key="item._id" :label="item.name" :value="item._id">
               <el-row>
                 <el-image style="width: 20px; height: 20px; margin-right: 5px" :src="item.icon" fit="fill" />

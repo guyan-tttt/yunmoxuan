@@ -8,19 +8,21 @@ import { getCategoryAllAPI } from "@/api/admin/category"
 import { getAllTagsAPI } from "@/api/admin/tags"
 import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
+import type { Page } from "@/types/admin/tags"
+import type { ArticleItem } from "@/types/admin/article"
 
 // 全局路由对象
 const router = useRouter()
 
 // 分页数据
-const pageData = ref({
+const pageData = ref<Page>({
   page: 1,
   pageSize: 5,
   total: 0
 })
 
 // 文章数据
-const articleList = ref<any[]>([])
+const articleList = ref<ArticleItem[]>([])
 
 // 添加文章
 const addArticle = () => {
@@ -69,6 +71,25 @@ const searchInfo = ref({
   tagID: ""
 })
 
+// 更新文章
+const updateArticle = (id: string) => {
+  router.push({
+    path: "/article-add",
+    query: {
+      id
+    }
+  })
+}
+
+// 文章预览
+const previewArticle = (id: string) => {
+  router.push({
+    path: "/article-detail",
+    query: {
+      id
+    }
+  })
+}
 // 初始化
 onMounted(() => {
   getArticleList()
@@ -133,8 +154,8 @@ onMounted(() => {
 
         <el-table-column prop="desc" align="center" label="操作">
           <template v-slot="{ row }">
-            <el-button type="success" :name="row" :icon="InfoFilled" circle />
-            <el-button type="primary" :icon="Edit" circle />
+            <el-button type="success" :name="row" @click="previewArticle(row._id)" :icon="InfoFilled" circle />
+            <el-button type="primary" @click="updateArticle(row._id)" :icon="Edit" circle />
             <el-button type="danger" :icon="DeleteFilled" circle />
           </template>
         </el-table-column>
