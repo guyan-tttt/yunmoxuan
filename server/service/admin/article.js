@@ -16,10 +16,29 @@ const articleService = {
     const article = await ArticleModel.create(articleInfo)
     return article
    },
-   getArticleList: async(left,right) => {
-    const articleList = await ArticleModel.find({isDelete: false}).skip(left).limit(right)
-    const data = articleList.concat([])
-    const total = await ArticleModel.countDocuments({isDelete: false})
+   getArticleList: async(left,right,articleType) => {
+    let data  = []
+    let total = 0
+    if(articleType === 1) {
+        const articleList = await ArticleModel.find({isDelete: false}).skip(left).limit(right)
+        data = articleList.concat([])
+        total = await ArticleModel.countDocuments({isDelete: false})
+    } else if(articleType === 2) {
+        // 查询已发布的文章
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: true}).skip(left).limit(right)
+        data = articleList.concat([])
+        total = await ArticleModel.countDocuments({isDelete: false, isPublish: true})
+    } else if(articleType === 3) {
+        // 查询未发布的文章
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: false}).skip(left).limit(right)
+        data = articleList.concat([])
+        total = await ArticleModel.countDocuments({isDelete: false, isPublish: false})
+    } else if(articleType === 4) {
+        // 查询已删除的文章
+        const articleList = await ArticleModel.find({isDelete: true}).skip(left).limit(right)
+        data = articleList.concat([])
+        total = await ArticleModel.countDocuments({isDelete: true})
+    }
     // 查询对应分类
     for(let i = 0;i < data.length;i++) {
         const item = data[i]
@@ -43,7 +62,94 @@ const articleService = {
             }
         }
     }
+    return {
+        data,
+        total: 0
+    }
     
+   },
+   getArticleDetail: async(id) => {
+    const article = await ArticleModel.findById(id)
+    const category = await CategoryModel.findById(article.categoryID)
+    const user = await UserModel.findById(article.authorID)
+    const tagID = article.tags[0].split(",")
+    const tag = await TagModel.find({_id: {$in: tagID}})
+    tag.forEach(item => {
+        item.icon = "http://localhost:3000" + item.icon
+    })
+    article.tags = tagID
+    article.aboutInfo = {
+        category,
+        author: user.nickname,
+        tags: tag
+    }
+    article.cover = "http://localhost:3000" + article.cover
+    return article
+   },
+   updateArticle: async(data) => {
+    data.updateTime = Date.now()
+    const article = await ArticleModel.findByIdAndUpdate(data._id, data)
+    return article
+   },
+   delArticle: async(id) => {
+    const article = await ArticleModel.findByIdAndUpdate(id, {isDelete: true})
+    return article
+   },
+   changePublish: async(id,isPublish) =>  {
+    const article = await ArticleModel.findByIdAndUpdate(id, {isPublish})
+   },
+   searchArticle: async(tagsID,categoryID,articleType) => {
+    let data = []
+    if(articleType === 1) {
+        const articleList = await ArticleModel.find({isDelete: false,  categoryID})
+        data = articleList.concat([])
+    } else if(articleType === 2) {
+        // 查询已发布的文章
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: true, categoryID})
+        data = articleList.concat([])
+    } else if(articleType === 3) {
+        // 查询未发布的文章
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: false, categoryID})
+        data = articleList.concat([])
+    } else if (articleType === 4) {
+        // 查询已删除的文章
+        const articleList = await ArticleModel.find({isDelete: true, categoryID})
+        data = articleList.concat([])
+    }
+    
+    
+    for(let i = 0;i < data.length;i++) {
+        const item = data[i]
+        const category = await CategoryModel.findById(item.categoryID)
+        const user = await UserModel.findById(item.authorID)
+        const tagID = item.tags[0].split(",")
+        const tag = await TagModel.find({_id: {$in: tagID}})
+        tag.forEach(item => {
+            item.icon = "http://localhost:3000" + item.icon
+        })
+        item.aboutInfo = {
+            category,
+            user: user.nickname
+        }
+        item.tags = tag
+        item.cover = "http://localhost:3000" + item.cover
+        if(i === data.length -1) {
+            return data
+        }
+    }
+    return data
+   },
+   delArticleRecover: async(id) => {
+    const article = await ArticleModel.findByIdAndUpdate(id, {isDelete: false})
+    return article
+   },
+   delArticlePermanently: async(id) => {
+    const article = await ArticleModel.findByIdAndDelete(id)
+    return article
+   },
+   delArticleAll: async(ids) => {
+    const article = await ArticleModel.deleteMany({_id: {$in: ids}})
+    return article
    }
 }
 

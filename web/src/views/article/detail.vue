@@ -20,6 +20,8 @@ const getArticleDetail = async () => {
   const res = await getArticleDetailAPI(route.query.id as string)
   articleDetail.value = res.data
   articleDetail.value.updateTime = dayjs(res.data?.updateTime).format("YYYY-MM-DD HH:mm")
+  console.log(res)
+
   // 渲染文章内容
 }
 

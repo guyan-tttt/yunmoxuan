@@ -24,11 +24,11 @@
   --v3-sidebar-menu-bg-color: #001428;
   --v3-sidebar-menu-hover-bg-color: #409eff10;
   --v3-sidebar-menu-text-color: #cfd3dc;
-  --v3-sidebar-menu-active-text-color: #ffffff;
+  --v3-sidebar-menu-active-text-color: #fff;
   /** TagsView 组件 */
   --v3-tagsview-height: 34px;
   --v3-tagsview-text-color: var(--el-text-color-regular);
-  --v3-tagsview-tag-active-text-color: #ffffff;
+  --v3-tagsview-tag-active-text-color: red;
   --v3-tagsview-tag-bg-color: var(--el-bg-color);
   --v3-tagsview-tag-active-bg-color: var(--el-color-primary);
   --v3-tagsview-tag-border-radius: 2px;
