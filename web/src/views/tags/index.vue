@@ -149,9 +149,7 @@ const cancel = () => {
 const getTagList = async () => {
   const res = await getTagListAPI(pageData.value.page, pageData.value.pageSize)
   tagList.value = res.data
-  tagList.value.forEach((item) => {
-    item.icon = "http://localhost:3000" + item.icon
-  })
+
   pageData.value.total = res.total
 }
 

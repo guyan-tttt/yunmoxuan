@@ -9,7 +9,7 @@ import { getCategoryAllAPI } from "@/api/admin/category"
 import { getAllTagsAPI } from "@/api/admin/tags"
 import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
-import { ElMessage, type UploadFile, type FormInstance } from "element-plus"
+import { ElMessage, type UploadFile, type FormInstance, type FormRules } from "element-plus"
 import { useUserStore } from "@/store/modules/user"
 import { addArticleAPI, getArticleDetailAPI, updateArticleAPI } from "@/api/admin/article"
 import { useRouter, useRoute } from "vue-router"
@@ -114,7 +114,7 @@ const imageUpload = (file: UploadFile) => {
 }
 
 // 表单校验
-const rules = {
+const rules: FormRules = {
   title: [{ required: true, message: "请输入文章标题", trigger: "blur" }],
   content: [{ required: true, message: "请输入文章内容", trigger: "blur" }],
   categoryID: [{ required: true, message: "请选择文章分类", trigger: "blur" }],

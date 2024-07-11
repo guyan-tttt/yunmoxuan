@@ -36,7 +36,7 @@ const userController = {
     // 获取个人详情
     getUserInfo: async(req,res)  => {
         const result = await userService.getUserInfo()
-        delete result.password
+        result.avatar = process.env.SERVER_BASE_URL + result.avatar
         res.send({
             code: 200,
             message: '获取个人信息成功',

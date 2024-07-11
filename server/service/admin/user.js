@@ -30,7 +30,7 @@ const userService = {
         })
         }
         console.log(userInfo);
-        userInfo.avatar  = userInfo.avatar.replace("http://localhost:3000","")
+        userInfo.avatar  = userInfo.avatar.replace(process.env.SERVER_BASE_URL,"")
         // 更新数据库
         const user = await UserModel.updateOne({
             _id: userInfo._id

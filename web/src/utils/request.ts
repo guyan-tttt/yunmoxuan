@@ -29,14 +29,8 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   function (response) {
     // 2xx 范围内的状态码都会触发该函数。
-    const userStore = useUserStore()
-    // token过期
-    if (response.status === 401) {
-      ElMessage.warning("登录状态已过期，请重新登录")
-      userStore.resetToken()
-      router.push("/login")
-    }
     // 提取token
+    const userStore = useUserStore()
     const token = response.headers.token
     if (token) {
       userStore.setUserToken(token)
@@ -45,8 +39,17 @@ request.interceptors.response.use(
     return response.data
   },
   function (error) {
-    // 超出 2xx 范围的状态码都会触发该函数。
+    // 超出 2xx 范围的状态码都会触发该函数
+    const userStore = useUserStore()
+    // token过期
+    if (error.response.status === 401) {
+      ElMessage.warning("登录状态已过期，请重新登录")
+      userStore.resetToken()
+      router.push("/login")
+    }
     // 对响应错误做点什么
+    console.log(error)
+
     return Promise.reject(error)
   }
 )

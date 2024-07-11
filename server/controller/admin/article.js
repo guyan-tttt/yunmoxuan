@@ -44,7 +44,7 @@ const articleController = {
             const cover = renameFile(req.file,req.file.mimetype.split("/")[1] )
             req.body.cover = cover
         } else {
-            req.body.cover = req.body.cover.replace("http://localhost:3000","")
+            req.body.cover = req.body.cover.replace(process.env.SERVER_BASE_URL,"")
         }
        const result = await articleService.updateArticle(req.body)
         res.send({

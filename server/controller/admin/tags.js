@@ -20,6 +20,9 @@ const tagsController = {
         const right = left + parseInt(pageSize)
         const total = result.length
         const data = result.slice(left,right )
+        data.forEach(item => {
+            item.icon = process.env.SERVER_BASE_URL + item.icon
+        })
         res.send({
             code: 200,
             message: '获取标签列表成功',
@@ -44,7 +47,7 @@ const tagsController = {
                 }
         })
         }
-       const url = req.file ? (req.file.destination +  req.file.filename + ".svg").replace("public","") : req.body.icon.replace("http://localhost:3000","")
+       const url = req.file ? (req.file.destination +  req.file.filename + ".svg").replace("public","") : req.body.icon.replace(process.env.SERVER_BASE_URL,"")
        req.body.icon = url
        const result = await tagsService.updateTag(req.body)
        res.send({
@@ -64,7 +67,7 @@ const tagsController = {
         const result = await tagsService.getAllTag()
         if(result.length > 0) {
             result.forEach(item => {
-                item.icon = "http://localhost:3000" + item.icon
+                item.icon = process.env.SERVER_BASE_URL + item.icon
             })
         }
         res.send({

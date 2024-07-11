@@ -55,3 +55,20 @@ export interface ArticleList extends ResponseData {
 export interface ArticleDetail extends ResponseData {
   data: ArticleItem
 }
+
+// 文章搜索数据
+export interface ArticleSearchForm {
+  tagID: string // 文章标题
+  categoryID: string // 文章分类ID
+  articleType?: ArticleType // 文章类型
+  page?: number // 当前页
+  pageSize?: number // 每页数量
+}
+
+// 文章类型
+export enum ArticleType {
+  All = 1,
+  Publish = 2,
+  NoPublish = 3,
+  Deleted = 4
+}

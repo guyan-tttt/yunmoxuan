@@ -47,14 +47,14 @@ const articleService = {
         const tagID = item.tags[0].split(",")
         const tag = await TagModel.find({_id: {$in: tagID}})
         tag.forEach(item => {
-            item.icon = "http://localhost:3000" + item.icon
+            item.icon = process.env.SERVER_BASE_URL + item.icon
         })
         item.aboutInfo = {
             category,
             user: user.nickname
         }
         item.tags = tag
-        item.cover = "http://localhost:3000" + item.cover
+        item.cover = process.env.SERVER_BASE_URL + item.cover
         if(i === data.length -1) {
             return {
                 data,
@@ -75,7 +75,7 @@ const articleService = {
     const tagID = article.tags[0].split(",")
     const tag = await TagModel.find({_id: {$in: tagID}})
     tag.forEach(item => {
-        item.icon = "http://localhost:3000" + item.icon
+        item.icon = process.env.SERVER_BASE_URL + item.icon
     })
     article.tags = tagID
     article.aboutInfo = {
@@ -83,7 +83,7 @@ const articleService = {
         author: user.nickname,
         tags: tag
     }
-    article.cover = "http://localhost:3000" + article.cover
+    article.cover = process.env.SERVER_BASE_URL + article.cover
     return article
    },
    updateArticle: async(data) => {

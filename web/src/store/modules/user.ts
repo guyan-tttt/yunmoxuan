@@ -65,11 +65,8 @@ export const useUserStore = defineStore(
      */
     const setUserInfo = async () => {
       const res = await getUserInfoAPI()
-      console.log(res)
-
       if (res.code === 200) {
         userInfo.value = res.data
-        userInfo.value.avatar = "http://localhost:3000" + userInfo.value.avatar
       } else {
         logout()
       }

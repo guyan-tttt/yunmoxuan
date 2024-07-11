@@ -17,8 +17,8 @@ import { getAllTagsAPI } from "@/api/admin/tags"
 import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
 import type { Page } from "@/types/admin/tags"
-import type { ArticleItem } from "@/types/admin/article"
-import { ElMessageBox, ElMessage } from "element-plus"
+import type { ArticleItem, ArticleSearchForm, ArticleType } from "@/types/admin/article"
+import { ElMessageBox, ElMessage, type FormRules, type FormInstance } from "element-plus"
 
 // 全局路由对象
 const router = useRouter()
@@ -79,7 +79,7 @@ const getTagsAll = async () => {
 }
 
 // 搜索信息
-const searchInfo = ref({
+const searchInfo = ref<ArticleSearchForm>({
   categoryID: "",
   tagID: ""
 })
@@ -136,13 +136,13 @@ const changePublish = async (id: string, isPublish: boolean) => {
 }
 
 // 搜索框校验
-const ruleSearch = {
+const ruleSearch: FormRules = {
   categoryID: [{ required: true, message: "请选择分类", trigger: "change" }],
   tagID: [{ required: true, message: "请选择标签", trigger: "change" }]
 }
 
 // 搜索对象
-const searchObj = ref()
+const searchObj = ref<FormInstance>()
 
 // 搜索
 const search = () => {
@@ -205,7 +205,7 @@ const options = [
 ]
 
 // 文章类型
-const articleType = ref<number>(2)
+const articleType = ref<ArticleType>(1)
 
 // 选项切换
 const onSegmentChange = (value: number) => {
