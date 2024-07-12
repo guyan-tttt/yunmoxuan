@@ -1,14 +1,22 @@
 <template>
   <div class="picture">
-    <el-row justify="space-between" style="min-height: 400px">
-      <el-col :span="16">1</el-col>
+    <el-row justify="space-between" style="min-height: 800px">
+      <el-col
+        :span="16"
+        class=".limit-box"
+        v-infinite-scroll="load"
+        infinite-scroll-distance="20px"
+        style="overflow: auto; height: 800px"
+      >
+        <ImageList />
+      </el-col>
       <el-col :span="7">
         <div class="title">
           <el-row>
             <span
               ><el-icon><FolderOpened /></el-icon>相册分组</span
             >
-            <el-button type="primary">编辑分组</el-button>
+            <el-button type="primary" @click="openDrawer">编辑分组</el-button>
           </el-row>
         </div>
         <div class="list">
@@ -29,14 +37,38 @@
               照片精选
             </div>
           </div>
-          <div class="swiper" />
+          <el-carousel height="400px" direction="vertical" type="card" :autoplay="true">
+            <el-carousel-item v-for="item in 4" :key="item">
+              <h3 text="2xl" justify="center">{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
         </div>
       </el-col>
     </el-row>
+    <el-drawer size="40%" v-model="categoryDrawer" :with-header="false">
+      <EditCategory />
+    </el-drawer>
   </div>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { ref } from "vue"
+import EditCategory from "./modules/EditCategory.vue"
+import ImageList from "./modules/ImageList.vue"
+// 分类编辑弹框
+const categoryDrawer = ref<boolean>(false)
+
+// 分组数据
+
+// 打开弹窗
+const openDrawer = () => {
+  categoryDrawer.value = true
+}
+
+const load = () => {
+  console.log(1)
+}
+</script>
 
 <style lang="scss" scoped>
 .picture {
@@ -98,6 +130,27 @@
           }
           display: flex;
           align-items: center;
+        }
+        .el-carousel {
+          margin-top: 30px;
+        }
+        .el-carousel__item h3 {
+          color: #475669;
+          opacity: 0.75;
+          line-height: 200px;
+          margin: 0;
+          text-align: center;
+        }
+        .el-carousel__item {
+          border-radius: 10px;
+        }
+
+        .el-carousel__item:nth-child(2n) {
+          background-color: #99a9bf;
+        }
+
+        .el-carousel__item:nth-child(2n + 1) {
+          background-color: #d3dce6;
         }
       }
     }
