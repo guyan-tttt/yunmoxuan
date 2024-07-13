@@ -1,3 +1,77 @@
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
+import EditCategory from "./modules/EditCategory.vue"
+import ImageList from "./modules/ImageList.vue"
+import { getImageCategoryListAPI } from "@/api/admin/imageCategory"
+import { uploadImageAPI } from "@/api/admin/image"
+import dayjs from "dayjs"
+import { ElMessage, type UploadFile, type UploadRawFile } from "element-plus"
+import type { ImageCategoryItem } from "@/types/admin/imageCategory"
+import type { ImageUploadForm } from "@/types/admin/image"
+// 分类编辑弹框
+const categoryDrawer = ref<boolean>(false)
+
+// 打开弹窗
+const openDrawer = () => {
+  categoryDrawer.value = true
+}
+
+// 触底加载所执行的函数
+const load = () => {
+  console.log(1, 43)
+}
+
+// 分类数据
+const imageCategoryList = ref<ImageCategoryItem[]>([])
+
+// 获取图片分类数据
+const getCategoryList = async () => {
+  const res = await getImageCategoryListAPI()
+
+  res.data.forEach((item: ImageCategoryItem) => {
+    item.isEdit = false
+    item.showDeleteIcon = false
+    item.value = item.name
+    item.createTime = dayjs(item.createTime).format("YYYY-MM-DD")
+  })
+  imageCategoryList.value = res.data
+}
+
+// 图片上传
+const changeUpload = (file: UploadFile) => {
+  imageFormData.value.fileList.push(file.raw as UploadRawFile)
+  console.log(imageFormData.value.fileList)
+}
+// 图片上传表单数据
+const imageFormData = ref<ImageUploadForm>({
+  categoryID: "",
+  fileList: []
+})
+// 图片上传提交
+const imageUploadSubmit = async () => {
+  // 创建FormData
+  const formData = new FormData()
+  formData.append("categoryID", imageFormData.value.categoryID)
+  imageFormData.value.fileList.forEach((item: any) => {
+    formData.append("files", item)
+  })
+  formData.append(
+    "categoryName",
+    imageCategoryList.value.find((item: any) => item._id === imageFormData.value.categoryID)!.name
+  )
+  const res = await uploadImageAPI(formData)
+  if (res.code === 200) {
+    ElMessage.success("上传成功")
+    imageFormData.value.fileList = []
+    imageFormData.value.categoryID = ""
+  }
+}
+
+// 初始化
+onMounted(() => {
+  getCategoryList()
+})
+</script>
 <template>
   <div class="picture">
     <el-row justify="space-between" style="min-height: 800px">
@@ -5,9 +79,54 @@
         :span="16"
         class=".limit-box"
         v-infinite-scroll="load"
-        infinite-scroll-distance="20px"
-        style="overflow: auto; height: 800px"
+        infinite-scroll-distance="200px"
+        style="overflow-y: auto; height: 800px"
       >
+        <el-row>
+          <div class="title">
+            <el-icon size="30" color="#093ddc"><UploadFilled /></el-icon>
+            上传照片
+          </div>
+        </el-row>
+        <el-row>
+          <el-form style="margin-left: 20px; width: 100%">
+            <el-form-item>
+              <el-select v-model="imageFormData.categoryID" style="width: 28%">
+                <el-option
+                  v-for="item in imageCategoryList"
+                  :key="item._id"
+                  :value="item._id as string"
+                  :label="item.name"
+                  >{{ item.name }}</el-option
+                >
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-upload
+                action=""
+                :auto-upload="false"
+                list-type="picture-card"
+                :on-change="changeUpload"
+                :on-preview="() => {}"
+                :on-remove="() => {}"
+              >
+                <el-icon><UploadFilled /></el-icon>
+                <div>上传图片</div>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </el-row>
+        <el-row>
+          <el-button @click="imageUploadSubmit" type="primary" size="large" style="margin-left: 20px"
+            >上传提交</el-button
+          >
+        </el-row>
+        <el-row>
+          <div class="title">
+            <el-icon size="28" color="#093ddc"><PictureFilled /></el-icon>
+            照片展示
+          </div>
+        </el-row>
         <ImageList />
       </el-col>
       <el-col :span="7">
@@ -20,13 +139,13 @@
           </el-row>
         </div>
         <div class="list">
-          <div class="item" v-for="item in 5" :key="item">
+          <div class="item" v-for="item in imageCategoryList" :key="item._id">
             <div class="info">
               <el-icon><Picture /></el-icon>
-              生活记录
+              {{ item.name }}
             </div>
             <div class="right">
-              <el-icon color="#267ee8"><WarningFilled /></el-icon>
+              <el-icon size="20" color="#49d027"><SuccessFilled /></el-icon>
             </div>
           </div>
         </div>
@@ -46,29 +165,10 @@
       </el-col>
     </el-row>
     <el-drawer size="40%" v-model="categoryDrawer" :with-header="false">
-      <EditCategory />
+      <EditCategory @update="getCategoryList" :data="imageCategoryList" />
     </el-drawer>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from "vue"
-import EditCategory from "./modules/EditCategory.vue"
-import ImageList from "./modules/ImageList.vue"
-// 分类编辑弹框
-const categoryDrawer = ref<boolean>(false)
-
-// 分组数据
-
-// 打开弹窗
-const openDrawer = () => {
-  categoryDrawer.value = true
-}
-
-const load = () => {
-  console.log(1)
-}
-</script>
 
 <style lang="scss" scoped>
 .picture {
@@ -157,6 +257,26 @@ const load = () => {
     .el-col:nth-child(1) {
       background-color: #fff;
       border-radius: 0 20px 20px 0;
+      .title {
+        width: 30%;
+        min-width: 200px;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .el-icon {
+          margin-right: 10px;
+        }
+        font-size: 24px;
+        font-weight: 800;
+        color: #333;
+        background-color: #fff;
+        border-radius: 0 20px 20px 0;
+        box-shadow: 0 0 10px #ccc;
+        margin: 10px 0;
+      }
     }
   }
 }
