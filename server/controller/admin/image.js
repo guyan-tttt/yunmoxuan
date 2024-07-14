@@ -24,6 +24,19 @@ const imageController = {
             code: 200,
             msg: '上传成功',
         })
+    },
+    list: async(req,res) => {
+        const { page, pageSize,type } = req.query
+        const left = 0
+        const right = parseInt(page) *  parseInt(pageSize)
+        const result = await imageService.list(type)
+        const data = result.slice(left,right)
+        res.send({
+            code: 200,
+            msg: '获取成功',
+            data,
+            total:  result.length
+        })
     }
 }
 module.exports = imageController
