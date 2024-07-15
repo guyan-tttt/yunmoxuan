@@ -58,7 +58,8 @@ const addCategoryDialog = ref(false)
 
 // 添加分组
 const addCategory = () => {
-  console.log(props)
+  // 判断此时照片分组是否超过5个
+  if (props.data.length >= 5) return ElMessage.error("最多只能有5个分组")
 
   addCategoryDialog.value = true
 }
@@ -102,6 +103,7 @@ const confirm = async () => {
       if (res.code === 200) {
         ElMessage.success("添加成功")
         cancel()
+        emit("update")
       }
     }
   })
@@ -213,6 +215,7 @@ const formRef = ref()
         margin-bottom: 10px;
         background-color: #f5f5f5;
         cursor: pointer;
+        color: #000;
         .info {
           span {
             color: #999;

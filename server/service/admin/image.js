@@ -13,6 +13,14 @@ const imageService = {
            item.src = process.env.SERVER_BASE_URL + item.src
        })
        return data
+    },
+    del: async(id) => {
+        const data = await imageModel.findByIdAndDelete(id)
+        return data
+    },
+    download: async(id) => {
+        const data = await imageModel.findById(id)
+        return data
     }
 }
 

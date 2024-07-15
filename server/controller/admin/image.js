@@ -1,6 +1,9 @@
+const { log } = require('console')
 const imageService = require('../../service/admin/image')
 const renameFile = require('../../utils/renameFile')
 const dayjs = require('dayjs')
+const fs = require('fs')
+const path = require('path')
 
 const imageController = {
     upload: (req,res) => {
@@ -14,8 +17,10 @@ const imageController = {
                 categoryID,
                 categoryName,
                 createTime: dayjs(Date.now()).format("YYYY-MM-DD"),
-                updateTime: dayjs(Date.now()).format("YYYY-MM-DD")
+                updateTime: dayjs(Date.now()).format("YYYY-MM-DD"),
+                size: item.size
             })
+
         })
         
         const result = imageService.upload(fileList)
@@ -37,6 +42,33 @@ const imageController = {
             data,
             total:  result.length
         })
+    },
+    del: async(req,res) => {
+        const { id } = req.params
+        // 删除当前文件并返回文件信息
+        const result = await imageService.del(id)
+        // 删除文件
+        fs.unlinkSync(path.join(__dirname,"../../public",result.src))
+        res.send({
+            code: 200,
+            msg: '删除成功'
+        })
+    },
+    download: async(req,res) => {
+        const { id } = req.params
+
+        const result = await imageService.download(id)
+        const filePath = path.join(__dirname, "../../public",result.src);
+
+        // 读取文件
+        const data = fs.readFileSync(filePath)
+         // 设置响应头，指定内容类型和文件名
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', 'attachment; filename="image1.jpg"');
+
+        // 发送文件数据
+        res.send(data)
+
     }
 }
 module.exports = imageController

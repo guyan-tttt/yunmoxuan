@@ -10,23 +10,24 @@
 
 <script setup lang="ts">
 import { ref, defineProps, watch } from "vue"
-
 const props = defineProps({
   url: String,
   modelValue: Boolean
 })
+
 const emit = defineEmits(["update:modelValue"])
 
 // 关闭弹框
 const close = () => {
   emit("update:modelValue", false)
 }
+
 // 弹框显示
-const dialog = ref(props.modelValue)
+const dialog = ref<boolean>(props.modelValue)
 
 watch(
   () => props.modelValue,
-  (val) => {
+  (val: boolean) => {
     dialog.value = val
   }
 )
