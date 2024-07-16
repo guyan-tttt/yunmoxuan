@@ -1,3 +1,4 @@
+import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs"
 import { type RouteRecordRaw, createRouter, createWebHistory } from "vue-router"
 
 const Layouts = () => import("@/layouts/index.vue")
@@ -86,12 +87,25 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
-        //@ts-expect-error
         component: () => import("@/views/picture/index.vue"),
         name: "Picture",
         meta: {
           title: "图片管理",
           svgIcon: "picture"
+        }
+      }
+    ]
+  },
+  {
+    path: "/trends",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/trends/index.vue"),
+        meta: {
+          title: "动态管理",
+          svgIcon: "trends"
         }
       }
     ]
@@ -125,7 +139,10 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       }
-    ]
+    ],
+    meta: {
+      hidden: true
+    }
   },
   {
     path: "/article-add",
@@ -139,7 +156,10 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       }
-    ]
+    ],
+    meta: {
+      hidden: true
+    }
   },
   {
     path: "/article-detail",
@@ -153,7 +173,10 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       }
-    ]
+    ],
+    meta: {
+      hidden: true
+    }
   },
   // 前台
   {

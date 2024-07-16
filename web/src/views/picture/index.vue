@@ -161,7 +161,7 @@ const getWellImageList = async () => {
   const res = await getImageListAPI(
     imageListPagination.value.page,
     imageListPagination.value.pageSize,
-    imageCategoryList.value[1]._id as string
+    imageCategoryList.value.filter((item) => item.name === "精选照片")[0]._id as string
   )
   wellImageList.value = res.data
 }
@@ -227,6 +227,8 @@ onMounted(async () => {
                   :on-change="changeUpload"
                   :on-preview="() => {}"
                   :on-remove="() => {}"
+                  :multiple="true"
+                  :drag="true"
                 >
                   <el-icon><UploadFilled /></el-icon>
                   <div>上传图片</div>

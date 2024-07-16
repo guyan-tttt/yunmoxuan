@@ -15,7 +15,7 @@ console.log("dadad")
 </script>
 
 <template>
-  <svg class="svg-icon" aria-hidden="true">
+  <svg class="svg-icon" aria-hidden="true" :font-size="5">
     <use :href="symbolId" />
   </svg>
 </template>

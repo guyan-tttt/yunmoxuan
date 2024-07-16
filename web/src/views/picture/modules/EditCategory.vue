@@ -35,6 +35,11 @@ const changeItem = (item: any) => {
   })
     .then(async () => {
       if (item.value !== "" && item.value !== item.name) {
+        // 判断是否为精选照片
+        if (item.name === "精选照片") {
+          ElMessage.error("精选照片不可修改")
+          return
+        }
         const res = await updateImageCategoryAPI({
           id: item._id,
           name: item.value
@@ -80,6 +85,11 @@ const deleteCategory = (item: any) => {
     type: "warning"
   })
     .then(async () => {
+      // 判断是否为精选照片
+      if (item.name === "精选照片") {
+        ElMessage.error("精选照片不可删除")
+        return
+      }
       const res = await deleteImageCategoryAPI(item._id)
       if (res.code === 200) {
         ElMessage.success("删除成功")
@@ -99,6 +109,9 @@ const imageCategoryForm = ref<ImageCategoryItem>({
 const confirm = async () => {
   formRef.value.validate(async (valid: boolean) => {
     if (valid) {
+      // 判断是否与现有分类重名
+      const isRepeat = props.data.some((item) => item.name === imageCategoryForm.value.name)
+      if (isRepeat) return ElMessage.error("分组名称已存在")
       const res = await addImageCategoryAPI(imageCategoryForm.value)
       if (res.code === 200) {
         ElMessage.success("添加成功")
@@ -184,6 +197,10 @@ const formRef = ref()
         >
       </template>
     </el-dialog>
+    <el-divider />
+    <el-card style="width: 100%" shadow="hover"
+      >以上图片分组在删除时会自动清空分组下所有的照片信息，因此在删除时请用户谨慎删除</el-card
+    >
   </div>
 </template>
 

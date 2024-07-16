@@ -69,6 +69,6 @@ const imageController = {
         // 发送文件数据
         res.send(data)
 
-    }
+    },
 }
 module.exports = imageController

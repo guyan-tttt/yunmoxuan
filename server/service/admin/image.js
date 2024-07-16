@@ -21,6 +21,11 @@ const imageService = {
     download: async(id) => {
         const data = await imageModel.findById(id)
         return data
+    },
+    clear: async(categoryID) => {
+        const data = await imageModel.find({categoryID: categoryID})
+        await imageModel.deleteMany({categoryID: categoryID})
+        return data
     }
 }
 
