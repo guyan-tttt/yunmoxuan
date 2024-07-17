@@ -69,7 +69,7 @@ const cancelUpdate = () => {
   // 清除表单校验
   formRef.value.resetFields()
   // 跳转到首页
-  router.push("/dashboard")
+  router.back()
 }
 
 // 校验规则

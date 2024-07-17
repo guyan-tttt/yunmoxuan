@@ -14,6 +14,7 @@ const categoryRouter = require('./routes/admin/categoryRouter')
 const articleRouter = require('./routes/admin/articleRouter')
 const imageCategory = require('./routes/admin/imageCategory')
 const imageRouter = require('./routes/admin/imageRouter')
+const trendsRouter = require('./routes/admin/trendsRouter')
 
 // 路由导入
 
@@ -78,6 +79,7 @@ app.use('/api/admin/category',categoryRouter)
 app.use('/api/admin/article',articleRouter)
 app.use('/api/admin/imageCategory',imageCategory)
 app.use('/api/admin/image',imageRouter)
+app.use('/api/admin/trends',trendsRouter)
 // 路由挂载区域
 
 // catch 404 and forward to error handler

@@ -3,6 +3,19 @@ import { useUserStore } from "@/store/modules/user"
 import { Plus } from "@element-plus/icons-vue"
 import * as echarts from "echarts"
 import { ref, onMounted } from "vue"
+import { useRouter } from "vue-router"
+import Vue3EmojiPicker from "vue3-emoji-picker"
+import { ElInput, ElMessage } from "element-plus"
+import "vue3-emoji-picker/css"
+import { addTrendsAPI } from "@/api/admin/trends"
+
+// 全局路由
+const router = useRouter()
+
+// 修改个人信息
+const changeUserInfo = () => {
+  router.push("userInfo")
+}
 
 // 用户信息仓库
 const userStore = useUserStore()
@@ -16,6 +29,111 @@ const srcList = [
   "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
   "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg"
 ]
+
+// 动态添加弹框显示
+const showDialog = ref<boolean>(false)
+
+// 添加动态
+const addTrends = () => {
+  showDialog.value = true
+}
+
+// 输入框组件
+const inputRef = ref<typeof ElInput>()
+
+// 表情选择值
+const selectedEmoji = ref("")
+
+// 选择表情
+const onEmojiSelect = (emoji: any) => {
+  // 当用户选择emoji时，将其插入到textarea中
+  console.log("xaxax")
+
+  if (inputRef.value) {
+    inputRef.value.focus()
+    trendsForm.value.content += emoji.i
+  }
+  selectedEmoji.value = ""
+}
+
+// 表情输入框显示
+const showEmoji = ref<boolean>(false)
+
+// 打开表情输入框
+const openEmoji = () => {
+  showEmoji.value = !showEmoji.value
+}
+
+// 表单数据
+const trendsForm = ref<{
+  content: string
+  imgList: any[]
+}>({
+  content: "",
+  imgList: []
+})
+
+// 图片上传组件
+const uploadRef = ref()
+
+// 添加图片
+const addImageList = (file: any) => {
+  // 判断上传图片数量
+  if (trendsForm.value.imgList.length > 9) {
+    uploadRef.value.handleRemove(file)
+    ElMessage.error("最多上传9张图片")
+    return
+  }
+  // 判断图片格式
+  if (file.raw.type !== "image/jpeg" && file.raw.type !== "image/png") {
+    ElMessage.error("请上传jpg或png格式的图片")
+    uploadRef.value.handleRemove(file)
+    return
+  }
+  // 判断图片大小
+  if (file.raw.size > 2 * 1024 * 1024) {
+    ElMessage.error("请上传小于2M的图片")
+    uploadRef.value.handleRemove(file.raw)
+    return
+  }
+
+  // 添加图片
+  trendsForm.value.imgList.push(file.raw)
+}
+
+// 移除图片
+const removeImageList = (file: any) => {
+  trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+}
+
+// 取消
+const cancel = () => {
+  showDialog.value = false
+  trendsForm.value.content = ""
+  trendsForm.value.imgList = []
+  uploadRef.value.clearFiles()
+}
+
+// 发布
+const publish = async () => {
+  if (trendsForm.value.content === "") {
+    ElMessage.error("请输入内容")
+    return
+  }
+  // 组装数据
+  const formData = new FormData()
+  formData.append("content", trendsForm.value.content)
+  formData.append("userID", userStore.userInfo._id)
+  trendsForm.value.imgList.forEach((item: any) => {
+    formData.append("files", item)
+  })
+  // 发送请求
+  const res = await addTrendsAPI(formData)
+  if (res.code === 200) {
+    ElMessage.success("发布成功")
+    cancel()
+  }
+}
 
 // 初始化
 onMounted(() => {
@@ -164,8 +282,8 @@ onMounted(() => {
         </template>
         <template #extra>
           <div class="flex items-center">
-            <el-button type="primary" :icon="Plus">发布动态</el-button>
-            <el-button type="success" class="ml-2">修改个人信息</el-button>
+            <el-button type="primary" :icon="Plus" @click="addTrends">发布动态</el-button>
+            <el-button type="success" class="ml-2" @click="changeUserInfo">修改个人信息</el-button>
           </div>
         </template>
 
@@ -234,6 +352,58 @@ onMounted(() => {
         <div class="main" id="like" />
       </el-card>
     </el-card>
+    <el-dialog title="添加动态" v-model="showDialog">
+      <el-form style="margin: 30px" :model="trendsForm">
+        <el-form-item required style="position: relative">
+          <el-input
+            v-model="trendsForm.content"
+            ref="inputRef"
+            placeholder="记录美好生活"
+            show-word-limit
+            maxlength="100"
+            type="textarea"
+            :autosize="{
+              minRows: 5,
+              maxRows: 8
+            }"
+            input-style="height: 180px"
+          />
+          <Vue3EmojiPicker
+            class="emoji"
+            :class="{ active: showEmoji }"
+            :native="true"
+            @select="onEmojiSelect"
+            v-model="selectedEmoji"
+          />
+
+          <el-row justify="start" style="width: 100%; margin-top: 20px; margin-right: 20px">
+            <SvgIcon
+              @click="openEmoji"
+              style="width: 30px; height: 30px"
+              name="emoji"
+              :style="{ color: showEmoji ? '#3cbff5' : '#666' }"
+            />
+          </el-row>
+        </el-form-item>
+        <el-form-item>
+          <el-upload
+            ref="uploadRef"
+            action=""
+            list-type="picture-card"
+            :auto-upload="false"
+            :on-preview="() => {}"
+            :on-remove="removeImageList"
+            :on-change="addImageList"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="publish">发布</el-button>
+          <el-button @click="cancel">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -272,6 +442,17 @@ onMounted(() => {
     font-size: 14px;
     display: flex;
     align-items: center;
+  }
+}
+.emoji {
+  position: absolute;
+  z-index: 1000;
+  right: 10px;
+  top: 118px;
+  transform: scale(0);
+  transition: all 0.3s;
+  &.active {
+    transform: scale(1);
   }
 }
 </style>
