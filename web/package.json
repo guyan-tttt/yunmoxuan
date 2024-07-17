@@ -43,8 +43,6 @@
     "path-browserify": "1.0.1",
     "path-to-regexp": "6.2.2",
     "pinia": "2.1.7",
-    "quill-blot-formatter": "^1.0.5",
-    "quill-emoji": "^0.2.0",
     "screenfull": "6.0.2",
     "v3-waterfall": "^2.0.0-beta.5",
     "vue": "3.4.27",
