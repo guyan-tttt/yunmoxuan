@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/modules/user"
-import { Plus } from "@element-plus/icons-vue"
+import { Plus, Edit, Delete, View } from "@element-plus/icons-vue"
 import * as echarts from "echarts"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import Vue3EmojiPicker from "vue3-emoji-picker"
 import { ElInput, ElMessage } from "element-plus"
 import "vue3-emoji-picker/css"
-import { addTrendsAPI } from "@/api/admin/trends"
+import { addTrendsAPI, getTrendsListAPI, getTrendsDetailAPI, updateTrendsAPI } from "@/api/admin/trends"
+import Comment from "./modules//Comment.vue"
+import dayjs from "dayjs"
 
 // 全局路由
 const router = useRouter()
@@ -19,16 +21,6 @@ const changeUserInfo = () => {
 
 // 用户信息仓库
 const userStore = useUserStore()
-
-const srcList = [
-  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
-  "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
-  "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
-  "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
-  "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg"
-]
 
 // 动态添加弹框显示
 const showDialog = ref<boolean>(false)
@@ -47,7 +39,6 @@ const selectedEmoji = ref("")
 // 选择表情
 const onEmojiSelect = (emoji: any) => {
   // 当用户选择emoji时，将其插入到textarea中
-  console.log("xaxax")
 
   if (inputRef.value) {
     inputRef.value.focus()
@@ -75,6 +66,8 @@ const trendsForm = ref<{
 
 // 图片上传组件
 const uploadRef = ref()
+// 弹框标题
+const title = ref("发布动态")
 
 // 添加图片
 const addImageList = (file: any) => {
@@ -103,7 +96,16 @@ const addImageList = (file: any) => {
 
 // 移除图片
 const removeImageList = (file: any) => {
-  trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+  // 判断此时的状态
+  if (title.value === "发布动态") {
+    // 发布动态
+    trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+  }
+  // 编辑动态
+  else {
+    // 按照url删除原动态中的该图片
+    trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item !== file.url)
+  }
 }
 
 // 取消
@@ -120,23 +122,135 @@ const publish = async () => {
     ElMessage.error("请输入内容")
     return
   }
-  // 组装数据
-  const formData = new FormData()
-  formData.append("content", trendsForm.value.content)
-  formData.append("userID", userStore.userInfo._id)
-  trendsForm.value.imgList.forEach((item: any) => {
-    formData.append("files", item)
-  })
-  // 发送请求
-  const res = await addTrendsAPI(formData)
+
+  // 判此时的编辑状态
+  if (title.value === "发布动态") {
+    // 组装数据
+    const formData = new FormData()
+    formData.append("content", trendsForm.value.content)
+    formData.append("userID", userStore.userInfo._id)
+    trendsForm.value.imgList.forEach((item: any) => {
+      formData.append("files", item)
+    })
+    // 发送请求
+    const res = await addTrendsAPI(formData)
+    if (res.code === 200) {
+      ElMessage.success("发布成功")
+    } else {
+      ElMessage.error("发布失败")
+    }
+  } else {
+    // 汇总数据
+    editTrendsInfo.value.content = trendsForm.value.content // 将修改过的内容替换
+    // 这里由于原本的图片是url路径，新增的图片是file类型所以需要分开处理
+    // 获取原图片
+    const oldImgList = trendsForm.value.imgList.filter((item: any) => !item.uid)
+    // 获取上传的新图片
+    const newImgList = trendsForm.value.imgList.filter((item: any) => item.uid)
+    // 获取需要删除的图片
+    const delImgList = editTrendsInfo.value.imgList.filter((item: any) => !oldImgList.includes(item))
+    editTrendsInfo.value.imgList = oldImgList
+    editTrendsInfo.value.delImgList = delImgList
+    // 组装数据
+    const formData = new FormData()
+    for (const key in editTrendsInfo.value) {
+      formData.append(key, editTrendsInfo.value[key])
+    }
+    // 挂载文件
+    newImgList.forEach((item: any) => {
+      formData.append("files", item)
+    })
+    // 发送请求
+    const res = await updateTrendsAPI(formData)
+    if (res.code === 200) {
+      ElMessage.success("修改成功")
+    } else {
+      ElMessage.error("修改失败")
+    }
+  }
+  getTrendsList()
+  cancel()
+}
+
+// 获取动态列表
+const getTrendsList = async () => {
+  const res = await getTrendsListAPI(pageData.value.page, pageData.value.pageSize)
+  console.log(res)
+
   if (res.code === 200) {
-    ElMessage.success("发布成功")
-    cancel()
+    res.data.forEach((item: any) => {
+      item.createTime = dayjs(item.createTime).format("YYYY-MM-DD HH:mm")
+    })
+    trendsList.value = res.data
+    pageData.value.total = res.total
   }
 }
 
+// 动态列表
+const trendsList = ref<any[]>([])
+
+// 分页数据
+const pageData = ref({
+  page: 1,
+  pageSize: 5,
+  total: 0
+})
+
+// 节流阀
+const throttle = ref<boolean>(false)
+
+// 是否加载完毕
+const isLoad = ref<boolean>(false)
+
+// 滚动加载逻辑
+const load = async () => {
+  if (isLoad.value) return
+  if (trendsList.value.length > 0) {
+    if (!throttle.value && trendsList.value.length < pageData.value.total) {
+      throttle.value = true
+      pageData.value.page++
+      await getTrendsList()
+      throttle.value = true
+    } else if (trendsList.value.length === pageData.value.total) {
+      ElMessage.info("没有更多数据了")
+      isLoad.value = true
+    }
+  }
+}
+
+// 当前修改的动态详情
+const editTrendsInfo = ref<any>({})
+
+// 修改动态
+const editTrends = async (item: any) => {
+  // 获取动态详情
+  const res = await getTrendsDetailAPI(item._id)
+  if (res.code === 200) {
+    editTrendsInfo.value = res.data
+  }
+  trendsForm.value.content = editTrendsInfo.value.content
+  trendsForm.value.imgList = editTrendsInfo.value.imgList.concat([])
+
+  // 打开弹窗
+  showDialog.value = true
+  // 修改标题
+  title.value = "编辑动态"
+
+  // 获取图片列表
+  uploadList.value = trendsForm.value.imgList.map((i: any) => {
+    return {
+      name: "image",
+      url: i
+    }
+  })
+}
+// 上传图片展示列表
+const uploadList = ref<any[]>([])
+
 // 初始化
 onMounted(() => {
+  getTrendsList()
+
   // 浏览量统计
   const myChart1 = echarts.init(document.getElementById("look"))
   // 绘制图表
@@ -304,29 +418,51 @@ onMounted(() => {
         </p>
       </el-page-header>
     </el-card>
-    <el-card style="width: 80%; margin: 0 auto; position: relative">
+    <el-card
+      v-infinite-scroll="load"
+      :infinite-scroll-disabled="isLoad"
+      infinite-scroll-distance="50px"
+      style="width: 80%; margin: 0 auto; position: relative"
+    >
       <el-timeline style="max-width: 50%">
-        <el-timeline-item v-for="i in 4" :key="i" color="#409eff" timestamp="2018/4/12" placement="top">
-          <el-row justify="space-between">
+        <el-timeline-item
+          v-for="i in trendsList"
+          :key="i._id"
+          color="#409eff"
+          :timestamp="i.createTime"
+          placement="top"
+        >
+          <el-row justify="space-between" align="middle">
             <el-col :span="24">
               <el-card>
-                <el-row>
-                  <el-avatar class="mr-3" :size="30" :src="userStore.userInfo?.avatar" />
-                  <span class="font-600 mr-3"> {{ userStore.userInfo.nickname }}</span>
+                <el-row style="width: 100%" justify="space-between">
+                  <div class="user">
+                    <el-avatar class="mr-3" :size="30" :src="i.userInfo.avatar" />
+                    <span class="font-600 mr-3"> {{ i.userInfo.nickname }}</span>
+                  </div>
+
+                  <el-popover placement="right" :width="100" trigger="click">
+                    <template #reference>
+                      <span style="justify-items: end" class="edit">编辑</span>
+                    </template>
+                    <el-button circle :icon="View" type="success" />
+                    <el-button circle :icon="Edit" type="primary" @click="editTrends(i)" />
+                    <el-button circle :icon="Delete" type="danger" />
+                  </el-popover>
                 </el-row>
                 <p>
-                  在人生的旅途中，我们每个人都会遇到各种各样的挑战和困难。但请记住，每一次跌倒都是成长的机会，每一次失败都是向成功迈进的一步。
+                  {{ i.content }}
                 </p>
                 <el-row class="imageList">
                   <el-image
-                    v-for="item in 9"
+                    v-for="item in i.imgList"
                     :key="item"
                     style="width: 30%; height: auto"
-                    src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
+                    :src="item"
                     :zoom-rate="1.2"
                     :max-scale="7"
                     :min-scale="0.2"
-                    :preview-src-list="srcList"
+                    :preview-src-list="i.imgList"
                     :initial-index="4"
                     fit="cover"
                   />
@@ -340,19 +476,21 @@ onMounted(() => {
                     ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>123</span
                   >
                 </el-row>
-              </el-card></el-col
-            >
+                <Comment />
+              </el-card>
+            </el-col>
             <el-col :span="11" />
           </el-row>
         </el-timeline-item>
       </el-timeline>
+      <!-- 统计图表 -->
       <el-card class="echart" style="width: 45%; margin: 20px auto">
         <div class="main" id="look" />
         <div class="main" id="publish" />
         <div class="main" id="like" />
       </el-card>
     </el-card>
-    <el-dialog title="添加动态" v-model="showDialog">
+    <el-dialog :title="title" v-model="showDialog">
       <el-form style="margin: 30px" :model="trendsForm">
         <el-form-item required style="position: relative">
           <el-input
@@ -387,6 +525,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item>
           <el-upload
+            v-model:file-list="uploadList"
             ref="uploadRef"
             action=""
             list-type="picture-card"
@@ -453,6 +592,16 @@ onMounted(() => {
   transition: all 0.3s;
   &.active {
     transform: scale(1);
+  }
+}
+.user {
+  display: flex;
+  align-items: center;
+}
+.edit {
+  cursor: pointer;
+  &:hover {
+    color: #3cbff5;
   }
 }
 </style>

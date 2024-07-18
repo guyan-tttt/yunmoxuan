@@ -54,7 +54,7 @@ const submitUpdate = async () => {
       if (res.code === 200) {
         ElMessage.success("更新成功")
         userStore.setUserInfo()
-        router.push("/dashboard")
+        cancelUpdate()
       }
     }
   })
