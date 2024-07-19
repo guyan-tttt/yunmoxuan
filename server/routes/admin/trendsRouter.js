@@ -16,5 +16,12 @@ router.get("/detail",trendsController.detail)
 // 修改动态
 router.put("/update",upload.array("files",9),trendsController.update)
 
+// 删除动态
+router.delete("/del",trendsController.del)
 
+// 浏览量
+router.put("/browse",trendsController.browse)
+
+// 点赞量
+router.put("/like",trendsController.like)
 module.exports =  router

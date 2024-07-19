@@ -20,6 +20,7 @@ import "@/styles/index.scss"
 import hljs from "highlight.js/lib/core"
 import javascript from "highlight.js/lib/languages/javascript"
 import hljsVuePlugin from "@highlightjs/vue-plugin"
+import "animate.css"
 
 import V3waterfall from "v3-waterfall"
 import "v3-waterfall/dist/style.css"

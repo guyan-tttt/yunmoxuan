@@ -23,6 +23,9 @@ const openComment = () => {
             </div>
 
             <div class="content">"大自然的美，总是让人心旷神怡。"</div>
+            <div class="del">
+              <el-icon :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
+            </div>
           </li>
         </ul>
         <!-- 新增功能： -->
@@ -53,6 +56,7 @@ const openComment = () => {
       width: 100%;
       padding: 10px 0;
       border-bottom: 1px solid #efefef;
+      position: relative;
       .info {
         .name {
           font-size: 14px;
@@ -68,6 +72,33 @@ const openComment = () => {
           color: #999;
           margin-left: 10px;
           float: right;
+        }
+      }
+      .del {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: rgba(0, 0, 0, 0.03);
+        clip-path: circle(0% at 95% 70%);
+        transition: all 1s;
+        border-radius: 10px;
+        cursor: pointer;
+        .el-icon {
+          position: absolute;
+          right: 3%;
+          bottom: 15%;
+          transform: scale(0);
+          transition: all 0.9s;
+        }
+      }
+      &:hover {
+        .del {
+          clip-path: circle(200% at 95% 70%);
+          .el-icon {
+            transform: scale(1);
+          }
         }
       }
     }

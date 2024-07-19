@@ -38,6 +38,19 @@ const trendsService = {
             imgList,
             updateTime: Date.now()
         })
+    },
+    del: async(id) => {
+        return await TrendsModel.findByIdAndDelete(id)
+    },
+    browse: async(id) => {
+        return await TrendsModel.findByIdAndUpdate(id,{
+            $inc: {lookNum: 1}
+        })
+    },
+    like: async(id) => {
+        return await TrendsModel.findByIdAndUpdate(id,{
+            $inc: {likeNum: 1}
+        })
     }
 }
 

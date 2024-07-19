@@ -5,11 +5,20 @@ import * as echarts from "echarts"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import Vue3EmojiPicker from "vue3-emoji-picker"
-import { ElInput, ElMessage } from "element-plus"
+import { ElInput, ElMessage, ElMessageBox } from "element-plus"
 import "vue3-emoji-picker/css"
-import { addTrendsAPI, getTrendsListAPI, getTrendsDetailAPI, updateTrendsAPI } from "@/api/admin/trends"
-import Comment from "./modules//Comment.vue"
+import {
+  addTrendsAPI,
+  getTrendsListAPI,
+  getTrendsDetailAPI,
+  updateTrendsAPI,
+  deleteTrendsAPI,
+  viewTrendsAPI,
+  likeTrendsAPI
+} from "@/api/admin/trends"
+import Comment from "./modules/Comment.vue"
 import dayjs from "dayjs"
+import Preview from "./modules/Preview.vue"
 
 // 全局路由
 const router = useRouter()
@@ -72,7 +81,7 @@ const title = ref("发布动态")
 // 添加图片
 const addImageList = (file: any) => {
   // 判断上传图片数量
-  if (trendsForm.value.imgList.length > 9) {
+  if (trendsForm.value.imgList.length === 9) {
     uploadRef.value.handleRemove(file)
     ElMessage.error("最多上传9张图片")
     return
@@ -103,8 +112,13 @@ const removeImageList = (file: any) => {
   }
   // 编辑动态
   else {
-    // 按照url删除原动态中的该图片
-    trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item !== file.url)
+    // 判断当前需要删的是图片链接还是图片文件,这里由于修改动态时添加过预览图片的列表uploadList，每张图片的名称都时image，因此可以通过name属性区分是否为图片链接
+    if (file.name === "image") {
+      // 按照url删除原动态中的该图片
+      trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item !== file.url)
+    } else {
+      trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+    }
   }
 }
 
@@ -160,6 +174,7 @@ const publish = async () => {
     newImgList.forEach((item: any) => {
       formData.append("files", item)
     })
+
     // 发送请求
     const res = await updateTrendsAPI(formData)
     if (res.code === 200) {
@@ -230,6 +245,7 @@ const editTrends = async (item: any) => {
   }
   trendsForm.value.content = editTrendsInfo.value.content
   trendsForm.value.imgList = editTrendsInfo.value.imgList.concat([])
+  console.log(trendsForm.value.imgList)
 
   // 打开弹窗
   showDialog.value = true
@@ -247,6 +263,63 @@ const editTrends = async (item: any) => {
 // 上传图片展示列表
 const uploadList = ref<any[]>([])
 
+// 删除动态
+const delTrends = async (item: any) => {
+  ElMessageBox.confirm("确定删除该动态吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  })
+    .then(async () => {
+      const res = await deleteTrendsAPI(item._id)
+      if (res.code === 200) {
+        ElMessage.success("删除成功")
+      } else {
+        ElMessage.error("删除失败")
+      }
+      getTrendsList()
+    })
+    .catch(() => {})
+}
+
+// 预览弹框显示
+const previewShow = ref(false)
+
+// 预览弹框内容
+const previewData = ref<any>({})
+
+// 预览
+const previewTrends = (item: any) => {
+  previewData.value = item
+  previewShow.value = true
+}
+
+// 浏览量增加
+const addLook = async () => {
+  previewData.value.lookNum++
+  await viewTrendsAPI(previewData.value._id)
+}
+
+// 点赞特效
+const like = ref<boolean>(false)
+
+const activeIndex = ref<number>(-1)
+
+// 点赞
+const addLike = async (item: any, index: number) => {
+  // 判断是否点赞
+  if (!like.value) {
+    like.value = true
+    activeIndex.value = index
+    // 点赞
+    item.likeNum++
+    await likeTrendsAPI(item._id)
+    setTimeout(() => {
+      like.value = false
+      activeIndex.value = -1
+    }, 1000)
+  }
+}
 // 初始化
 onMounted(() => {
   getTrendsList()
@@ -389,7 +462,9 @@ onMounted(() => {
         <template #content>
           <div class="flex items-center">
             <el-avatar class="mr-3" :size="60" :src="userStore.userInfo?.avatar" />
-            <span class="text-large font-600 mr-3"> {{ userStore.userInfo.nickname }}</span>
+            <span class="text-large font-600 mr-3 animate__animated animate__bounce">
+              {{ userStore.userInfo.nickname }}</span
+            >
             <SvgIcon :name="userStore.userInfo?.gender === 1 ? 'boy' : 'girl'" style="width: 30px; height: 30px" />
             <el-tag>管理员</el-tag>
           </div>
@@ -426,7 +501,7 @@ onMounted(() => {
     >
       <el-timeline style="max-width: 50%">
         <el-timeline-item
-          v-for="i in trendsList"
+          v-for="(i, index) in trendsList"
           :key="i._id"
           color="#409eff"
           :timestamp="i.createTime"
@@ -445,9 +520,9 @@ onMounted(() => {
                     <template #reference>
                       <span style="justify-items: end" class="edit">编辑</span>
                     </template>
-                    <el-button circle :icon="View" type="success" />
+                    <el-button circle :icon="View" type="success" @click="previewTrends(i)" />
                     <el-button circle :icon="Edit" type="primary" @click="editTrends(i)" />
-                    <el-button circle :icon="Delete" type="danger" />
+                    <el-button circle :icon="Delete" type="danger" @click="delTrends(i)" />
                   </el-popover>
                 </el-row>
                 <p>
@@ -468,12 +543,20 @@ onMounted(() => {
                   />
                 </el-row>
                 <el-row justify="end" class="about">
-                  <span><SvgIcon style="margin-right: 10px" name="like" size="18" />1213</span>
+                  <span @click="addLike(i, index)" style="position: relative"
+                    ><SvgIcon
+                      class="like"
+                      :class="{ animate__heartBeat: activeIndex === index }"
+                      style="margin-right: 10px; color: red"
+                      :name="i.likeNum === 0 ? 'like' : 'like-active'"
+                      size="18"
+                    />{{ i.likeNum }}
+                  </span>
                   <span
-                    ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>3414</span
+                    ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>{{ i.lookNum }}</span
                   >
                   <span
-                    ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>123</span
+                    ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ i.commentNum }}</span
                   >
                 </el-row>
                 <Comment />
@@ -543,6 +626,8 @@ onMounted(() => {
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 预览 -->
+    <Preview :data="previewData" v-model="previewShow" @increase="addLook" />
   </div>
 </template>
 

@@ -1,4 +1,5 @@
 
+const { log } = require('console')
 const trendsService = require('../../service/admin/trends')
 const renameFile = require('../../utils/renameFile')
 const dayjs = require('dayjs')
@@ -77,6 +78,45 @@ const trendsController = {
         res.send({
             code: 200,
             message: '更新成功'
+        })
+    },
+    del: async(req,res) => {
+        const { id }  = req.query
+        const result = await trendsService.detail(id)
+        const imgList = result.imgList
+        // console.log(imgList)
+        // 删除图片
+        if(imgList.length > 0) {
+            imgList.forEach(item => {
+                const src = item.replace(process.env.SERVER_BASE_URL,"")
+                try {
+                    fs.unlinkSync(path.join(__dirname,"../../public",src))
+                } catch(err) {
+                    console.log(err)
+                }
+            })
+        }
+        // 删除数据库
+        await trendsService.del(id)
+        res.send({
+            code: 200,
+            message: '删除成功'
+        })
+    },
+    browse: async(req,res) => {
+        const { id } = req.query
+        const result = await trendsService.browse(id)
+        res.send({
+            code: 200,
+            message: '浏览成功',
+        })
+    },
+    like: async(req,res) => {
+        const { id } = req.query
+        const result = await trendsService.like(id)
+        res.send({
+            code: 200,
+            message: '点赞成功',
         })
     }
 }

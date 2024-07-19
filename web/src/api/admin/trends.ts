@@ -20,3 +20,16 @@ export const updateTrendsAPI = (data: FormData) => {
   return request.put<any, any>("/admin/trends/update", data)
 }
 // 删除动态
+export const deleteTrendsAPI = (id: string) => {
+  return request.delete<any, any>(`/admin/trends/del?id=${id}`)
+}
+
+// 浏览动态
+export const viewTrendsAPI = (id: string) => {
+  return request.put<any, any>(`/admin/trends/browse?id=${id}`)
+}
+
+// 点赞
+export const likeTrendsAPI = (id: string) => {
+  return request.put<any, any>(`/admin/trends/like?id=${id}`)
+}
