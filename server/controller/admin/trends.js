@@ -1,5 +1,4 @@
 
-const { log } = require('console')
 const trendsService = require('../../service/admin/trends')
 const renameFile = require('../../utils/renameFile')
 const dayjs = require('dayjs')
@@ -117,6 +116,38 @@ const trendsController = {
         res.send({
             code: 200,
             message: '点赞成功',
+        })
+    },
+    comment: async(req,res) => {
+        if(req.body.ip === "") {
+            req.body.ip = "未知"
+        }
+        // 添加评论
+        const result = await trendsService.comment(req.body)
+        res.send({
+            code: 200,
+            message: '评论成功',
+        })
+    },
+    commentList: async(req,res) => {
+         const {  page,pageSize,trendsID } = req.query
+         const left = 0
+         const right = parseInt(page) *  parseInt(pageSize)
+         const result = await trendsService.commentList(trendsID,left,right)
+         
+         res.send({
+             code: 200,
+             message: '获取成功',
+             data: result
+         })
+    },
+    commentDel: async(req,res) => {
+        const { id } = req.query
+        await trendsService.commentDel(id)
+        
+        res.send({
+            code: 200,
+            message: '删除成功'
         })
     }
 }

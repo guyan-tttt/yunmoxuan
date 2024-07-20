@@ -24,4 +24,14 @@ router.put("/browse",trendsController.browse)
 
 // 点赞量
 router.put("/like",trendsController.like)
+
+// 添加评论
+router.post("/comment/add",trendsController.comment)
+
+// 获取评论列表
+router.get("/comment/list",trendsController.commentList)
+
+// 删除评论
+router.delete("/comment/del",trendsController.commentDel)
+
 module.exports =  router

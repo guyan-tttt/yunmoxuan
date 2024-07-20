@@ -6,10 +6,11 @@ import Comment from "./Comment.vue"
 const props = defineProps<{
   data: any
   modelValue: boolean
+  province: any[]
 }>()
 
 // 接受父组件参数
-const emit = defineEmits(["update:modelValue", "increase"])
+const emit = defineEmits(["update:modelValue", "increase", "update:comment"])
 
 // 弹框显示
 const dialogVisible = ref(props.modelValue)
@@ -31,6 +32,11 @@ watch(
 const lookIncrease = () => {
   // 提交父组件事件，提示动态浏览量+1
   emit("increase")
+}
+
+// 评论更新
+const commentUpdate = (val: number) => {
+  emit("update:comment", val)
 }
 </script>
 
@@ -78,7 +84,7 @@ const lookIncrease = () => {
                 ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ props.data.commentNum }}</span
               >
             </el-row>
-            <Comment />
+            <Comment :data="props.data" :province="props.province" @update="commentUpdate" />
           </el-col>
           <el-col :span="11" />
         </el-row>

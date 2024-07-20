@@ -1,5 +1,7 @@
 const TrendsModel = require('../../model/TrendsModel')
 const UserModel = require('../../model/UserModel')
+const TrendsCommentModel = require('../../model/TrendsComment')
+
 
 const trendsService = {
     add: async(content,userID,imgList) => {
@@ -51,6 +53,30 @@ const trendsService = {
         return await TrendsModel.findByIdAndUpdate(id,{
             $inc: {likeNum: 1}
         })
+    },
+    comment: async(data) => {
+        // 更新评论数量
+        await TrendsModel.findByIdAndUpdate(data.trendsID,{
+            $inc: {commentNum: 1}
+        })
+        console.log(data.trendsID);
+        // 添加评论数据
+        await TrendsCommentModel.create({
+            ...data,
+            createTime: Date.now()
+        })
+    },
+    commentList: async(trendsID,left,right) => {
+        const data = await TrendsCommentModel.find({trendsID}).sort('-createTime').skip(left).limit(right)
+        return data
+    },
+    commentDel: async(id) => {
+        // 更新评论数量
+        const comment = await TrendsCommentModel.findById(id)
+        await TrendsModel.findByIdAndUpdate(comment.trendsID,{
+            $inc: {commentNum: -1}
+        })
+         await TrendsCommentModel.findByIdAndDelete(id)
     }
 }
 

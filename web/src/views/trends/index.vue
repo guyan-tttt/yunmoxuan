@@ -14,7 +14,8 @@ import {
   updateTrendsAPI,
   deleteTrendsAPI,
   viewTrendsAPI,
-  likeTrendsAPI
+  likeTrendsAPI,
+  getProvinceAPI
 } from "@/api/admin/trends"
 import Comment from "./modules/Comment.vue"
 import dayjs from "dayjs"
@@ -320,10 +321,22 @@ const addLike = async (item: any, index: number) => {
     }, 1000)
   }
 }
+// 获取省信息
+const getLocation = async () => {
+  const res = await getProvinceAPI()
+  provinceData.value = res.data.districts[0].districts
+}
+// 省份数据
+const provinceData = ref<any[]>([])
+
+// 评论数量改变
+const commentNumChange = (item: any, value: number) => {
+  item.commentNum += value
+}
 // 初始化
 onMounted(() => {
   getTrendsList()
-
+  getLocation()
   // 浏览量统计
   const myChart1 = echarts.init(document.getElementById("look"))
   // 绘制图表
@@ -559,7 +572,7 @@ onMounted(() => {
                     ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ i.commentNum }}</span
                   >
                 </el-row>
-                <Comment />
+                <Comment :data="i" :province="provinceData" @update="(value) => commentNumChange(i, value)" />
               </el-card>
             </el-col>
             <el-col :span="11" />
@@ -627,7 +640,13 @@ onMounted(() => {
       </el-form>
     </el-dialog>
     <!-- 预览 -->
-    <Preview :data="previewData" v-model="previewShow" @increase="addLook" />
+    <Preview
+      :data="previewData"
+      v-model="previewShow"
+      :province="provinceData"
+      @increase="addLook"
+      @update:comment="(val) => commentNumChange(previewData, val)"
+    />
   </div>
 </template>
 
