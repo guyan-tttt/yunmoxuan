@@ -68,7 +68,11 @@ const trendsService = {
     },
     commentList: async(trendsID,left,right) => {
         const data = await TrendsCommentModel.find({trendsID}).sort('-createTime').skip(left).limit(right)
-        return data
+        const total = await TrendsCommentModel.find({trendsID}).countDocuments()
+        return {
+            data,
+            total
+        }
     },
     commentDel: async(id) => {
         // 更新评论数量
@@ -77,7 +81,20 @@ const trendsService = {
             $inc: {commentNum: -1}
         })
          await TrendsCommentModel.findByIdAndDelete(id)
+    },
+    trendsWeek: async() => {
+        const nowDate = new Date()
+        const weekAgo = new Date()
+        weekAgo.setDate(weekAgo.getDate() - 7)
+        const data = await TrendsModel.find({
+            createTime: {
+                $gt: weekAgo,
+                $lt: nowDate
+            }
+        })
+        return data
     }
 }
+
 
 module.exports = trendsService

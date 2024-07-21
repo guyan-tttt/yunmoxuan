@@ -3,10 +3,12 @@ import { ref, defineProps } from "vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import dayjs from "dayjs"
 import { getCommentListAPI, addCommentAPI, deleteCommentAPI } from "@/api/admin/trends"
+import type { CommentItem, CommentFormData, TrendsItem, TrendsPageData } from "@/types/admin/trends"
+import { onClickOutside } from "@vueuse/core"
 
 // 接受父组件数据
 const props = defineProps<{
-  data: any
+  data: TrendsItem
   province: any[]
 }>()
 
@@ -21,11 +23,16 @@ const openComment = async () => {
   // 判断是否为空
   if (activeNames.value.length !== 0) {
     await getCommentList()
+    setTimeout(() => {
+      showEmojiPicker.value = true
+    }, 1000)
+  } else {
+    showEmojiPicker.value = false
   }
 }
 
 // 评论表单
-const commentForm = ref({
+const commentForm = ref<CommentFormData>({
   nickname: "",
   content: "",
   ip: "",
@@ -64,9 +71,10 @@ const loading = ref<boolean>(false)
 // 获取评论列表
 const getCommentList = async () => {
   loading.value = true
-  const res = await getCommentListAPI(1, 5, props.data._id)
+  const res = await getCommentListAPI(pageData.value.page, pageData.value.pageSize, props.data._id)
   if (res.code == 200) {
     commentList.value = res.data
+    pageData.value.total = res.total
     setTimeout(() => {
       loading.value = false
     }, 500)
@@ -89,8 +97,53 @@ const delComment = async (id: string) => {
   })
 }
 
+// 分页数据
+const pageData = ref<TrendsPageData>({
+  page: 1,
+  pageSize: 5,
+  total: 0
+})
+
+// 加载更多
+const loadMore = async () => {
+  if (commentList.value.length < pageData.value.total) {
+    pageData.value.page++
+    await getCommentList()
+  }
+  if (commentList.value.length === pageData.value.total) {
+    ElMessage.success("加载完毕")
+  }
+}
+
 // 评论列表
-const commentList = ref<any[]>([])
+const commentList = ref<CommentItem[]>([])
+
+// 表情选择
+const selectedEmoji = ref<string>("")
+
+// 表情输入框显示
+const showEmoji = ref<boolean>(false)
+
+// 打开表情输入框
+const openEmoji = () => {
+  showEmoji.value = !showEmoji.value
+}
+// 选择表情
+const selectEmoji = (emoji: any) => {
+  commentForm.value.content += emoji.i
+  selectedEmoji.value = ""
+}
+
+// 表情选择组件
+const emojiPicker = ref<any>(null)
+
+// 点击表情组件以外的位置，关闭表情选择框
+onClickOutside(emojiPicker, () => {
+  showEmoji.value = false
+})
+
+// 由于每一个评论区都需要一个表情选择框，所以在打开评论区时会有卡顿效果，因此在这里将表情框动态控制
+const showEmojiPicker = ref<boolean>(false)
 </script>
 
 <template>
@@ -122,8 +175,26 @@ const commentList = ref<any[]>([])
           show-word-limit
           v-model="commentForm.content"
         />
-        <el-button style="margin-top: 10px" type="primary" size="small" @click="submitComment">发布</el-button>
-        <el-button style="margin-top: 10px" type="danger" size="small" @click="clearComment">清除</el-button>
+
+        <el-row align="middle" style="relative">
+          <el-button style="margin: 10px 0 0 0" type="primary" size="small" @click="submitComment">发布</el-button>
+          <el-button style="margin-top: 10px" type="danger" size="small" @click="clearComment">清除</el-button>
+          <SvgIcon
+            @click="openEmoji"
+            style="width: 25px; height: 25px; margin-top: 10px; margin-left: 10px"
+            name="emoji"
+            :style="{ color: showEmoji ? '#3cbff5' : '#666' }"
+          />
+          <Vue3EmojiPicker
+            v-if="showEmojiPicker"
+            ref="emojiPicker"
+            class="emoji"
+            :class="{ active: showEmoji }"
+            :native="true"
+            @select="selectEmoji"
+            v-model="selectedEmoji"
+          />
+        </el-row>
         <ul class="list" v-if="commentList.length > 0" v-loading="loading">
           <li class="item" v-for="item in commentList" :key="item._id">
             <div class="info">
@@ -140,8 +211,12 @@ const commentList = ref<any[]>([])
             </div>
           </li>
 
-          <el-button class="more">加载更多...</el-button>
+          <el-row style="width: 100%" v-if="commentList.length >= pageData.pageSize" justify="center">
+            <el-button class="more" v-if="commentList.length < pageData.total" @click="loadMore">加载更多...</el-button>
+            <div class="no-comment" v-else>没有更多了~</div>
+          </el-row>
         </ul>
+
         <div class="no-comment" v-else>暂无评论</div>
       </el-collapse-item>
     </el-collapse>
@@ -156,7 +231,7 @@ const commentList = ref<any[]>([])
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    list-style: none;
     .item {
       width: 100%;
       padding: 10px 0;
@@ -221,5 +296,19 @@ const commentList = ref<any[]>([])
   color: #999;
   text-align: center;
   padding: 20px 0;
+}
+.emoji {
+  position: absolute;
+  z-index: 1000;
+  right: 0px;
+  top: 0px;
+  transform: scale(0);
+  transition: all 0.3s;
+  &.active {
+    transform: scale(1);
+  }
+}
+::v-deep(.el-collapse-item__wrap) {
+  overflow: visible;
 }
 </style>

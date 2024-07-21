@@ -24,7 +24,8 @@ import "animate.css"
 
 import V3waterfall from "v3-waterfall"
 import "v3-waterfall/dist/style.css"
-
+import Vue3EmojiPicker from "vue3-emoji-picker"
+import "vue3-emoji-picker/css"
 // Then register the languages you need
 hljs.registerLanguage("javascript", javascript)
 
@@ -37,6 +38,7 @@ loadSvg(app)
 /** 加载自定义指令 */
 
 app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall)
+app.component("Vue3EmojiPicker", Vue3EmojiPicker)
 router.isReady().then(() => {
   app.mount("#app")
 })

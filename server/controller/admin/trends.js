@@ -133,21 +133,30 @@ const trendsController = {
          const {  page,pageSize,trendsID } = req.query
          const left = 0
          const right = parseInt(page) *  parseInt(pageSize)
-         const result = await trendsService.commentList(trendsID,left,right)
+         const { data,total } = await trendsService.commentList(trendsID,left,right)
          
          res.send({
              code: 200,
              message: '获取成功',
-             data: result
+             data: data,
+             total: total
          })
     },
     commentDel: async(req,res) => {
         const { id } = req.query
         await trendsService.commentDel(id)
-        
+
         res.send({
             code: 200,
             message: '删除成功'
+        })
+    },
+    trendsWeek: async(req,res) => {
+        const result = await trendsService.trendsWeek()
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data: result
         })
     }
 }

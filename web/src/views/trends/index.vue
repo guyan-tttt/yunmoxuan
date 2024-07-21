@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/modules/user"
 import { Plus, Edit, Delete, View } from "@element-plus/icons-vue"
-import * as echarts from "echarts"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
-import Vue3EmojiPicker from "vue3-emoji-picker"
-import { ElInput, ElMessage, ElMessageBox } from "element-plus"
-import "vue3-emoji-picker/css"
+import { ElInput, ElMessage, ElMessageBox, type UploadInstance, type UploadFile } from "element-plus"
 import {
   addTrendsAPI,
   getTrendsListAPI,
@@ -15,11 +12,16 @@ import {
   deleteTrendsAPI,
   viewTrendsAPI,
   likeTrendsAPI,
-  getProvinceAPI
+  getProvinceAPI,
+  getTrendsWeekAPI
 } from "@/api/admin/trends"
 import Comment from "./modules/Comment.vue"
 import dayjs from "dayjs"
 import Preview from "./modules/Preview.vue"
+import type { AddTrendsFormData, TrendsItem, TrendsPageData } from "@/types/admin/trends"
+import TrendsBar from "./modules/TrendsBar.vue"
+import TrendsPie from "./modules/TrendsPie.vue"
+import TrendsLine from "./modules/TrendsLine.vue"
 
 // 全局路由
 const router = useRouter()
@@ -44,7 +46,7 @@ const addTrends = () => {
 const inputRef = ref<typeof ElInput>()
 
 // 表情选择值
-const selectedEmoji = ref("")
+const selectedEmoji = ref<any>("")
 
 // 选择表情
 const onEmojiSelect = (emoji: any) => {
@@ -66,37 +68,35 @@ const openEmoji = () => {
 }
 
 // 表单数据
-const trendsForm = ref<{
-  content: string
-  imgList: any[]
-}>({
+const trendsForm = ref<AddTrendsFormData>({
   content: "",
   imgList: []
 })
 
 // 图片上传组件
-const uploadRef = ref()
+const uploadRef = ref<UploadInstance>()
+
 // 弹框标题
-const title = ref("发布动态")
+const title = ref<string>("发布动态")
 
 // 添加图片
-const addImageList = (file: any) => {
+const addImageList = (file: UploadFile) => {
   // 判断上传图片数量
   if (trendsForm.value.imgList.length === 9) {
-    uploadRef.value.handleRemove(file)
+    uploadRef.value?.handleRemove(file)
     ElMessage.error("最多上传9张图片")
     return
   }
   // 判断图片格式
-  if (file.raw.type !== "image/jpeg" && file.raw.type !== "image/png") {
+  if (file.raw?.type !== "image/jpeg" && file.raw?.type !== "image/png") {
     ElMessage.error("请上传jpg或png格式的图片")
-    uploadRef.value.handleRemove(file)
+    uploadRef.value?.handleRemove(file)
     return
   }
   // 判断图片大小
-  if (file.raw.size > 2 * 1024 * 1024) {
+  if (file?.raw.size > 2 * 1024 * 1024) {
     ElMessage.error("请上传小于2M的图片")
-    uploadRef.value.handleRemove(file.raw)
+    uploadRef.value?.handleRemove(file?.raw)
     return
   }
 
@@ -105,11 +105,11 @@ const addImageList = (file: any) => {
 }
 
 // 移除图片
-const removeImageList = (file: any) => {
+const removeImageList = (file: UploadFile) => {
   // 判断此时的状态
   if (title.value === "发布动态") {
     // 发布动态
-    trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+    trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw?.uid)
   }
   // 编辑动态
   else {
@@ -118,7 +118,7 @@ const removeImageList = (file: any) => {
       // 按照url删除原动态中的该图片
       trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item !== file.url)
     } else {
-      trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw.uid)
+      trendsForm.value.imgList = trendsForm.value.imgList.filter((item: any) => item.uid !== file.raw?.uid)
     }
   }
 }
@@ -128,7 +128,7 @@ const cancel = () => {
   showDialog.value = false
   trendsForm.value.content = ""
   trendsForm.value.imgList = []
-  uploadRef.value.clearFiles()
+  uploadRef.value?.clearFiles()
 }
 
 // 发布
@@ -156,19 +156,20 @@ const publish = async () => {
     }
   } else {
     // 汇总数据
-    editTrendsInfo.value.content = trendsForm.value.content // 将修改过的内容替换
+    editTrendsInfo.value!.content = trendsForm.value.content // 将修改过的内容替换
     // 这里由于原本的图片是url路径，新增的图片是file类型所以需要分开处理
     // 获取原图片
     const oldImgList = trendsForm.value.imgList.filter((item: any) => !item.uid)
     // 获取上传的新图片
     const newImgList = trendsForm.value.imgList.filter((item: any) => item.uid)
     // 获取需要删除的图片
-    const delImgList = editTrendsInfo.value.imgList.filter((item: any) => !oldImgList.includes(item))
-    editTrendsInfo.value.imgList = oldImgList
-    editTrendsInfo.value.delImgList = delImgList
+    const delImgList = editTrendsInfo.value?.imgList.filter((item: any) => !oldImgList.includes(item))
+    editTrendsInfo.value!.imgList = oldImgList as string[]
+    editTrendsInfo.value!.delImgList = delImgList
     // 组装数据
     const formData = new FormData()
     for (const key in editTrendsInfo.value) {
+      //@ts-ignore
       formData.append(key, editTrendsInfo.value[key])
     }
     // 挂载文件
@@ -203,10 +204,10 @@ const getTrendsList = async () => {
 }
 
 // 动态列表
-const trendsList = ref<any[]>([])
+const trendsList = ref<TrendsItem[]>([])
 
 // 分页数据
-const pageData = ref({
+const pageData = ref<TrendsPageData>({
   page: 1,
   pageSize: 5,
   total: 0
@@ -235,17 +236,17 @@ const load = async () => {
 }
 
 // 当前修改的动态详情
-const editTrendsInfo = ref<any>({})
+const editTrendsInfo = ref<TrendsItem>()
 
 // 修改动态
-const editTrends = async (item: any) => {
+const editTrends = async (item: TrendsItem) => {
   // 获取动态详情
   const res = await getTrendsDetailAPI(item._id)
   if (res.code === 200) {
     editTrendsInfo.value = res.data
   }
-  trendsForm.value.content = editTrendsInfo.value.content
-  trendsForm.value.imgList = editTrendsInfo.value.imgList.concat([])
+  trendsForm.value.content = editTrendsInfo.value?.content as string
+  trendsForm.value.imgList = editTrendsInfo.value?.imgList.concat([]) as string[]
   console.log(trendsForm.value.imgList)
 
   // 打开弹窗
@@ -262,10 +263,15 @@ const editTrends = async (item: any) => {
   })
 }
 // 上传图片展示列表
-const uploadList = ref<any[]>([])
+const uploadList = ref<
+  {
+    name: string
+    url: string
+  }[]
+>([])
 
 // 删除动态
-const delTrends = async (item: any) => {
+const delTrends = async (item: TrendsItem) => {
   ElMessageBox.confirm("确定删除该动态吗？", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -284,30 +290,31 @@ const delTrends = async (item: any) => {
 }
 
 // 预览弹框显示
-const previewShow = ref(false)
+const previewShow = ref<boolean>(false)
 
 // 预览弹框内容
-const previewData = ref<any>({})
+const previewData = ref<TrendsItem>()
 
 // 预览
-const previewTrends = (item: any) => {
+const previewTrends = (item: TrendsItem) => {
   previewData.value = item
   previewShow.value = true
 }
 
 // 浏览量增加
 const addLook = async () => {
-  previewData.value.lookNum++
-  await viewTrendsAPI(previewData.value._id)
+  previewData.value!.lookNum++
+  await viewTrendsAPI(previewData.value?._id as string)
 }
 
 // 点赞特效
 const like = ref<boolean>(false)
 
+// 点赞特效激活状态
 const activeIndex = ref<number>(-1)
 
 // 点赞
-const addLike = async (item: any, index: number) => {
+const addLike = async (item: TrendsItem, index: number = 0) => {
   // 判断是否点赞
   if (!like.value) {
     like.value = true
@@ -321,148 +328,31 @@ const addLike = async (item: any, index: number) => {
     }, 1000)
   }
 }
+
 // 获取省信息
 const getLocation = async () => {
   const res = await getProvinceAPI()
   provinceData.value = res.data.districts[0].districts
 }
+
 // 省份数据
 const provinceData = ref<any[]>([])
 
 // 评论数量改变
-const commentNumChange = (item: any, value: number) => {
+const commentNumChange = (item: TrendsItem, value: number) => {
   item.commentNum += value
+}
+
+// 获取一周内动态列表
+const getTrendsListWeek = async () => {
+  const res = await getTrendsWeekAPI()
+  console.log(res)
 }
 // 初始化
 onMounted(() => {
   getTrendsList()
   getLocation()
-  // 浏览量统计
-  const myChart1 = echarts.init(document.getElementById("look"))
-  // 绘制图表
-  myChart1.setOption({
-    title: {
-      text: "近6个月浏览量"
-    },
-    xAxis: {
-      type: "category",
-      data: ["1月", "2月", "3月", "4月", "5月", "6月"]
-    },
-    yAxis: {
-      type: "value"
-    },
-    series: [
-      {
-        data: [
-          {
-            value: 200,
-            itemStyle: {
-              color: "#ff5800"
-            }
-          },
-          {
-            value: 120,
-            itemStyle: {
-              color: "#a90000"
-            }
-          },
-          {
-            value: 242,
-            itemStyle: {
-              color: "#ffaf00"
-            }
-          },
-          {
-            value: 109,
-            itemStyle: {
-              color: "#9e42ff"
-            }
-          },
-          {
-            value: 183,
-            itemStyle: {
-              color: "#3b93ff"
-            }
-          },
-          {
-            value: 161,
-            itemStyle: {
-              color: "#74ff3c"
-            }
-          }
-        ],
-        type: "bar"
-      }
-    ]
-  })
-  //   发布量统计
-  const myChart2 = echarts.init(document.getElementById("publish"))
-  // 绘制图表
-  myChart2.setOption({
-    title: {
-      text: "近6个月发布量"
-    },
-    tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-      top: "bottom"
-    },
-    toolbox: {
-      show: true,
-      feature: {
-        mark: { show: true },
-        dataView: { show: false, readOnly: false },
-        restore: { show: false },
-        saveAsImage: { show: false }
-      }
-    },
-    series: [
-      {
-        name: "月发布量占比",
-        type: "pie",
-        radius: [20, 180],
-        center: ["50%", "50%"],
-        roseType: "area",
-        itemStyle: {
-          borderRadius: 8
-        },
-
-        data: [
-          { value: 40, name: "1月" },
-          { value: 38, name: "2月" },
-          { value: 32, name: "3月" },
-          { value: 30, name: "4月" },
-          { value: 28, name: "5月" },
-          { value: 26, name: "6月" }
-        ]
-      }
-    ]
-  })
-  //   点赞数统计量
-  const myChart3 = echarts.init(document.getElementById("like"))
-  // 绘制图表
-  myChart3.setOption({
-    title: {
-      text: "近6个月点赞量"
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: ["1月", "2月", "3月", "4月", "5月", "6月"]
-    },
-    yAxis: {
-      type: "value"
-    },
-    series: [
-      {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: "line",
-        areaStyle: {}
-      }
-    ]
-  })
+  getTrendsListWeek()
 })
 </script>
 
@@ -538,7 +428,7 @@ onMounted(() => {
                     <el-button circle :icon="Delete" type="danger" @click="delTrends(i)" />
                   </el-popover>
                 </el-row>
-                <p>
+                <p style="margin-bottom: 10px">
                   {{ i.content }}
                 </p>
                 <el-row class="imageList">
@@ -581,9 +471,11 @@ onMounted(() => {
       </el-timeline>
       <!-- 统计图表 -->
       <el-card class="echart" style="width: 45%; margin: 20px auto">
-        <div class="main" id="look" />
-        <div class="main" id="publish" />
-        <div class="main" id="like" />
+        <el-col>
+          <el-row style="height: 400px"><TrendsBar /></el-row>
+          <el-row style="height: 400px"><TrendsPie /></el-row>
+          <el-row style="height: 400px"><TrendsLine /></el-row>
+        </el-col>
       </el-card>
     </el-card>
     <el-dialog :title="title" v-model="showDialog">
@@ -641,11 +533,12 @@ onMounted(() => {
     </el-dialog>
     <!-- 预览 -->
     <Preview
-      :data="previewData"
+      :data="previewData as TrendsItem"
       v-model="previewShow"
       :province="provinceData"
       @increase="addLook"
-      @update:comment="(val) => commentNumChange(previewData, val)"
+      @update:comment="(val) => commentNumChange(previewData as TrendsItem, val)"
+      @addLike="addLike(previewData as TrendsItem)"
     />
   </div>
 </template>
@@ -707,5 +600,12 @@ onMounted(() => {
   &:hover {
     color: #3cbff5;
   }
+}
+
+::v-deep(.el-card__body) {
+  overflow: visible !important;
+}
+::v-deep(.el-card) {
+  overflow: visible !important;
 }
 </style>

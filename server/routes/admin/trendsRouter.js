@@ -34,4 +34,7 @@ router.get("/comment/list",trendsController.commentList)
 // 删除评论
 router.delete("/comment/del",trendsController.commentDel)
 
+// 获取近七天动态
+router.get("/week",trendsController.trendsWeek)
+
 module.exports =  router

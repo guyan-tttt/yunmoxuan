@@ -39,7 +39,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
-        //@ts-expect-error
         component: () => import("@/views/article/index.vue"),
         name: "Article",
         meta: {
@@ -189,16 +188,17 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
+        name: "home-index",
         component: () => import("@/pages/index/index.vue")
       },
       {
         path: "home-article",
-
+        name: "home-article",
         component: () => import("@/pages/article/index.vue")
       },
       {
         path: "home-detail",
-
+        name: "home-detail",
         component: () => import("@/pages/article/detail.vue")
       }
     ]

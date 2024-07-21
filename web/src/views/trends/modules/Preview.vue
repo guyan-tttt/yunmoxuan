@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import { ref, defineProps, watch } from "vue"
+import { ref, defineProps, watch, nextTick } from "vue"
 import Comment from "./Comment.vue"
+import type { TrendsItem } from "@/types/admin/trends"
 
 // 接受父组件参数
 const props = defineProps<{
-  data: any
+  data: TrendsItem
   modelValue: boolean
   province: any[]
 }>()
 
 // 接受父组件参数
-const emit = defineEmits(["update:modelValue", "increase", "update:comment"])
+const emit = defineEmits(["update:modelValue", "increase", "update:comment", "addLike"])
 
 // 弹框显示
-const dialogVisible = ref(props.modelValue)
+const dialogVisible = ref<boolean>(props.modelValue)
 
 // 弹框关闭
 const close = () => {
   emit("update:modelValue", false)
+  commentShow.value = false
+  nextTick(() => {
+    commentShow.value = true
+  })
 }
 
 // 监听父组件变化
@@ -37,6 +42,25 @@ const lookIncrease = () => {
 // 评论更新
 const commentUpdate = (val: number) => {
   emit("update:comment", val)
+}
+
+// 评论组件
+const commentShow = ref<boolean>(true)
+
+// 点赞组件样式激活
+const activeIndex = ref<number>(0)
+
+// 添加点赞
+const addLike = () => {
+  // 判断是否点赞
+  if (activeIndex.value === 0) {
+    activeIndex.value = 1
+    emit("addLike")
+
+    setTimeout(() => {
+      activeIndex.value = 0
+    }, 1000)
+  }
 }
 </script>
 
@@ -76,7 +100,15 @@ const commentUpdate = (val: number) => {
               />
             </el-row>
             <el-row justify="end" class="about">
-              <span><SvgIcon style="margin-right: 10px" name="like" size="18" />{{ props.data.likeNum }}</span>
+              <span @click="addLike()" style="position: relative"
+                ><SvgIcon
+                  class="like"
+                  :class="{ animate__heartBeat: activeIndex === 1 }"
+                  style="margin-right: 10px; color: red"
+                  :name="props.data.likeNum === 0 ? 'like' : 'like-active'"
+                  size="18"
+                />{{ props.data.likeNum }}
+              </span>
               <span
                 ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>{{ props.data.lookNum }}</span
               >
@@ -84,7 +116,7 @@ const commentUpdate = (val: number) => {
                 ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ props.data.commentNum }}</span
               >
             </el-row>
-            <Comment :data="props.data" :province="props.province" @update="commentUpdate" />
+            <Comment v-if="commentShow" :data="props.data" :province="props.province" @update="commentUpdate" />
           </el-col>
           <el-col :span="11" />
         </el-row>
