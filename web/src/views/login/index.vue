@@ -41,7 +41,7 @@ const loginFormRules: FormRules = {
 
 /** 登录逻辑 */
 const handleLogin = () => {
-  loginFormRef.value?.validate(async (valid: boolean, fields: any) => {
+  loginFormRef.value?.validate(async (valid: boolean) => {
     if (valid) {
       // 开启按钮加载
       loading.value = true
@@ -74,7 +74,7 @@ const handleLogin = () => {
       }
       console.log(res)
     } else {
-      console.error("表单校验不通过", fields)
+      console.error("表单校验不通过")
     }
   })
 }

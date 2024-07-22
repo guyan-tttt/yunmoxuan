@@ -200,7 +200,7 @@ onMounted(async () => {
       <el-col :span="16" class=".limit-box">
         <el-card>
           <el-row>
-            <div class="title">
+            <div class="title  animate__animated animate__swing">
               <el-icon size="30" color="#093ddc"><UploadFilled /></el-icon>
               上传照片
             </div>
@@ -242,7 +242,7 @@ onMounted(async () => {
             >
           </el-row>
           <el-row>
-            <div class="title">
+            <div class="title  animate__animated animate__swing">
               <el-icon size="28" color="#093ddc"><PictureFilled /></el-icon>
               照片展示
             </div>
@@ -254,11 +254,11 @@ onMounted(async () => {
           </el-row>
         </el-card>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="8">
         <el-card>
           <div class="title">
             <el-row>
-              <span
+              <span class="animate__animated animate__bounce"
                 ><el-icon><FolderOpened /></el-icon>相册分组</span
               >
               <el-button type="primary" @click="openDrawer">编辑分组</el-button>
@@ -277,7 +277,7 @@ onMounted(async () => {
           </div>
           <div class="banner">
             <div class="header">
-              <div class="info">
+              <div class="info animate__animated animate__bounce">
                 <el-icon><PictureFilled /></el-icon>
                 照片精选
               </div>
@@ -305,10 +305,11 @@ onMounted(async () => {
 .picture {
   width: 100%;
   .el-row {
+    position: relative;
     .el-col:nth-child(2) {
-      width: 30%;
-      position: fixed;
-      top: 85px;
+      width: 80%;
+      position: sticky;
+      top: 0;
       height: 100%;
       right: 0;
       // background-color: #fff;

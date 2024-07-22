@@ -132,7 +132,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="category">
-    <el-card class="container">
+    <el-card >
       <div class="role-operate" style="margin-bottom: 20px">
         <el-button size="default" type="primary" @click="addCategory">添加分类</el-button>
       </div>

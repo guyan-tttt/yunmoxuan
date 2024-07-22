@@ -38,7 +38,7 @@ export interface TrendsPageData {
 // 获取动态列表数据
 export interface GetTrendsListResponseData extends ResponseData {
   data: TrendsItem[]
-  total: number
+  total?: number
 }
 
 // 获取动态列表详情
@@ -69,5 +69,5 @@ export interface CommentItem {
 // 获取评论列表数据
 export interface GetCommentListResponseData extends ResponseData {
   data: CommentItem[]
-  total: number
+  total?: number
 }

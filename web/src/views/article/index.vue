@@ -289,7 +289,7 @@ onMounted(() => {
         </template>
       </el-segmented>
     </el-card>
-    <el-card class="container">
+    <el-card class="con">
       <el-row justify="space-between">
         <div class="role-operate" style="margin-bottom: 10px">
           <el-button v-if="articleType !== 4" size="default" type="primary" @click="addArticle" :icon="Plus"
@@ -423,7 +423,8 @@ onMounted(() => {
 .demo-form-inline .el-select {
   --el-select-width: 220px;
 }
-.container {
+.con {
   margin-top: 20px;
+  padding-right: 0;
 }
 </style>

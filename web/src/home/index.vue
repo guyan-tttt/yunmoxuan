@@ -16,7 +16,20 @@
 import Header from "./components/Header.vue"
 //@ts-expect-error
 import Footer from "./components/Footer.vue"
+import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
 
+import { onMounted, onUnmounted } from "vue"
+
+// 初始化动画
+onMounted(() => {
+  clickEffect()
+})
+// 销毁动画
+onUnmounted(() => {
+  console.log("xa")
+
+  removeClickEffect()
+})
 </script>
 
 <style scoped lang="scss">

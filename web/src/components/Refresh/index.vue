@@ -16,7 +16,7 @@ const refresh = () => {
   <div>
     <!-- 全屏 -->
     <el-tooltip effect="dark" content="刷新" placement="bottom">
-      <SvgIcon name="refresh" @click="refresh" />
+      <el-icon :size="20" @click="refresh"><Refresh /></el-icon>
     </el-tooltip>
   </div>
 </template>

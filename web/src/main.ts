@@ -27,6 +27,7 @@ import "v3-waterfall/dist/style.css"
 import Vue3EmojiPicker from "vue3-emoji-picker"
 import "vue3-emoji-picker/css"
 // Then register the languages you need
+
 hljs.registerLanguage("javascript", javascript)
 
 const app = createApp(App)

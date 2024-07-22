@@ -9,6 +9,8 @@ const { initTheme } = useTheme()
 /** 初始化主题 */
 initTheme()
 
+// 初始化动画
+
 /** 作者小心思 */
 // ElNotification({
 //   title: "Hello",

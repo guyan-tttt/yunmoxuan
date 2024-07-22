@@ -65,20 +65,20 @@ const goUserInfo = () => {
       <Notify v-if="showNotify" class="right-menu-item" />
       <el-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
-          <el-avatar :icon="UserFilled" :size="30" :src="userStore.userInfo.avatar" />
-          <span>{{ userStore.userInfo.nickname }}</span>
+          <el-avatar :icon="UserFilled" :size="30" :src="userStore?.userInfo?.avatar" />
+          <span>{{ userStore?.userInfo?.nickname }}</span>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="goBackHome">返回前台</el-dropdown-item>
             <el-dropdown-item @click="goUserInfo">个人信息</el-dropdown-item>
-            <a target="_blank" :href="userStore.userInfo.github">
+            <a target="_blank" :href="userStore.userInfo?.github">
               <el-dropdown-item>GitHub</el-dropdown-item>
             </a>
-            <a target="_blank" :href="userStore.userInfo.gitee">
+            <a target="_blank" :href="userStore.userInfo?.gitee">
               <el-dropdown-item>Gitee</el-dropdown-item>
             </a>
-            <a target="_blank" :href="userStore.userInfo.csdn">
+            <a target="_blank" :href="userStore.userInfo?.csdn">
               <el-dropdown-item>CSDN</el-dropdown-item>
             </a>
             <a target="_blank" href="https://app.apifox.com/project/4136363">

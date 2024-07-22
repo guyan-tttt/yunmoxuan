@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/modules/user"
-import { Plus, Edit, Delete, View } from "@element-plus/icons-vue"
+import { Plus, Edit, Delete, View, Refresh } from "@element-plus/icons-vue"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { ElInput, ElMessage, ElMessageBox, type UploadInstance, type UploadFile } from "element-plus"
@@ -192,14 +192,12 @@ const publish = async () => {
 // 获取动态列表
 const getTrendsList = async () => {
   const res = await getTrendsListAPI(pageData.value.page, pageData.value.pageSize)
-  console.log(res)
-
   if (res.code === 200) {
     res.data.forEach((item: any) => {
       item.createTime = dayjs(item.createTime).format("YYYY-MM-DD HH:mm")
     })
     trendsList.value = res.data
-    pageData.value.total = res.total
+    pageData.value.total = res.total as number
   }
 }
 
@@ -343,10 +341,30 @@ const commentNumChange = (item: TrendsItem, value: number) => {
   item.commentNum += value
 }
 
+// 统计数据信息
+const trendsEchartsData = ref<any>({})
+
 // 获取一周内动态列表
 const getTrendsListWeek = async () => {
   const res = await getTrendsWeekAPI()
-  console.log(res)
+  if (res.code === 200) {
+    const data = {}
+    for (let i = 0; i < 7; i++) {
+      const now = new Date()
+      now.setDate(now.getDate() - i)
+      const key = dayjs(now).format("MM/DD")
+      // @ts-ignore
+      data[key] = []
+    }
+    res.data.forEach((item: TrendsItem) => {
+      item.createTime = dayjs(item.createTime).format("MM/DD")
+    })
+    res.data.forEach((item: TrendsItem) => {
+      // @ts-ignore
+      data[item.createTime].push(item)
+    })
+    trendsEchartsData.value = data
+  }
 }
 // 初始化
 onMounted(() => {
@@ -472,9 +490,10 @@ onMounted(() => {
       <!-- 统计图表 -->
       <el-card class="echart" style="width: 45%; margin: 20px auto">
         <el-col>
-          <el-row style="height: 400px"><TrendsBar /></el-row>
-          <el-row style="height: 400px"><TrendsPie /></el-row>
-          <el-row style="height: 400px"><TrendsLine /></el-row>
+          <el-button @click="getTrendsListWeek" style="float: right" :icon="Refresh" circle type="primary" />
+          <el-row style="height: 400px"><TrendsBar :data="trendsEchartsData" /></el-row>
+          <el-row style="height: 400px"><TrendsPie :data="trendsEchartsData" /></el-row>
+          <el-row style="height: 400px"><TrendsLine :data="trendsEchartsData" /></el-row>
         </el-col>
       </el-card>
     </el-card>

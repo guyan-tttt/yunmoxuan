@@ -65,5 +65,5 @@ export const deleteCommentAPI = (id: string) => {
 
 // 获取一周内的动态信息
 export const getTrendsWeekAPI = () => {
-  return request.get<any, ResponseData>("/admin/trends/week")
+  return request.get<any, GetTrendsListResponseData>("/admin/trends/week")
 }
