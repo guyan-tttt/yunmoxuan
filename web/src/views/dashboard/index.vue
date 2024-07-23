@@ -1,9 +1,23 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/store/modules/user"
-import { onMounted } from "vue"
+import { onMounted, computed, ref } from "vue"
+import { usePermissionStore } from "@/store/modules/permission"
+import SeamLessScroll from "./components/SeamlessScroll.vue"
+import EChart from "./components/Echart.vue"
+import { CountTo } from "vue3-count-to"
 
+// 权限仓库
+const permissionStore = usePermissionStore()
 // 用户信息仓库
 const userStore = useUserStore()
+
+// 快捷路由
+const noHiddenRoutes = computed(() => {
+  return permissionStore.routes?.filter((item: any) => !item.meta?.hidden).slice(1) ?? []
+})
+
+// 当前时间
+const nowTime = ref(new Date())
 
 // 页面挂载时获取用户信息
 onMounted(() => {
@@ -21,7 +35,7 @@ onMounted(() => {
         <div class="left">
           <div class="panel">
             <!-- 个人信息 -->
-            <div class="user-info">
+            <div class="user-info animate__animated animate__bounce">
               <img class="avatar" src="../../assets/layouts/logo.png" alt="" />
               <div class="company-info">
                 <div class="title">
@@ -36,115 +50,101 @@ onMounted(() => {
               <div class="todo-item">
                 <span>文章总数</span>
                 <!-- 起始值 终点值  滚动时间 -->
-                <span>228篇</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>分类总数</span>
-                <span>334</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>标签总数</span>
-                <span>345</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>图片数量</span>
-                <span>890</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>动态数量</span>
-                <span>117</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>文章评论数</span>
-                <span>234</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>动态评论数</span>
-                <span>789</span>
+                <countTo :startVal="0" :endVal="375" :duration="1000" />
               </div>
             </div>
           </div>
           <!-- 快捷入口 -->
           <div class="panel">
-            <div class="panel-title">快捷入口</div>
+            <div class="panel-title animate__animated animate__bounce">⏩ 快捷入口</div>
             <div class="quick-entry">
-              <div class="entry-item">
-                <div class="entry-icon"><SvgIcon class="icon" name="article" /></div>
-                <span>假期审批</span>
-              </div>
-              <div class="entry-item">
-                <div class="entry-icon" />
-                <span>社保管理</span>
-              </div>
-              <div class="entry-item">
-                <div class="entry-icon" />
-                <span>角色管理</span>
-              </div>
-              <div class="entry-item">
-                <div class="entry-icon" />
-                <span>薪资设置</span>
-              </div>
-              <div class="entry-item">
-                <div class="entry-icon" />
-                <span>流程设置</span>
+              <div class="entry-item" v-for="item in noHiddenRoutes" :key="item.path">
+                <div class="entry-icon">
+                  <SvgIcon class="icon" :name="item.children![0].meta?.svgIcon as string" />
+                </div>
+                <span>{{ item.children![0].meta?.title }}</span>
               </div>
             </div>
           </div>
           <!-- 图表数据 -->
           <div class="panel">
-            <div class="panel-title">社保申报数据</div>
+            <div class="panel-title animate__animated animate__bounce">📈 文章数据</div>
             <div class="chart-container">
               <div class="chart-info">
                 <div class="info-main">
-                  <span>申报人数</span>
-                  <span>223</span>
+                  <span>文章总数</span>
+                  <countTo :startVal="0" :endVal="375" :duration="1000" />
                 </div>
                 <div class="info-list">
                   <div class="info-list-item">
-                    <span>待申报(人)</span>
-                    <span>117</span>
+                    <span>已发布</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                   <div class="info-list-item">
-                    <span>申报中(人)</span>
-                    <span>167</span>
+                    <span>未发布</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                   <div class="info-list-item">
-                    <span>已申报(人)</span>
-                    <span>24</span>
+                    <span>回收站</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                 </div>
               </div>
               <div class="chart">
-                <!-- 图表 -->
+                <EChart />
               </div>
             </div>
           </div>
           <!-- 图表数据 -->
           <div class="panel">
-            <div class="panel-title">公积金申报数据</div>
+            <div class="panel-title animate__animated animate__bounce">📉 动态数据</div>
             <div class="chart-container">
               <div class="chart-info">
                 <div class="info-main">
-                  <span>申报人数</span>
-                  <span>335</span>
+                  <span>动态发布量</span>
+                  <countTo :startVal="0" :endVal="375" :duration="1000" />
                 </div>
                 <div class="info-list">
                   <div class="info-list-item">
-                    <span>待申报(人)</span>
-                    <span>345</span>
+                    <span>点赞量</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                   <div class="info-list-item">
-                    <span>申报中(人)</span>
-                    <span>109</span>
+                    <span>浏览量</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                   <div class="info-list-item">
-                    <span>已申报(人)</span>
-                    <span>77</span>
+                    <span>评论量</span>
+                    <countTo :startVal="0" :endVal="375" :duration="1000" />
                   </div>
                 </div>
               </div>
               <div class="chart">
-                <!-- 图表 -->
+                <EChart />
               </div>
             </div>
           </div>
@@ -152,64 +152,30 @@ onMounted(() => {
         <!-- 右侧内容 -->
         <div class="right">
           <!-- 帮助链接 -->
-          <div class="panel">
+          <div class="panel animate__animated animate__fadeInRight">
             <div class="help">
-              <div class="help-left">
-                <div class="panel-title">帮助链接</div>
-                <div class="help-list">
-                  <div class="help-block">
-                    <i class="icon-entry" />
-                    入门指南
-                  </div>
-                  <div class="help-block">
-                    <i class="icon-help" />
-                    在线帮助手册
-                  </div>
-                  <div class="help-block">
-                    <i class="icon-support" />
-                    联系技术支持
-                  </div>
-                  <div class="help-block">
-                    <i class="icon-add" />
-                    添加链接
-                  </div>
-                </div>
-              </div>
               <div class="help-right">
                 <div class="calendar">
-                  <!-- <el-calendar /> -->
-                  <el-calendar />
+                  <el-calendar ref="calendar" v-model="nowTime">
+                    <template #header="{ date }">
+                      <span class="">年度日历</span>
+                      <span>{{ date }}</span>
+                      <el-button-group>
+                        <el-button size="small">上个月</el-button>
+                        <el-button size="small">当前时间</el-button>
+                        <el-button size="small">下个月</el-button>
+                      </el-button-group>
+                    </template>
+                  </el-calendar>
                 </div>
               </div>
             </div>
           </div>
           <!-- 通知公告 -->
-          <div class="panel">
-            <div class="panel-title">通知公告</div>
-            <div class="information-list">
-              <div class="information-list-item">
-                <img src="" alt="" />
-                <div>
-                  <p><span class="col">朱继柳</span> 发布了 第1期“传智大讲堂”互动讨论获奖名单公布</p>
-                  <p>2018-07-21 15:21:38</p>
-                </div>
-              </div>
-              <div class="information-list-item">
-                <img src="" alt="" />
-                <div>
-                  <p><span class="col">朱继柳</span> 发布了 第1期“传智大讲堂”互动讨论获奖名单公布</p>
-                  <p>2018-07-21 15:21:38</p>
-                </div>
-              </div>
-              <div class="information-list-item">
-                <img src="" alt="" />
-                <div>
-                  <p><span class="col">朱继柳</span> 发布了 第1期“传智大讲堂”互动讨论获奖名单公布</p>
-                  <p>2018-07-21 15:21:38</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <el-card style="margin-top: 50px" class="panel2 animate__animated animate__fadeInRight">
+            <div class="panel-title">🔔 通知公告</div>
+            <SeamLessScroll />
+          </el-card>
         </div>
       </div>
     </el-card>
@@ -219,14 +185,14 @@ onMounted(() => {
 <style scoped lang="scss">
 .dashboard {
   width: 100%;
-  min-height: calc(100vh - 80px);
 
-  ::v-deep .el-calendar-day {
+  ::v-deep(.el-calendar-day) {
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  ::v-deep .el-calendar-table__row td,
-  ::v-deep .el-calendar-table tr td:first-child,
-  ::v-deep .el-calendar-table__row td.prev {
+  ::v-deep(.el-calendar-table__row td) {
     border: none;
   }
   .date-content {
@@ -251,19 +217,34 @@ onMounted(() => {
     line-height: 20px;
     display: inline-block;
   }
-  ::v-deep .el-calendar-table td.is-selected .text {
-    background: #409eff;
-    border-radius: 50%;
-  }
-  ::v-deep .el-calendar__header {
-    display: none;
+  ::v-deep(.el-calendar-table td.is-selected .el-calendar-day) {
+    background: rgb(108, 224, 253);
+    color: #fff;
+    border-radius: 10px;
   }
   .container {
     display: flex;
     .right {
       width: 40%;
+
       .panel {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-left: 8px;
+      }
+      .panel2 {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 8px;
+        margin: auto;
+        .panel-title {
+          font-size: 20px;
+          font-weight: 500;
+        }
       }
       :nth-child(1) {
         margin-top: 0;
@@ -279,7 +260,7 @@ onMounted(() => {
       margin-top: 8px;
       padding: 20px;
       .panel-title {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 500;
       }
       // 用户信息样式
@@ -436,6 +417,7 @@ onMounted(() => {
       // 帮助链接
       .help {
         display: flex;
+        border: 1px solid #ecf5ff;
         .help-left {
           width: 40%;
         }
@@ -458,37 +440,6 @@ onMounted(() => {
               background-size: cover;
               vertical-align: middle;
             }
-            i.icon-help {
-              background-image: url("~@/assets/common/help.png");
-            }
-            i.icon-support {
-              background-image: url("~@/assets/common/support.png");
-            }
-            i.icon-add {
-              background-image: url("~@/assets/common/add.png");
-            }
-            i.icon-entry {
-              background-image: url("~@/assets/common/entry.png");
-            }
-          }
-        }
-      }
-      // 通知公告
-      .information-list {
-        margin-top: 20px;
-        .information-list-item {
-          display: flex;
-          align-items: center;
-          margin: 15px 0;
-          img {
-            width: 40px;
-            height: 40px;
-            border: 50%;
-          }
-          .col {
-          }
-          div :nth-child(2) {
-            font-size: 14px;
           }
         }
       }

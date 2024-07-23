@@ -197,7 +197,7 @@ onMounted(async () => {
     :infinite-scroll-distance="0"
   >
     <el-row justify="space-between" style="min-height: 800px">
-      <el-col :span="16" class=".limit-box">
+      <el-col :span="16" class=".limit-box animate__animated  animate__fadeInLeft">
         <el-card>
           <el-row>
             <div class="title  animate__animated animate__swing">
@@ -254,7 +254,7 @@ onMounted(async () => {
           </el-row>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" class="animate__animated animate__fadeInRight">
         <el-card>
           <div class="title">
             <el-row>

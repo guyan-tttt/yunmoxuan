@@ -1,13 +1,9 @@
-import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs"
 import { type RouteRecordRaw, createRouter, createWebHistory } from "vue-router"
 
 const Layouts = () => import("@/layouts/index.vue")
 const Home = () => import("@/home/index.vue")
 
-/**
- * 常驻路由
- * 除了 redirect/403/404/login 等隐藏页面，其他页面建议设置 Name 属性
- */
+// 后台静态路由
 export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/login",
@@ -43,7 +39,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Article",
         meta: {
           title: "文章管理",
-          svgIcon: "article"
+          svgIcon: "article",
+          affix: true
         }
       }
     ]
@@ -59,7 +56,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Category",
         meta: {
           title: "分类管理",
-          svgIcon: "category"
+          svgIcon: "category",
+          affix: true
         }
       }
     ]
@@ -75,7 +73,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Tags",
         meta: {
           title: "标签管理",
-          svgIcon: "tags"
+          svgIcon: "tags",
+          affix: true
         }
       }
     ]
@@ -90,7 +89,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Picture",
         meta: {
           title: "图片管理",
-          svgIcon: "picture"
+          svgIcon: "picture",
+          affix: true
         }
       }
     ]
@@ -102,9 +102,11 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: "",
         component: () => import("@/views/trends/index.vue"),
+        name: "Trends",
         meta: {
           title: "动态管理",
-          svgIcon: "trends"
+          svgIcon: "trends",
+          affix: true
         }
       }
     ]
@@ -121,7 +123,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "Music",
         meta: {
           title: "音乐管理",
-          svgIcon: "music"
+          svgIcon: "music",
+          affix: true
         }
       }
     ]

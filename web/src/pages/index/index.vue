@@ -5,6 +5,7 @@ import UserCard from "./components/userCard.vue"
 
 <template>
   <div class="index">
+    <div class="banner" />
     <div class="container mx-auto max-w-screen-xl mt-5">
       <div class="grid grid-cols-4">
         <!-- 左边栏 -->
@@ -137,6 +138,12 @@ import UserCard from "./components/userCard.vue"
 </template>
 
 <style scoped lang="scss">
+.banner {
+  background-color: red;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background-image: url(../../assets/1.jpg);
+}
 .sticky {
   position: sticky;
   top: 60px;

@@ -17,17 +17,21 @@ import "element-plus/theme-chalk/dark/css-vars.css"
 import "vxe-table/lib/style.css"
 import "vxe-table-plugin-element/dist/style.css"
 import "@/styles/index.scss"
+// 代码高亮
 import hljs from "highlight.js/lib/core"
 import javascript from "highlight.js/lib/languages/javascript"
 import hljsVuePlugin from "@highlightjs/vue-plugin"
 import "animate.css"
 
+// 瀑布流组件
 import V3waterfall from "v3-waterfall"
 import "v3-waterfall/dist/style.css"
+// 表情插件
 import Vue3EmojiPicker from "vue3-emoji-picker"
 import "vue3-emoji-picker/css"
 // Then register the languages you need
 
+import vue3SeamlessScroll from "vue3-seamless-scroll"
 hljs.registerLanguage("javascript", javascript)
 
 const app = createApp(App)
@@ -38,7 +42,7 @@ loadPlugins(app)
 loadSvg(app)
 /** 加载自定义指令 */
 
-app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall)
+app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall).use(vue3SeamlessScroll, { name: "scroll" })
 app.component("Vue3EmojiPicker", Vue3EmojiPicker)
 router.isReady().then(() => {
   app.mount("#app")
