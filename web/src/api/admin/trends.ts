@@ -5,7 +5,8 @@ import type {
   ResponseData,
   CommentFormData,
   GetCommentListResponseData,
-  GetTrendsListDetailResponseData
+  GetTrendsListDetailResponseData,
+  GetTrendsStatisticsResponseData
 } from "@/types/admin/trends"
 
 // 添加动态
@@ -66,4 +67,9 @@ export const deleteCommentAPI = (id: string) => {
 // 获取一周内的动态信息
 export const getTrendsWeekAPI = () => {
   return request.get<any, GetTrendsListResponseData>("/admin/trends/week")
+}
+
+// 获取动态统计量
+export const getTrendsStatisticsAPI = () => {
+  return request.get<any, GetTrendsStatisticsResponseData>("/admin/trends/statistics")
 }

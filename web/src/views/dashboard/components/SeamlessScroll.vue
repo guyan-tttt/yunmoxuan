@@ -1,18 +1,15 @@
 <template>
-  <vue3-seamless-scroll :list="listData" :step="0.5" class="scroll">
+  <vue3-seamless-scroll :hover="true" :list="listData" :step="0.5" class="scroll">
     <div class="information-list">
       <div class="information-list-item" v-for="item in listData" :key="item.title">
-        <el-icon :size="35"><ChromeFilled /></el-icon>
+        <el-icon color="#5387f0" :size="35"><ChromeFilled /></el-icon>
         <div>
-          <p><span class="col">朱继柳</span> 发布了评论{{ item.title }}</p>
-          <p>2018-07-21 15:21:38 <i>IP: 北京·海淀</i></p>
-        </div>
-      </div>
-      <div class="information-list-item">
-        <el-icon :size="35"><ChromeFilled /></el-icon>
-        <div>
-          <p><span class="col">朱继柳</span> 发布了评论 第1期“scscscsc论获奖名单公布“</p>
-          <p>2018-07-21 15:21:38 <i>IP: 北京·海淀</i></p>
+          <p>
+            <span class="col">{{ item.nickname }}</span> 发布了评论“{{ item.content }}”
+          </p>
+          <p>
+            {{ item.time }} <i>{{ item.ip }}</i>
+          </p>
         </div>
       </div>
     </div>
@@ -20,54 +17,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-const listData = ref([
-  {
-    title: "无缝滚动第一行无缝滚动第一行"
+import { ref, defineProps, watch } from "vue"
+
+// 获取数据
+const props = defineProps<{
+  data: any[]
+}>()
+
+const listData = ref(props.data)
+
+watch(
+  () => props.data,
+  () => {
+    listData.value = props.data
   },
   {
-    title: "无缝滚动第二行无缝滚动第二行"
-  },
-  {
-    title: "无缝滚动第三行无缝滚动第三行"
-  },
-  {
-    title: "无缝滚动第四行无缝滚动第四行"
-  },
-  {
-    title: "无缝滚动第五行无缝滚动第五行"
-  },
-  {
-    title: "无缝滚动第六行无缝滚动第六行"
-  },
-  {
-    title: "无缝滚动第七行无缝滚动第七行"
-  },
-  {
-    title: "无缝滚动第二行无缝滚动第二行"
-  },
-  {
-    title: "无缝滚动第三行无缝滚动第三行"
-  },
-  {
-    title: "无缝滚动第四行无缝滚动第四行"
-  },
-  {
-    title: "无缝滚动第五行无缝滚动第五行"
-  },
-  {
-    title: "无缝滚动第六行无缝滚动第六行"
-  },
-  {
-    title: "无缝滚动第七行无缝滚动第七行"
+    deep: true
   }
-])
+)
 </script>
 
 <style scoped lang="scss">
 .scroll {
   width: 100%;
-  height: 600px;
+  height: 500px;
   overflow: hidden;
   margin: 10px;
 }

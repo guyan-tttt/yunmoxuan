@@ -1,6 +1,7 @@
 const TrendsModel = require('../../model/TrendsModel')
 const UserModel = require('../../model/UserModel')
 const TrendsCommentModel = require('../../model/TrendsComment')
+const dayjs = require('dayjs')
 
 
 const trendsService = {
@@ -93,6 +94,47 @@ const trendsService = {
             }
         })
         return data
+    },
+    statistics: async() => {
+        // 定义统计量对象
+        const count = {
+            trendNum: 0,
+            lookNum: 0,
+            likeNum: 0,
+            commentNum: 0,
+            weekData: {}
+        }
+        // 查询动态
+        const trendList = await TrendsModel.find({})
+        count.trendNum = trendList.length
+        // 查询点赞数量
+        count.likeNum = trendList.reduce((p,i) => p + i.likeNum,0 )
+        // 查询评论数量
+        count.commentNum = trendList.reduce((p,i) => p + i.commentNum,0 )
+        // 查询浏览量
+        count.lookNum = trendList.reduce((p,i) => p + i.lookNum,0 )
+   
+        // 查询一周内文章发布量
+        const item = await TrendsModel.find().sort({ createTime: -1 }).limit(1) // 查询上一次距今最近的分布于时间
+        // 查询在上次发布时间一长周内发布的文章数
+        const nowDate = new Date(item[0].createTime)
+        const weekAgo = new Date(item[0].createTime)
+        weekAgo.setDate(weekAgo.getDate() - 7)
+        const data = await TrendsModel.find({
+            createTime: {
+                $gt: weekAgo,
+                $lt: nowDate
+            }
+        })
+        for(let i of data) {
+            const key = dayjs(i.createTime).format("YYYY/MM/DD")
+            count.weekData[key] = 0
+        }
+        for(let i of data) {
+            const key = dayjs(i.createTime).format("YYYY/MM/DD")
+            count.weekData[key]++
+        }
+        return count
     }
 }
 

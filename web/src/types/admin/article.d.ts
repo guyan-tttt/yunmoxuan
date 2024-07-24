@@ -72,3 +72,17 @@ export enum ArticleType {
   NoPublish = 3,
   Deleted = 4
 }
+
+// 文章统计量
+export interface ArticleStatistics {
+  articleNum: number // 文章数量
+  articlePublishNum: number // 已发布文章数量
+  articleUnPublishNum: number // 未发布文章数量
+  articleDeleteNum: number // 已删除文章数量
+  weekData: Object // 最近一周发布文章数量
+}
+
+// 获取文航统计量
+export interface ArticleStatisticsData extends ResponseData {
+  data: ArticleStatistics
+}

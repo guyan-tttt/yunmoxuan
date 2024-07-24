@@ -2,6 +2,7 @@ const ArticleModel = require('../../model/ArticleModel')
 const CategoryModel = require('../../model/CategoryModel')
 const TagModel = require('../../model/TagModel')
 const UserModel = require('../../model/UserModel')
+const dayjs = require('dayjs')
 
 const articleService = {
    addArticle: async(data) => {
@@ -150,6 +151,45 @@ const articleService = {
    delArticleAll: async(ids) => {
     const article = await ArticleModel.deleteMany({_id: {$in: ids}})
     return article
+   },
+   statistics: async() => {
+        // 定义统计量对象
+        const count = {
+            articleNum: 0,
+            articlePublishNum: 0,
+            articleUnPublishNum: 0,
+            articleDeleteNum: 0,
+            weekData: {}
+        }
+        // 查询文章总数
+        count.articleNum = await ArticleModel.countDocuments({isDelete: false})
+        // 查询已发布的文章数
+        count.articlePublishNum = await ArticleModel.countDocuments({isDelete: false, isPublish: true})
+        // 查询未发布的文章数
+        count.articleUnPublishNum = await ArticleModel.countDocuments({isDelete: false, isPublish: false})
+        // 查询已删除的文章数
+        count.articleDeleteNum = await ArticleModel.countDocuments({isDelete: true})
+        const item = await ArticleModel.find({isDelete: false}).sort({ createTime: -1 }).limit(1) // 查询上一次距今最近的分布于时间
+        // 查询在上次发布时间一长周内发布的文章数
+        const nowDate = new Date(item[0].createTime)
+        const weekAgo = new Date(item[0].createTime)
+        weekAgo.setDate(weekAgo.getDate() - 7)
+        const data = await ArticleModel.find({
+            isDelete: false,
+            createTime: {
+                $gt: weekAgo,
+                $lt: nowDate
+            }
+        })
+        for(let i of data) {
+            const key = dayjs(i.createTime).format("YYYY/MM/DD")
+            count.weekData[key] = 0
+        }
+        for(let i of data) {
+            const key = dayjs(i.createTime).format("YYYY/MM/DD")
+            count.weekData[key]++
+        }
+        return count
    }
 }
 

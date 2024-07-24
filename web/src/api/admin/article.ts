@@ -1,5 +1,5 @@
 import request from "@/utils/request"
-import { ResponseData, ArticleList, ArticleDetail } from "@/types/admin/article"
+import { ResponseData, ArticleList, ArticleDetail, ArticleStatisticsData } from "@/types/admin/article"
 // 添加文章
 export const addArticleAPI = (data: FormData) => {
   return request.post<any, ResponseData>("/admin/article/add", data)
@@ -67,4 +67,9 @@ export const deleteArticlePermanentlyAPI = (id: string) => {
 // 批量删除
 export const deleteArticleAll = (data: any) => {
   return request.post<any, ResponseData>(`/admin/article/delAll`, data)
+}
+
+// 获取文章统计量
+export const getArticleStatisticsAPI = () => {
+  return request.get<any, ArticleStatisticsData>(`/admin/article/statistics`)
 }

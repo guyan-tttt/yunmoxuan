@@ -15,6 +15,7 @@ const articleRouter = require('./routes/admin/articleRouter')
 const imageCategory = require('./routes/admin/imageCategory')
 const imageRouter = require('./routes/admin/imageRouter')
 const trendsRouter = require('./routes/admin/trendsRouter')
+const dashboardRouter = require('./routes/admin/dashboardRouter')
 
 // 路由导入
 
@@ -73,6 +74,7 @@ app.use((req,res,next) => {
 })
 
 // 后台接口
+app.use("/api/admin/dashboard", dashboardRouter)
 app.use('/api/admin/user', userRouter);
 app.use('/api/admin/tag',tagsRouter)
 app.use('/api/admin/category',categoryRouter)

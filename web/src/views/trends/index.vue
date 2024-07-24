@@ -361,8 +361,13 @@ const getTrendsListWeek = async () => {
     })
     res.data.forEach((item: TrendsItem) => {
       // @ts-ignore
-      data[item.createTime].push(item)
+      if (item.createTime in data) {
+        // @ts-ignore
+        data[item.createTime].push(item)
+      }
     })
+    console.log(data)
+
     trendsEchartsData.value = data
   }
 }

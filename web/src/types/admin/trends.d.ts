@@ -71,3 +71,16 @@ export interface GetCommentListResponseData extends ResponseData {
   data: CommentItem[]
   total?: number
 }
+
+// 动态统计量
+export interface TrendsStatistics {
+  trendNum: number
+  lookNum: number
+  likeNum: number
+  commentNum: number
+  weekData: Object
+}
+// 获取动态统计量数据
+export interface GetTrendsStatisticsResponseData extends ResponseData {
+  data: TrendsStatistics
+}

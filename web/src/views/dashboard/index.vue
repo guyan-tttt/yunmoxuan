@@ -5,6 +5,13 @@ import { usePermissionStore } from "@/store/modules/permission"
 import SeamLessScroll from "./components/SeamlessScroll.vue"
 import EChart from "./components/Echart.vue"
 import { CountTo } from "vue3-count-to"
+import { getDashboardStatisticsAPI, getDashboardNoticeAPI } from "@/api/admin/dashboard"
+import type { StatisticsData } from "@/types/admin/dashboard"
+import { getArticleStatisticsAPI } from "@/api/admin/article"
+import type { ArticleStatistics } from "@/types/admin/article"
+import type { TrendsStatistics } from "@/types/admin/trends"
+import { getTrendsStatisticsAPI } from "@/api/admin/trends"
+import type { CalendarDateType, CalendarInstance } from "element-plus"
 
 // 权限仓库
 const permissionStore = usePermissionStore()
@@ -19,11 +26,65 @@ const noHiddenRoutes = computed(() => {
 // 当前时间
 const nowTime = ref(new Date())
 
+// 首页统计数据
+const dashboardStatistics = ref<StatisticsData>()
+
+// 获取统计数据
+const getDashboardStatistics = async () => {
+  const res = await getDashboardStatisticsAPI()
+  if (res.code === 200) {
+    dashboardStatistics.value = res.data
+  }
+}
+
+// 文章统计数据
+const articleStatistics = ref<ArticleStatistics>()
+
+// 获取文章统计数据
+const getArticleStatistics = async () => {
+  const res = await getArticleStatisticsAPI()
+  if (res.code === 200) {
+    articleStatistics.value = res.data
+  }
+}
+
+// 动态统计数据
+const trendsStatistics = ref<TrendsStatistics>()
+
+// 获取动态统计数据
+const getTrendsStatistics = async () => {
+  const res = await getTrendsStatisticsAPI()
+  if (res.code === 200) {
+    trendsStatistics.value = res.data
+  }
+}
+
+// 日历对象
+const calendar = ref<CalendarInstance>()
+
+// 切换日历
+const changeCalendar = (date: CalendarDateType) => {
+  if (!calendar.value) return
+  calendar.value?.selectDate(date)
+}
+
+// 通知公告数据
+const notice = ref<any[]>([])
+
+// 获取通知公告信息
+const getNotice = async () => {
+  const res = await getDashboardNoticeAPI()
+  if (res.code === 200) {
+    notice.value = res.data
+  }
+}
 // 页面挂载时获取用户信息
 onMounted(() => {
-  // 判断此时是否有用户信息
-  // 没有用户信息，则发送请求获取用户信息
   userStore.setUserInfo()
+  getDashboardStatistics()
+  getArticleStatistics()
+  getTrendsStatistics()
+  getNotice()
 })
 </script>
 
@@ -42,7 +103,7 @@ onMounted(() => {
                   极客空间-jeekspace
                   <span>开发版</span>
                 </div>
-                <div class="depart">顾言 ｜ 管理员🧑‍💻</div>
+                <div class="depart">{{ userStore.userInfo?.nickname }} ｜ 管理员🧑‍💻</div>
               </div>
             </div>
             <!-- 代办 -->
@@ -50,31 +111,31 @@ onMounted(() => {
               <div class="todo-item">
                 <span>文章总数</span>
                 <!-- 起始值 终点值  滚动时间 -->
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.articleNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>分类总数</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.categoryNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>标签总数</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.tagNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>图片数量</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.pictureNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>动态数量</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.trendsNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>文章评论数</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.articleCommentNum" :duration="1000" />
               </div>
               <div class="todo-item">
                 <span>动态评论数</span>
-                <countTo :startVal="0" :endVal="375" :duration="1000" />
+                <countTo :startVal="0" :endVal="dashboardStatistics?.trendsCommentNum" :duration="1000" />
               </div>
             </div>
           </div>
@@ -83,10 +144,12 @@ onMounted(() => {
             <div class="panel-title animate__animated animate__bounce">⏩ 快捷入口</div>
             <div class="quick-entry">
               <div class="entry-item" v-for="item in noHiddenRoutes" :key="item.path">
-                <div class="entry-icon">
-                  <SvgIcon class="icon" :name="item.children![0].meta?.svgIcon as string" />
-                </div>
-                <span>{{ item.children![0].meta?.title }}</span>
+                <router-link  class="entry-item" :to="item.path">
+                  <div class="entry-icon">
+                    <SvgIcon class="icon" :name="item.children![0].meta?.svgIcon as string" />
+                  </div>
+                  <span>{{ item.children![0].meta?.title }}</span>
+                </router-link>
               </div>
             </div>
           </div>
@@ -97,25 +160,25 @@ onMounted(() => {
               <div class="chart-info">
                 <div class="info-main">
                   <span>文章总数</span>
-                  <countTo :startVal="0" :endVal="375" :duration="1000" />
+                  <countTo :startVal="0" :endVal="articleStatistics?.articleNum" :duration="1000" />
                 </div>
                 <div class="info-list">
                   <div class="info-list-item">
                     <span>已发布</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="articleStatistics?.articlePublishNum" :duration="1000" />
                   </div>
                   <div class="info-list-item">
                     <span>未发布</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="articleStatistics?.articleUnPublishNum" :duration="1000" />
                   </div>
                   <div class="info-list-item">
                     <span>回收站</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="articleStatistics?.articleDeleteNum" :duration="1000" />
                   </div>
                 </div>
               </div>
               <div class="chart">
-                <EChart />
+                <EChart :data="articleStatistics?.weekData" />
               </div>
             </div>
           </div>
@@ -126,25 +189,25 @@ onMounted(() => {
               <div class="chart-info">
                 <div class="info-main">
                   <span>动态发布量</span>
-                  <countTo :startVal="0" :endVal="375" :duration="1000" />
+                  <countTo :startVal="0" :endVal="trendsStatistics?.trendNum" :duration="1000" />
                 </div>
                 <div class="info-list">
                   <div class="info-list-item">
                     <span>点赞量</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="trendsStatistics?.likeNum" :duration="1000" />
                   </div>
                   <div class="info-list-item">
                     <span>浏览量</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="trendsStatistics?.lookNum" :duration="1000" />
                   </div>
                   <div class="info-list-item">
                     <span>评论量</span>
-                    <countTo :startVal="0" :endVal="375" :duration="1000" />
+                    <countTo :startVal="0" :endVal="trendsStatistics?.commentNum" :duration="1000" />
                   </div>
                 </div>
               </div>
               <div class="chart">
-                <EChart />
+                <EChart :data="trendsStatistics?.weekData" />
               </div>
             </div>
           </div>
@@ -161,9 +224,9 @@ onMounted(() => {
                       <span class="">年度日历</span>
                       <span>{{ date }}</span>
                       <el-button-group>
-                        <el-button size="small">上个月</el-button>
-                        <el-button size="small">当前时间</el-button>
-                        <el-button size="small">下个月</el-button>
+                        <el-button size="small" @click="changeCalendar('prev-month')">上个月</el-button>
+                        <el-button size="small" @click="changeCalendar('today')">当前时间</el-button>
+                        <el-button size="small" @click="changeCalendar('next-month')">下个月</el-button>
                       </el-button-group>
                     </template>
                   </el-calendar>
@@ -174,7 +237,7 @@ onMounted(() => {
           <!-- 通知公告 -->
           <el-card style="margin-top: 50px" class="panel2 animate__animated animate__fadeInRight">
             <div class="panel-title">🔔 通知公告</div>
-            <SeamLessScroll />
+            <SeamLessScroll :data="notice" />
           </el-card>
         </div>
       </div>
@@ -363,6 +426,9 @@ onMounted(() => {
           span {
             font-size: 14px;
             margin-top: 8px;
+            &:hover {
+              color: #5387f0;
+            }
           }
         }
       }

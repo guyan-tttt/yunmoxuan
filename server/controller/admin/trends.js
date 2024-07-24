@@ -158,6 +158,14 @@ const trendsController = {
             message: '获取成功',
             data: result
         })
+    },
+    statistics: async(req,res) => {
+        const result = await trendsService.statistics()
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data: result
+        })
     }
 }
 

@@ -117,9 +117,15 @@ const articleController = {
             code: 200,
             message: '批量删除成功',          
         })
+    },
+    statistics: async(req,res) => {
+        const result = await articleService.statistics()
+        res.send({
+            code: 200,
+            message: '获取文章统计量成功',
+            data: result,
+        })
     }
-
-   
 }
 
 module.exports = articleController
