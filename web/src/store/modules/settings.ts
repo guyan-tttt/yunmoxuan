@@ -41,10 +41,17 @@ export const useSettingsStore = defineStore("settings", () => {
   const setIsRefresh = (val: boolean) => {
     isRefresh.value = val
   }
-
+  // 导航栏显示背景
+  const showNavBg = ref(true)
+  // 改变导航栏背景
+  const changeNavBg = (value: boolean) => {
+    showNavBg.value = value
+  }
   return {
     ...state,
     isRefresh,
-    setIsRefresh
+    setIsRefresh,
+    showNavBg,
+    changeNavBg
   }
 })

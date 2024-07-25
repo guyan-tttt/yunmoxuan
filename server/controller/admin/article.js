@@ -1,6 +1,8 @@
+const { log } = require('console')
 const articleService = require('../../service/admin/article')
 const renameFile = require('../../utils/renameFile')
-
+const fs = require('fs')
+const path = require('path')
 const articleController = {
     addArticle: async(req,res) => {
         // 处理文件路径重命名
@@ -43,10 +45,15 @@ const articleController = {
             // 处理文件路径重命名
             const cover = renameFile(req.file,req.file.mimetype.split("/")[1] )
             req.body.cover = cover
+            // 删除原来的文件
+            const info = await articleService.getArticleDetail(req.body._id)
+            const url = info.cover.replace(process.env.SERVER_BASE_URL,"")
+            await fs.unlinkSync(path.join(__dirname,`../../public${url}`))
         } else {
             req.body.cover = req.body.cover.replace(process.env.SERVER_BASE_URL,"")
         }
-       const result = await articleService.updateArticle(req.body)
+        // 更新文章
+        const result = await articleService.updateArticle(req.body)
         res.send({
             code: 200,
             message: '更新文章成功',
@@ -102,6 +109,10 @@ const articleController = {
     },
     delArticlePermanently: async(req,res) => {
         const { id } = req.params
+        const info = await articleService.getArticleDetail(id)
+        // 删除文章图片;
+        const url = info.cover.replace(process.env.SERVER_BASE_URL,"")
+        await fs.unlinkSync(path.join(__dirname,`../../public${url}`))
         const result = await articleService.delArticlePermanently(id)
 
         res.send({
@@ -112,6 +123,13 @@ const articleController = {
     delArticleAll: async(req,res) => {
         const { ids } = req.body
         console.log(ids);
+        // 删除文章图片;
+        for(let item of ids) {
+            // 删除文章图片;
+            const info = await articleService.getArticleDetail(item)
+            const url = info.cover.replace(process.env.SERVER_BASE_URL,"")
+            await fs.unlinkSync(path.join(__dirname,`../../public${url}`))
+        }
         const result = await articleService.delArticleAll(ids)
         res.send({
             code: 200,

@@ -13,7 +13,9 @@ import type { ImageUploadForm, ImageItem, ImagePage } from "@/types/admin/image"
 const categoryDrawer = ref<boolean>(false)
 
 // 打开弹窗
-const openDrawer = () => {
+const openDrawer = (e: any) => {
+  console.log(e)
+
   categoryDrawer.value = true
 }
 
@@ -197,10 +199,10 @@ onMounted(async () => {
     :infinite-scroll-distance="0"
   >
     <el-row justify="space-between" style="min-height: 800px">
-      <el-col :span="16" class=".limit-box animate__animated  animate__fadeInLeft">
+      <el-col :span="16" class=".limit-box animate__animated animate__fadeInLeft">
         <el-card>
           <el-row>
-            <div class="title  animate__animated animate__swing">
+            <div class="title animate__animated animate__swing">
               <el-icon size="30" color="#093ddc"><UploadFilled /></el-icon>
               上传照片
             </div>
@@ -242,7 +244,7 @@ onMounted(async () => {
             >
           </el-row>
           <el-row>
-            <div class="title  animate__animated animate__swing">
+            <div class="title animate__animated animate__swing">
               <el-icon size="28" color="#093ddc"><PictureFilled /></el-icon>
               照片展示
             </div>

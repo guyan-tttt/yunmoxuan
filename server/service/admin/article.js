@@ -169,13 +169,11 @@ const articleService = {
         count.articleUnPublishNum = await ArticleModel.countDocuments({isDelete: false, isPublish: false})
         // 查询已删除的文章数
         count.articleDeleteNum = await ArticleModel.countDocuments({isDelete: true})
-        const item = await ArticleModel.find({isDelete: false}).sort({ createTime: -1 }).limit(1) // 查询上一次距今最近的分布于时间
         // 查询在上次发布时间一长周内发布的文章数
-        const nowDate = new Date(item[0].createTime)
-        const weekAgo = new Date(item[0].createTime)
+        const nowDate = new Date()
+        const weekAgo = new Date()
         weekAgo.setDate(weekAgo.getDate() - 7)
         const data = await ArticleModel.find({
-            isDelete: false,
             createTime: {
                 $gt: weekAgo,
                 $lt: nowDate

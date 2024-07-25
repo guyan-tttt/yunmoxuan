@@ -61,4 +61,7 @@ watch(
     border-radius: 20px;
   }
 }
+::v-deep(.el-overlay-dialog) {
+  top: 30%;
+}
 </style>

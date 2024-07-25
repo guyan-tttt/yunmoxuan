@@ -30,9 +30,8 @@
     <div v-else>
       <el-empty :image-size="200" />
     </div>
-    <ImagePreview v-model="showImage" :url="currentImage" />
   </div>
-  <el-dialog v-model="showInfo" width="40%">
+  <el-dialog class="menu" v-model="showInfo" style="top: 40%; z-index: 10000">
     <el-descriptions class="margin-top" title="图片属性" :column="3" size="large" border>
       <el-descriptions-item>
         <template #label>
@@ -66,6 +65,7 @@
       </el-descriptions-item>
     </el-descriptions>
   </el-dialog>
+  <ImagePreview class="privew" v-model="showImage" :url="currentImage" />
 </template>
 
 <script setup lang="ts">
@@ -209,6 +209,8 @@ const downloadImage = async (item: ImageItem) => {
   transform: translate(-50%, -50%);
   border-radius: 5px;
   background-color: #fff;
+  border: 1px solid #999;
+  box-shadow: 2px 2px 5px #666;
 }
 
 .context-menu ul {
@@ -221,7 +223,8 @@ const downloadImage = async (item: ImageItem) => {
 .menu-item {
   padding: 12px 16px;
   cursor: pointer;
-  background-color: #fff;
+  // background-color: #fff;
+  color: #000;
 }
 
 .menu-item:hover {
@@ -232,5 +235,16 @@ const downloadImage = async (item: ImageItem) => {
 }
 .waterfall-list {
   background-color: transparent;
+}
+// ::v-deep(.el-overlay) {
+//   width: 100vw;
+// }
+
+::v-deep(.waterfall-list[data-v-fa08b5ca]) {
+  overflow: visible;
+}
+.menu {
+  z-index: 100;
+  top: 40%;
 }
 </style>

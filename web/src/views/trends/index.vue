@@ -545,6 +545,8 @@ onMounted(() => {
             :on-preview="() => {}"
             :on-remove="removeImageList"
             :on-change="addImageList"
+            :drag="true"
+            :multiple="true"
           >
             <el-icon><Plus /></el-icon>
           </el-upload>
@@ -631,5 +633,9 @@ onMounted(() => {
 }
 ::v-deep(.el-card) {
   overflow: visible !important;
+}
+::v-deep(.el-upload--picture-card) {
+  border: none;
+  background-color: transparent;
 }
 </style>

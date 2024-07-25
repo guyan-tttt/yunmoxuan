@@ -30,6 +30,23 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/banner",
+    component: Layouts,
+    redirect: "",
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/banner/index.vue"),
+        name: "Banner",
+        meta: {
+          title: "轮播管理",
+          svgIcon: "banner",
+          affix: true
+        }
+      }
+    ]
+  },
+  {
     path: "/article",
     component: Layouts,
     children: [
@@ -190,19 +207,30 @@ export const constantRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "",
+        path: "/",
         name: "home-index",
-        component: () => import("@/pages/index/index.vue")
+        component: () => import("@/pages/index/index.vue"),
+        meta: {
+          title: "首页",
+          index: 1
+        }
       },
       {
         path: "home-article",
         name: "home-article",
-        component: () => import("@/pages/article/index.vue")
+        component: () => import("@/pages/article/index.vue"),
+        meta: {
+          title: "博文",
+          index: 2
+        }
       },
       {
         path: "home-detail",
         name: "home-detail",
-        component: () => import("@/pages/article/detail.vue")
+        component: () => import("@/pages/article/detail.vue"),
+        meta: {
+          hidden: true
+        }
       }
     ]
   }

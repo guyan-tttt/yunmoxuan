@@ -115,10 +115,9 @@ const trendsService = {
         count.lookNum = trendList.reduce((p,i) => p + i.lookNum,0 )
    
         // 查询一周内文章发布量
-        const item = await TrendsModel.find().sort({ createTime: -1 }).limit(1) // 查询上一次距今最近的分布于时间
         // 查询在上次发布时间一长周内发布的文章数
-        const nowDate = new Date(item[0].createTime)
-        const weekAgo = new Date(item[0].createTime)
+        const nowDate = new Date()
+        const weekAgo = new Date()
         weekAgo.setDate(weekAgo.getDate() - 7)
         const data = await TrendsModel.find({
             createTime: {

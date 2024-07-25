@@ -1,11 +1,30 @@
 <script setup lang="ts">
 //@ts-expect-error
 import UserCard from "./components/userCard.vue"
+import Banner from "@/components/Banner/Banner.vue"
+import { useSettingsStore } from "@/store/modules/settings"
+import { onMounted, onUnmounted } from "vue"
+
+// 设置对象
+const settings = useSettingsStore()
+
+// 改变导航栏背景显示
+const changeNavBg = (value: boolean) => {
+  settings.changeNavBg(value)
+}
+
+onMounted(() => {
+  changeNavBg(false)
+})
+
+onUnmounted(() => {
+  changeNavBg(true)
+})
 </script>
 
 <template>
   <div class="index">
-    <div class="banner" />
+    <Banner />
     <div class="container mx-auto max-w-screen-xl mt-5">
       <div class="grid grid-cols-4">
         <!-- 左边栏 -->
@@ -22,7 +41,10 @@ import UserCard from "./components/userCard.vue"
               class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
             >
               <a class="cursor-pointer">
-                <img class="rounded-t-lg h-50 w-full" src="../../assets/1.jpg" />
+                <img
+                  class="rounded-t-lg h-50 w-full"
+                  src="http://localhost:3000/images/image/ac25018e749e1661299dcd29601d4bb0.jpeg"
+                />
               </a>
               <div class="p-5">
                 <!-- 标签 -->
@@ -138,12 +160,6 @@ import UserCard from "./components/userCard.vue"
 </template>
 
 <style scoped lang="scss">
-.banner {
-  background-color: red;
-  width: 100%;
-  height: calc(100vh - 60px);
-  background-image: url(../../assets/1.jpg);
-}
 .sticky {
   position: sticky;
   top: 60px;
