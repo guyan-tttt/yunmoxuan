@@ -30,23 +30,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/banner",
-    component: Layouts,
-    redirect: "",
-    children: [
-      {
-        path: "",
-        component: () => import("@/views/banner/index.vue"),
-        name: "Banner",
-        meta: {
-          title: "轮播管理",
-          svgIcon: "banner",
-          affix: true
-        }
-      }
-    ]
-  },
-  {
     path: "/article",
     component: Layouts,
     children: [
@@ -228,6 +211,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         path: "home-detail",
         name: "home-detail",
         component: () => import("@/pages/article/detail.vue"),
+        meta: {
+          hidden: true
+        }
+      },
+      {
+        path: "home-userinfo",
+        name: "home-userinfo",
+        component: () => import("@/pages/userInfo/index.vue"),
         meta: {
           hidden: true
         }

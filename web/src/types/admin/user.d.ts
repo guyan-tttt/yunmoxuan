@@ -19,7 +19,7 @@ export interface LoginResponseData extends ResponseData {
 export interface UserInfo {
   _id: string // 用户id
   username: string // 用户名
-  password: string // 密码
+  password?: string // 密码
   email: string // 邮箱
   phone: string // 手机号
   gender: number // 性别
@@ -29,7 +29,7 @@ export interface UserInfo {
   github?: string // github地址
   gitee?: string // gitee地址
   csdn?: string // csdn地址
-  file: any // 文件信息
+  file?: any // 文件信息
 }
 
 // 个人信息返回

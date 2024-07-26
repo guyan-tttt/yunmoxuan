@@ -20,30 +20,15 @@
 
         <el-sub-menu index="2">
           <template #title>
-            <el-avatar :size="30" class="mr-2" />
+            <el-avatar :size="30" :src="webInfoStore.authorInfo?.avatar" class="mr-2" />
             极客空间
           </template>
-          <el-menu-item index="2-1" class="bg-gray-hover" @click="goToManagement">
+          <el-menu-item index="" class="bg-gray-hover" @click="goToManagement">
             <el-icon><Monitor /></el-icon>
             进入后台
           </el-menu-item>
-          <el-menu-item index="2-2" class="bg-gray-hover">
-            <svg
-              t="1688554592591"
-              class="icon mr-2 ml-1"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2307"
-              width="18"
-              height="18"
-            >
-              <path
-                d="M874.666667 855.744a19.093333 19.093333 0 0 1-19.136 18.922667H168.469333A19.2 19.2 0 0 1 149.333333 855.530667V168.469333A19.2 19.2 0 0 1 168.469333 149.333333h687.061334c10.581333 0 19.136 8.533333 19.136 18.922667V320h42.666666V168.256A61.717333 61.717333 0 0 0 855.530667 106.666667H168.469333A61.866667 61.866667 0 0 0 106.666667 168.469333v687.061334A61.866667 61.866667 0 0 0 168.469333 917.333333h687.061334A61.76 61.76 0 0 0 917.333333 855.744V704h-42.666666v151.744zM851.84 533.333333l-131.797333 131.754667a21.141333 21.141333 0 0 0 0.213333 29.973333 21.141333 21.141333 0 0 0 29.973333 0.192l165.589334-165.589333a20.821333 20.821333 0 0 0 6.122666-14.976 21.44 21.44 0 0 0-6.314666-14.997333l-168.533334-168.533334a21.141333 21.141333 0 0 0-29.952-0.213333 21.141333 21.141333 0 0 0 0.213334 29.973333L847.296 490.666667H469.333333v42.666666h382.506667z"
-                fill="#8a8a8a"
-                p-id="2308"
-              />
-            </svg>
+          <el-menu-item index="/home-userinfo" class="bg-gray-hover">
+            <el-icon><User /></el-icon>
             个人资料
           </el-menu-item>
         </el-sub-menu>
@@ -63,6 +48,7 @@ import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import { useWindowScroll } from "@vueuse/core"
 import { usePermissionStore } from "@/store/modules/permission"
 import { useSettingsStore } from "@/store/modules/settings"
+import { useWebInfoStore } from "@/store/modules/webInfo"
 
 // 路由对象
 const route = useRoute()
@@ -80,6 +66,9 @@ const permissionStore = usePermissionStore()
 
 // 设置仓库
 const settingsStore = useSettingsStore()
+
+// 前台信息仓库
+const webInfoStore = useWebInfoStore()
 
 const routesList = computed(() => {
   return permissionStore.routes.find((item) => item.name === "Home")?.children?.filter((item) => !item.meta!.hidden)

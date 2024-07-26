@@ -7,7 +7,7 @@ var logger = require('morgan');
 const JWT = require('./utils/JWT')
 const cors = require('cors');
 
-// 路由导入
+// 后台路由导入
 const userRouter = require('./routes/admin/userRouter');
 const tagsRouter = require('./routes/admin/tagsRouter');
 const categoryRouter = require('./routes/admin/categoryRouter')
@@ -16,14 +16,19 @@ const imageCategory = require('./routes/admin/imageCategory')
 const imageRouter = require('./routes/admin/imageRouter')
 const trendsRouter = require('./routes/admin/trendsRouter')
 const dashboardRouter = require('./routes/admin/dashboardRouter')
-
 // 路由导入
 
+// 前台路由导入
+const indexRouter  = require("./routes/web/indexRouter")
+
+// 前台路由导入
 var app = express();
+
 // 跨域配置，用于前端请求获取后端图片信息
 app.use(cors({
   origin: 'http://localhost:3333' // 只允许 http://localhost:3000 这个域名
 }));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,6 +40,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由挂载区域
+// 前台接口
+app.use('/api/web/index', indexRouter);
 
 // token校验
 app.use((req,res,next) => {

@@ -6,7 +6,6 @@
         :key="item.name"
         class="itm"
         :style="{ backgroundImage: `url(${item.url})`, left: index > 1 ? `calc(70% + ${index - 2} * 250px)` : 0 }"
-        @click="changeImage(index)"
       />
     </div>
     <el-row class="btn" justify="space-between" align="middle" style="height: calc(100vh - 60px)">
@@ -19,6 +18,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { onMounted, onUnmounted } from "vue"
+
 
 const imgList = ref<any[]>([
   {
@@ -43,27 +44,68 @@ const imgList = ref<any[]>([
   }
 ])
 
+// 节流阀
+const isChange = ref<boolean>(true)
+
 // 下一张
 const next = () => {
-  const items = imgList.value.shift()
-  imgList.value.push(items)
+  // 暂停自动轮播
+  clearInterval(timer.value)
+  clearTimeout(delay.value)
+  // 判断是否可以切换
+  if (isChange.value) {
+    isChange.value = false
+    const items = imgList.value.shift()
+    imgList.value.push(items)
+    setTimeout(() => {
+      isChange.value = true
+    }, 1000)
+  }
+  // 开启延时器，若一定时间内没有点击，则自动轮播
+  delay.value = setTimeout(() => {
+    autoPlay(5000)
+  }, 10000)
 }
 
 // 上一张
 const prev = () => {
-  const items = imgList.value.pop()
-  imgList.value.unshift(items)
+  // 暂停自动轮播
+  clearInterval(timer.value)
+  clearTimeout(delay.value)
+  if (isChange.value) {
+    isChange.value = false
+    const items = imgList.value.pop()
+    imgList.value.unshift(items)
+    setTimeout(() => {
+      isChange.value = true
+    }, 1000)
+  }
+  // 开启延时器，若一定时间内没有点击，则自动轮播
+  delay.value = setTimeout(() => {
+    autoPlay(5000)
+  }, 10000)
 }
 
-// 点击图片
-const changeImage = (index: number) => {
-  // 由于元素结构的原因，这里的index只有可能是2或者3
-  if (index === 2) {
-    next()
-  } else {
-    return
-  }
+// 定时器
+const timer = ref<any>(null)
+// 延时器
+const delay = ref<any>(null)
+
+// 自动轮播
+const autoPlay = (time: number) => {
+  timer.value = setInterval(() => {
+    const items = imgList.value.shift()
+    imgList.value.push(items)
+  }, time)
 }
+
+onMounted(() => {
+  autoPlay(5000)
+})
+
+onUnmounted(() => {
+  clearInterval(timer.value)
+})
 </script>
 
 <style scoped lang="scss">

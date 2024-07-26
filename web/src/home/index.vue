@@ -21,11 +21,15 @@ import Header from "./components/Header.vue"
 //@ts-expect-error
 import Footer from "./components/Footer.vue"
 import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
-
 import { onMounted, onUnmounted } from "vue"
-//
+import { useWebInfoStore } from "@/store/modules/webInfo"
+
+// 前台信息仓库
+const webInfoStore = useWebInfoStore()
+
 // 初始化动画
 onMounted(() => {
+  webInfoStore.getAuthorInfo()
   clickEffect()
 })
 // 销毁动画
