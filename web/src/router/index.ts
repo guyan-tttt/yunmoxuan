@@ -195,7 +195,8 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/index/index.vue"),
         meta: {
           title: "首页",
-          index: 1
+          index: 1,
+          icon: "home-index"
         }
       },
       {
@@ -204,13 +205,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/article/index.vue"),
         meta: {
           title: "博文",
-          index: 2
+          index: 2,
+          icon: "home-article"
         }
       },
       {
         path: "home-detail",
         name: "home-detail",
-        component: () => import("@/pages/article/detail.vue"),
+        component: () => import("@/pages/article-detail/index.vue"),
         meta: {
           hidden: true
         }
@@ -221,6 +223,36 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/pages/userInfo/index.vue"),
         meta: {
           hidden: true
+        }
+      },
+      {
+        path: "home-trends",
+        name: "home-trends",
+        component: () => import("@/pages/trends/index.vue"),
+        meta: {
+          title: "动态",
+          index: 3,
+          icon: "home-trends"
+        }
+      },
+      {
+        path: "home-picture",
+        name: "home-picture",
+        component: () => import("@/pages/picture/index.vue"),
+        meta: {
+          title: "相册",
+          index: 4,
+          icon: "home-picture"
+        }
+      },
+      {
+        path: "home-guestbook",
+        name: "home-guestbook",
+        component: () => import("@/pages/guestbook/index.vue"),
+        meta: {
+          title: "留言板",
+          index: 5,
+          icon: "home-guestbook"
         }
       }
     ]
@@ -235,7 +267,13 @@ export const constantRoutes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: constantRoutes
+  routes: constantRoutes,
+  scrollBehavior: () => {
+    return {
+      left: 0,
+      top: 0
+    }
+  }
 })
 
 export default router

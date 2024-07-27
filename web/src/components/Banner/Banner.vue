@@ -5,7 +5,7 @@
         v-for="(item, index) in imgList"
         :key="item.name"
         class="itm"
-        :style="{ backgroundImage: `url(${item.url})`, left: index > 1 ? `calc(70% + ${index - 2} * 250px)` : 0 }"
+        :style="{ backgroundImage: `url(${item.src})`, left: index > 1 ? `calc(70% + ${index - 2} * 250px)` : 0 }"
       />
     </div>
     <el-row class="btn" justify="space-between" align="middle" style="height: calc(100vh - 60px)">
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { onMounted, onUnmounted } from "vue"
-
+import { getBannerAPI } from "@/api/web/index"
 
 const imgList = ref<any[]>([
   {
@@ -99,7 +99,17 @@ const autoPlay = (time: number) => {
   }, time)
 }
 
+// 获取轮播图
+const getBanner = async () => {
+  const res = await getBannerAPI()
+  if (res.code === 200) {
+    // console.log(res)
+    imgList.value = res.data
+  }
+}
+
 onMounted(() => {
+  getBanner()
   autoPlay(5000)
 })
 

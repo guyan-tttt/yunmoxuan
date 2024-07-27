@@ -48,7 +48,7 @@ export interface ArticleItem {
 //获取文章列表
 export interface ArticleList extends ResponseData {
   data: ArticleItem[]
-  total: number
+  total?: number
 }
 
 // 获取文章详情

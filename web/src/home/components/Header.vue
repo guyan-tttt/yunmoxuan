@@ -15,8 +15,10 @@
           :key="item.meta?.index as string"
           @click="changeActive(item.meta?.index)"
           :index="item.path"
-          >{{ item.meta?.title }}</el-menu-item
         >
+          <SvgIcon :name="item.meta?.icon as string" style="width: 18px; height: 18px; margin-right: 5px" />
+          {{ item.meta?.title }}
+        </el-menu-item>
 
         <el-sub-menu index="2">
           <template #title>
@@ -52,6 +54,7 @@ import { useWebInfoStore } from "@/store/modules/webInfo"
 
 // 路由对象
 const route = useRoute()
+
 // 页面滚动距离监听
 const { y } = useWindowScroll()
 
@@ -92,6 +95,17 @@ watch(
     }
   }
 )
+// 监听页面路由变化，切换选项卡
+watch(
+  () => route.path,
+  () => {
+    if (route.meta?.index) {
+      activeIndex.value = route.meta.index
+    } else {
+      activeIndex.value = 0
+    }
+  }
+)
 /**
  * 调转后台
  * @param {*}
@@ -107,7 +121,7 @@ const goToManagement = () => {
 }
 
 // 导航栏高亮显示
-const activeIndex = ref(1)
+const activeIndex = ref(route.meta?.index || 0)
 
 // 切换当前项
 const changeActive = (index: any) => {

@@ -82,8 +82,6 @@ import FileSaver from "file-saver"
 // 瀑布流布局配置
 const breakPoints = {
   1200: { rowPerView: 4 }, // 1200px 宽度四列
-  900: { rowPerView: 3 },
-  600: { rowPerView: 2 },
   300: { rowPerView: 1 }
 }
 

@@ -13,6 +13,7 @@
     <!-- 底部 -->
     <Footer />
     <!-- 底部 -->
+    <TagPreview :tagDetail="webInfoStore.tagPreviewInfo" v-model="webInfoStore.showPreview" />
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import Footer from "./components/Footer.vue"
 import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
 import { onMounted, onUnmounted } from "vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
+import TagPreview from "@/components/TagPreview/index.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
@@ -30,6 +32,8 @@ const webInfoStore = useWebInfoStore()
 // 初始化动画
 onMounted(() => {
   webInfoStore.getAuthorInfo()
+  webInfoStore.getCategoryInfo()
+  webInfoStore.getTagsInfo()
   clickEffect()
 })
 // 销毁动画

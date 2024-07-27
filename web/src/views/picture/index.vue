@@ -46,8 +46,8 @@ const changeUpload = (file: UploadFile) => {
     uploadRef.value?.handleRemove(file)
     return
   }
-  if (file.raw?.size > 1024 * 1024 * 2) {
-    ElMessage.error("图片大小不能超过2MB")
+  if (file.raw?.size > 1024 * 1024 * 5) {
+    ElMessage.error("图片大小不能超过5MB")
     uploadRef.value?.handleRemove(file)
     return
   }

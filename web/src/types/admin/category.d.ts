@@ -13,7 +13,7 @@ export interface AddCategory {
 // 获取分类列表返回
 export interface GetCategoryListResponse extends ResponseData {
   data: CategoryItem[]
-  total: number
+  total?: number
 }
 // 分类列表项
 export interface CategoryItem {

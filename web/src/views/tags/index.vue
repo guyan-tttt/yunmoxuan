@@ -212,7 +212,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="tag">
-    <el-card >
+    <el-card>
       <div class="role-operate" style="margin-bottom: 20px">
         <el-button size="default" type="primary" @click="addTag">添加标签</el-button>
       </div>

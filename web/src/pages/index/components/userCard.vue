@@ -1,8 +1,20 @@
+<script setup lang="ts">
+import { useWebInfoStore } from "@/store/modules/webInfo"
+import type { Tag } from "@/types/admin/tags"
+
+// 前台信息仓库
+const webInfoStore = useWebInfoStore()
+
+// 点击打开弹框预览
+const openPreview = (tag: Tag) => {
+  webInfoStore.openPreview(tag)
+}
+</script>
 <template>
   <div class="mb-3 w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <div class="flex justify-end px-4 pt-4" />
     <div class="flex flex-col items-center pb-6">
-      <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="64" />
+      <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="70" />
       <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
         {{ webInfoStore.authorInfo?.nickname }}
         <SvgIcon :name="webInfoStore.authorInfo?.gender === 1 ? 'boy' : 'girl'" style="width: 25px; height: 25px" />
@@ -86,13 +98,13 @@
   <div
     class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
   >
-    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">分类</h2>
+    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</h2>
     <div
       class="text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
     >
       <a
-        v-for="(item, index) in 5"
-        :key="index"
+        v-for="item in webInfoStore.categoryInfo"
+        :key="item._id"
         class="flex items-end block w-full px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
       >
         <svg
@@ -110,7 +122,7 @@
             d="M2.539 17h12.476l4-9H5m-2.461 9a1 1 0 0 1-.914-1.406L5 8m-2.461 9H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H16a1 1 0 0 1 1 1v2H5"
           />
         </svg>
-        hefhehe
+        {{ item.name }}
       </a>
     </div>
   </div>
@@ -119,22 +131,13 @@
   <div
     class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
   >
-    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">标签</h2>
-    <div
-      v-for="(item, index) in 3"
-      :key="index"
-      class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 mb-1 px-2.5 py-0.5 rounded hover:bg-green-200 hover:text-green-900 dark:hover:bg-green-800 dark:hover:text-green-300 dark:bg-green-900 dark:text-green-300"
-    >
-      guyah1
+    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</h2>
+    <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click="openPreview(item)">
+      <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
+      <span>{{ item.name }}</span>
     </div>
   </div>
 </template>
-
-<script setup>
-import { useWebInfoStore } from "@/store/modules/webInfo"
-// 前台信息仓库
-const webInfoStore = useWebInfoStore()
-</script>
 
 <style scoped lang="scss">
 .text-xl {
@@ -149,5 +152,30 @@ const webInfoStore = useWebInfoStore()
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0 20px;
+}
+
+.tag {
+  text-align: center;
+  vertical-align: middle;
+  height: 66px;
+  line-height: 66px;
+}
+.item {
+  margin-top: 10px;
+  width: 100px;
+  height: 30px;
+  display: inline-flex;
+  font-weight: normal;
+  line-height: 30px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  background-color: #ecf5ff;
+  border-radius: 4px;
+  span {
+    margin-left: 10px;
+    color: #409eff;
+  }
 }
 </style>

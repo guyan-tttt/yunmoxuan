@@ -27,7 +27,7 @@ export interface ImageItem {
 // 获取图片列表接口返回类型
 export interface ImageListResponse extends ResponseData {
   data: ImageItem[]
-  total: number // 总条数
+  total?: number // 总条数
 }
 
 // 分页数据

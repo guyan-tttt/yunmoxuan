@@ -188,6 +188,28 @@ const articleService = {
             count.weekData[key]++
         }
         return count
+   },
+   getRecommends: async() => {
+        const data = await ArticleModel.find({isDelete: false, isTop: true}).limit(10)
+        for(let item of data) {
+            item.cover = process.env.SERVER_BASE_URL + item.cover
+            const category = await CategoryModel.findById(item.categoryID)
+            const user = await UserModel.findById(item.authorID)
+            const tagID = item.tags[0].split(",")
+            const tag = await TagModel.find({_id: {$in: tagID}})
+            tag.forEach(item => {
+                item.icon = process.env.SERVER_BASE_URL + item.icon
+            })
+            item.aboutInfo = {
+                category,
+                user: {
+                    name: user.nickname,
+                    avatar: user.avatar,
+                }
+            }
+            item.tags = tag
+        }
+        return data
    }
 }
 

@@ -1,7 +1,9 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import type { UserInfo } from "@/types/admin/user"
-import { getAuthorInfoAPI } from "@/api/web/index"
+import { getAuthorInfoAPI, getCategoryAPI, getTagAPI } from "@/api/web/index"
+import type { AddCategory } from "@/types/admin/category"
+import type { Tag } from "@/types/admin/tags"
 
 // 前台全局信息仓库
 export const useWebInfoStore = defineStore(
@@ -17,9 +19,50 @@ export const useWebInfoStore = defineStore(
         authorInfo.value = res.data
       }
     }
+
+    // 分类信息
+    const categoryInfo = ref<AddCategory[]>([])
+
+    // 获取分类列表项
+    const getCategoryInfo = async () => {
+      const res = await getCategoryAPI()
+      if (res.code === 200) {
+        categoryInfo.value = res.data
+      }
+    }
+
+    // 文章标签信息
+    const tagInfo = ref<Tag[]>([])
+
+    // 获取标签信息
+    const getTagsInfo = async () => {
+      const res = await getTagAPI()
+      if (res.code === 200) {
+        tagInfo.value = res.data
+      }
+    }
+
+    // 标签预览信息
+    const tagPreviewInfo = ref<Tag>()
+
+    // 标签预览显示
+    const showPreview = ref<boolean>(false)
+
+    // 打开预览框
+    const openPreview = (tag: Tag) => {
+      tagPreviewInfo.value = tag
+      showPreview.value = true
+    }
     return {
       authorInfo,
-      getAuthorInfo
+      getAuthorInfo,
+      categoryInfo,
+      getCategoryInfo,
+      tagInfo,
+      getTagsInfo,
+      tagPreviewInfo,
+      showPreview,
+      openPreview
     }
   },
   {

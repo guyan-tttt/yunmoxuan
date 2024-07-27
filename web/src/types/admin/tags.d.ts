@@ -20,7 +20,7 @@ export interface AddTagResponseData extends ResponseData {
 // 获取标签列表数据返回类型
 export interface GetTagsResponseData extends ResponseData {
   data: Tag[]
-  total: number // 标签总数
+  total?: number // 标签总数
 }
 
 // 标签项类型

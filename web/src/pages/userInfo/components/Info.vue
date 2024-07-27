@@ -26,13 +26,9 @@
         </div>
         <div class="skills">
           <h3>技术栈</h3>
-          <div type="success" class="item" v-for="item in 5" :key="item">
-            <el-image
-              style="width: 20px; height: 20px"
-              src="http://localhost:3000/images/tags/57265e016c5b4e65fab81d2037e37787.svg"
-              fit="fill"
-            />
-            <span>HTML</span>
+          <div type="success" class="item" v-for="item in props.tagList" :key="item._id" @click="openTagPreview(item)">
+            <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
+            <span>{{ item.name }}</span>
           </div>
         </div>
         <div class="motto">
@@ -43,13 +39,13 @@
           <h3>关于我的</h3>
           <ul class="info-list">
             <li>
-              github: <a class="github-link" :href="props.data?.github" target="_blank">{{ props.data?.github }}</a>
+              🌟 github: <a class="github-link" :href="props.data?.github" target="_blank">{{ props.data?.github }}</a>
             </li>
             <li>
-              gitee: <a class="github-link" :href="props.data?.gitee" target="_blank">{{ props.data?.gitee }}</a>
+              🌟 gitee: <a class="github-link" :href="props.data?.gitee" target="_blank">{{ props.data?.gitee }}</a>
             </li>
             <li>
-              csdn: <a class="github-link" :href="props.data?.csdn" target="_blank">{{ props.data?.csdn }}</a>
+              🌟 csdn: <a class="github-link" :href="props.data?.csdn" target="_blank">{{ props.data?.csdn }}</a>
             </li>
           </ul>
         </div>
@@ -61,9 +57,19 @@
 <script setup lang="ts">
 import { defineProps } from "vue"
 import type { UserInfo } from "@/types/admin/user"
+import type { Tag } from "@/types//admin/tags"
+import { useWebInfoStore } from "@/store/modules/webInfo"
+
+// 前台信息仓库
+const webInfoStore = useWebInfoStore()
 
 // 接收父组件数据
-const props = defineProps<{ data: UserInfo }>()
+const props = defineProps<{ data: UserInfo; tagList: Tag[] }>()
+
+// 点击预览标签
+const openTagPreview = (tag: Tag) => {
+  webInfoStore.openPreview(tag)
+}
 </script>
 
 <style scoped lang="scss">

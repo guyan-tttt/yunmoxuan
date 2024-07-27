@@ -5,6 +5,13 @@ import Banner from "@/components/Banner/Banner.vue"
 import { useSettingsStore } from "@/store/modules/settings"
 import { onMounted, onUnmounted, ref } from "vue"
 import { useIntersectionObserver } from "@vueuse/core"
+import ArticleCard from "./components/articleCard.vue"
+import { getRecommendArticleAPI } from "@/api/web/article"
+import type { ArticleItem } from "@/types/admin/article"
+import { useRouter } from "vue-router"
+
+// 全局路由对象
+const router = useRouter()
 
 // 设置对象
 const settings = useSettingsStore()
@@ -16,7 +23,6 @@ const changeNavBg = (value: boolean) => {
 
 // 元素进入视口渐入
 const articleTarget = ref<any>(null)
-
 const targetIsActive = ref<boolean>(false)
 
 // 进入视口修改激活状态
@@ -24,8 +30,25 @@ const { stop } = useIntersectionObserver(articleTarget, ([{ isIntersecting }]) =
   targetIsActive.value = isIntersecting
 })
 
+// 推荐文章列表
+const recommendArticleList = ref<ArticleItem[]>([])
+
+// 获取推荐文章
+const getRecommendArticle = async () => {
+  const res = await getRecommendArticleAPI()
+  if (res.code === 200) {
+    recommendArticleList.value = res.data
+  }
+}
+
+// 查看更多
+const showMore = () => {
+  router.push("/home-article")
+}
+
 onMounted(() => {
   changeNavBg(false)
+  getRecommendArticle()
 })
 
 onUnmounted(() => {
@@ -43,72 +66,11 @@ onUnmounted(() => {
         <div class="col-span-4 px-3 md:col-span-3 sm:col-span-4">
           <div class="article-title">
             <h4>文章推荐</h4>
-            <span>查看更多</span>
+            <span @click="showMore">查看更多</span>
           </div>
           <!-- 文章列表 -->
           <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
-            <div
-              v-for="(article, index) in 3"
-              :key="index"
-              class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-            >
-              <a class="cursor-pointer">
-                <img
-                  class="rounded-t-lg h-50 w-full"
-                  src="http://localhost:3000/images/image/ac25018e749e1661299dcd29601d4bb0.jpeg"
-                />
-              </a>
-              <div class="p-5">
-                <!-- 标签 -->
-                <div
-                  v-for="(item, index) in 3"
-                  :key="index"
-                  class="mb-3 inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded hover:bg-green-200 hover:text-green-900 dark:hover:bg-green-800 dark:hover:text-green-300 dark:bg-green-900 dark:text-green-300"
-                >
-                  wenzhang1
-                </div>
-                <a class="cursor-pointer">
-                  <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">yibenshu1</h2>
-                </a>
-                <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">vsdvasvadvadvadvav</p>
-                <!-- meta 信息 -->
-                <p class="text-gray-400 text-sm flex items-center article-mata">
-                  <svg
-                    class="inline w-3 h-3 mr-2 text-gray-400 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 1v3m5-3v3m5-3v3M1 7h18M5 11h10M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"
-                    />
-                  </svg>
-                  2024.4.5
-
-                  <svg
-                    class="inline w-3 h-3 ml-5 mr-2 text-gray-400 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 18"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M1 5v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1Zm0 0V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H1Z"
-                    />
-                  </svg>
-                  <a class="text-gray-400 hover:underline">fjqofjqfqfewqf</a>
-                </p>
-              </div>
-            </div>
+            <ArticleCard v-for="item in recommendArticleList" :key="item._id" :article="item" />
           </div>
 
           <!-- 分页 -->

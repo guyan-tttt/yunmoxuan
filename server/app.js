@@ -20,6 +20,7 @@ const dashboardRouter = require('./routes/admin/dashboardRouter')
 
 // 前台路由导入
 const indexRouter  = require("./routes/web/indexRouter")
+const articleHomeRouter = require("./routes/web/articleRouter")
 
 // 前台路由导入
 var app = express();
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 路由挂载区域
 // 前台接口
 app.use('/api/web/index', indexRouter);
+app.use('/api/web/article', articleHomeRouter);
 
 // token校验
 app.use((req,res,next) => {
