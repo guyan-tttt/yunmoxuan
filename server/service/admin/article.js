@@ -210,6 +210,37 @@ const articleService = {
             item.tags = tag
         }
         return data
+   },
+   getList: async(left,right) => {
+    const data = await ArticleModel.find({isDelete: false ,isPublish: true}).limit(right).skip(left)
+    const total = await ArticleModel.countDocuments({isDelete: false, isPublish: true})
+        for(let item of data) {
+            item.cover = process.env.SERVER_BASE_URL + item.cover
+            const category = await CategoryModel.findById(item.categoryID)
+            const user = await UserModel.findById(item.authorID)
+            const tagID = item.tags[0].split(",")
+            const tag = await TagModel.find({_id: {$in: tagID}})
+            tag.forEach(item => {
+                item.icon = process.env.SERVER_BASE_URL + item.icon
+            })
+            item.aboutInfo = {
+                category,
+                user: {
+                    name: user.nickname,
+                    avatar: user.avatar,
+                }
+            }
+            item.tags = tag
+        }
+        return {
+            data,
+            total
+        }
+   },
+   like: async(id) => {
+    await ArticleModel.findByIdAndUpdate(id, {
+        $inc: {likeNum: 1}
+    })
    }
 }
 

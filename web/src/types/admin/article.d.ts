@@ -43,7 +43,10 @@ export interface ArticleItem {
     author: string // 文章作者昵称
   }
   createTime?: string // 文章创建时间
-  updateTime?: string // 文章更新时间
+  updateTime?: string // 文章更新时间,
+  likeNum: number // 点赞数量
+  commentNum: number // 评论数量
+  viewNum: number // 阅读数量
 }
 //获取文章列表
 export interface ArticleList extends ResponseData {

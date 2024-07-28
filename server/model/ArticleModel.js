@@ -16,7 +16,8 @@ const Schema = mongoose.Schema({
     updateTime: Date, // 更新时间
     isDelete: Boolean, // 是否删除
     likeNum: Number, // 点赞数
-    aboutInfo: Object
+    aboutInfo: Object,
+    commentNum: Number, // 评论数
 })
 
 module.exports = mongoose.model('Article', Schema);

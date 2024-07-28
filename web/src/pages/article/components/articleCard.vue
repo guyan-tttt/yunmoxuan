@@ -1,35 +1,40 @@
 <template>
   <div class="card mb-4 border border-gray-200 rounded-lg">
     <div class="bg">
-      <img src="http://localhost:3000/images/image/375cb42cc947c8dce0a690499bc8caf0.png" alt="" />
+      <img :src="$props.article?.cover" alt="" />
     </div>
     <div class="text" :class="{ even: props.index % 2 === 0 }">
       <div class="left">
-        <img class="cover" src="http://localhost:3000/images/image/375cb42cc947c8dce0a690499bc8caf0.png" alt="" />
+        <img class="cover" :src="$props.article?.cover" alt="" />
       </div>
       <div class="right">
         <div class="top">
-          <div class="date">🕛 2024/04/09</div>
-          <div class="category">📜 前端基础知识</div>
+          <div class="date">🕛 {{ dayjs(props.article?.createTime).format("YYYY/MM/DD") }}</div>
+          <div class="category">📜 {{ props.article?.aboutInfo.category.name }}</div>
         </div>
-        <div class="name">文章第一篇</div>
-        <p class="desc">
-          徐爱徐爱遂川县安徽菜u拆改UC公会赛唱歌撒村尬吹一噶uv吃噶nygjtjtyjtmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnu因此v发噶
-        </p>
+        <div class="name">{{ props.article?.title }}</div>
+        <p class="desc">{{ props.article?.desc }}</p>
         <div class="tags">
-          <div class="item" v-for="i in 6" :key="i">
-            <img src="http://localhost:3000/images/tags/57265e016c5b4e65fab81d2037e37787.svg" alt="" />
+          <div class="item" v-for="i in $props.article?.tags as Tag[]" :key="i._id">
+            <img :src="i.icon" alt="" />
           </div>
         </div>
         <div class="about">
-          <span @click="addLike(i, index)" style="position: relative"
-            ><SvgIcon class="like" style="margin-right: 10px; color: red" name="like-active" size="18" />222
-          </span>
-          <span
-            ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>444</span
+          <span style="position: relative"
+            ><SvgIcon
+              @click="addLike"
+              :class="{ animate__heartBeat: !isLike }"
+              class="like animate__animated"
+              style="margin-right: 10px; color: red"
+              name="like-active"
+              size="18"
+            />{{ props.article?.likeNum }}</span
           >
           <span
-            ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>555</span
+            ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>{{ props.article?.viewNum }}</span
+          >
+          <span
+            ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ props.article?.commentNum }}</span
           >
         </div>
       </div>
@@ -39,11 +44,34 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue"
+import { ArticleItem } from "@/types/admin/article"
+import type { Tag } from "@/types/admin/tags"
+import dayjs from "dayjs"
+import { ref } from "vue"
 
 // 接受父组件按数据
 const props = defineProps<{
   index: number
+  article: ArticleItem
 }>()
+
+// 防抖
+const isLike = ref<boolean>(true)
+
+// 提交事件
+const emit = defineEmits(["addLike"])
+
+// 点赞
+const addLike = () => {
+  if (isLike.value) {
+    isLike.value = false
+    // 通知父组件更新点赞量
+    emit("addLike")
+    setTimeout(() => {
+      isLike.value = true
+    }, 1000)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -91,7 +119,7 @@ const props = defineProps<{
     }
   }
   .left {
-    width: 40%;
+    width: 600px;
     height: 100%;
     img {
       &:hover {
