@@ -190,7 +190,7 @@ const articleService = {
         return count
    },
    getRecommends: async() => {
-        const data = await ArticleModel.find({isDelete: false, isTop: true}).limit(10)
+        const data = await ArticleModel.find({isDelete: false, isTop: true}).limit(10).sort( {createTime: -1} )
         for(let item of data) {
             item.cover = process.env.SERVER_BASE_URL + item.cover
             const category = await CategoryModel.findById(item.categoryID)
@@ -212,7 +212,7 @@ const articleService = {
         return data
    },
    getList: async(left,right) => {
-    const data = await ArticleModel.find({isDelete: false ,isPublish: true}).limit(right).skip(left)
+    const data = await ArticleModel.find({isDelete: false ,isPublish: true}).limit(right).skip(left).sort( {createTime: -1} )
     const total = await ArticleModel.countDocuments({isDelete: false, isPublish: true})
         for(let item of data) {
             item.cover = process.env.SERVER_BASE_URL + item.cover
@@ -240,6 +240,20 @@ const articleService = {
    like: async(id) => {
     await ArticleModel.findByIdAndUpdate(id, {
         $inc: {likeNum: 1}
+    })
+   },
+   getPrevAndNext: async(id,createTime) => {
+    console.log(createTime);
+    const prev = await ArticleModel.find({isDelete: false, isPublish: true }).where("createTime").lt(createTime).sort( {createTime: -1} ).limit(1).select("title")
+    const next = await ArticleModel.find({isDelete: false, isPublish: true }).where("createTime").gt(createTime).sort( {createTime: 1} ).limit(1).select("title")
+    return {
+        prev,
+        next
+    }
+   },
+   addView: async(id) => {
+    await ArticleModel.findByIdAndUpdate(id, {
+        $inc: {viewNum: 1}
     })
    }
 }

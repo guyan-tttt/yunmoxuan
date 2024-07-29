@@ -18,6 +18,7 @@ const Schema = mongoose.Schema({
     likeNum: Number, // 点赞数
     aboutInfo: Object,
     commentNum: Number, // 评论数
+    index: Number, // 排序
 })
 
 module.exports = mongoose.model('Article', Schema);

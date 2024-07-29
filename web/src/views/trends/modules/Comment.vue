@@ -74,7 +74,7 @@ const getCommentList = async () => {
   const res = await getCommentListAPI(pageData.value.page, pageData.value.pageSize, props.data._id)
   if (res.code == 200) {
     commentList.value = res.data
-    pageData.value.total = res.total
+    pageData.value.total = res.total as number
     setTimeout(() => {
       loading.value = false
     }, 500)
@@ -159,11 +159,7 @@ const showEmojiPicker = ref<boolean>(false)
             maxlength="10"
             show-word-limit
           />
-          <el-select
-            v-model="commentForm.ip"
-            placeholder="请选择省份"
-            style="width: 150px; margin-bottom: 10px; margin-left: 20px"
-          >
+          <el-select v-model="commentForm.ip" placeholder="请选择省份" style="width: 150px; margin-bottom: 10px; margin-left: 20px">
             <el-option v-for="item in props.province" :key="item" :label="item.name" :value="item.name" />
           </el-select>
         </el-row>

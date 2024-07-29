@@ -53,6 +53,14 @@ export const useWebInfoStore = defineStore(
       tagPreviewInfo.value = tag
       showPreview.value = true
     }
+
+    // 评论组件显示
+    const commentShow = ref<boolean>(false)
+
+    // 打开评论框
+    const openComment = (value: boolean) => {
+      commentShow.value = value
+    }
     return {
       authorInfo,
       getAuthorInfo,
@@ -62,7 +70,9 @@ export const useWebInfoStore = defineStore(
       getTagsInfo,
       tagPreviewInfo,
       showPreview,
-      openPreview
+      openPreview,
+      commentShow,
+      openComment
     }
   },
   {

@@ -3,7 +3,7 @@
     <div class="bg">
       <img :src="$props.article?.cover" alt="" />
     </div>
-    <div class="text" :class="{ even: props.index % 2 === 0 }">
+    <div class="text" @click="goToDetail(props.article._id as string)" :class="{ even: props.index % 2 === 0 }">
       <div class="left">
         <img class="cover" :src="$props.article?.cover" alt="" />
       </div>
@@ -22,7 +22,7 @@
         <div class="about">
           <span style="position: relative"
             ><SvgIcon
-              @click="addLike"
+              @click.stop="addLike"
               :class="{ animate__heartBeat: !isLike }"
               class="like animate__animated"
               style="margin-right: 10px; color: red"
@@ -48,12 +48,16 @@ import { ArticleItem } from "@/types/admin/article"
 import type { Tag } from "@/types/admin/tags"
 import dayjs from "dayjs"
 import { ref } from "vue"
+import { useRouter } from "vue-router"
 
 // 接受父组件按数据
 const props = defineProps<{
   index: number
   article: ArticleItem
 }>()
+
+// 全局路由对象
+const router = useRouter()
 
 // 防抖
 const isLike = ref<boolean>(true)
@@ -71,6 +75,16 @@ const addLike = () => {
       isLike.value = true
     }, 1000)
   }
+}
+
+// 跳转详情页面
+const goToDetail = (id: string) => {
+  router.push({
+    path: "/home-detail",
+    query: {
+      id
+    }
+  })
 }
 </script>
 

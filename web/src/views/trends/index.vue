@@ -388,9 +388,7 @@ onMounted(() => {
         <template #content>
           <div class="flex items-center">
             <el-avatar class="mr-3" :size="60" :src="userStore.userInfo?.avatar" />
-            <span class="text-large font-600 mr-3 animate__animated animate__bounce">
-              {{ userStore.userInfo.nickname }}</span
-            >
+            <span class="text-large font-600 mr-3 animate__animated animate__bounce"> {{ userStore.userInfo.nickname }}</span>
             <SvgIcon :name="userStore.userInfo?.gender === 1 ? 'boy' : 'girl'" style="width: 30px; height: 30px" />
             <el-tag>管理员</el-tag>
           </div>
@@ -426,13 +424,7 @@ onMounted(() => {
       style="width: 80%; margin: 0 auto; position: relative"
     >
       <el-timeline style="max-width: 50%">
-        <el-timeline-item
-          v-for="(i, index) in trendsList"
-          :key="i._id"
-          color="#409eff"
-          :timestamp="i.createTime"
-          placement="top"
-        >
+        <el-timeline-item v-for="(i, index) in trendsList" :key="i._id" color="#409eff" :timestamp="i.createTime" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">
               <el-card>
@@ -518,21 +510,10 @@ onMounted(() => {
             }"
             input-style="height: 180px"
           />
-          <Vue3EmojiPicker
-            class="emoji"
-            :class="{ active: showEmoji }"
-            :native="true"
-            @select="onEmojiSelect"
-            v-model="selectedEmoji"
-          />
+          <Vue3EmojiPicker class="emoji" :class="{ active: showEmoji }" :native="true" @select="onEmojiSelect" v-model="selectedEmoji" />
 
           <el-row justify="start" style="width: 100%; margin-top: 20px; margin-right: 20px">
-            <SvgIcon
-              @click="openEmoji"
-              style="width: 30px; height: 30px"
-              name="emoji"
-              :style="{ color: showEmoji ? '#3cbff5' : '#666' }"
-            />
+            <SvgIcon @click="openEmoji" style="width: 30px; height: 30px" name="emoji" :style="{ color: showEmoji ? '#3cbff5' : '#666' }" />
           </el-row>
         </el-form-item>
         <el-form-item>

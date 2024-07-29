@@ -30,6 +30,25 @@ const articleController = {
             code: 200,
             message: '点赞成功'
         })
+    },
+    getDetail: async(req,res) => {
+        const { id }  = req.params
+        const data = {}
+        // 增加浏览量
+        await articleService.addView(id)
+        // 查询本条数据
+        const result = await articleService.getArticleDetail(id)
+        // 查询上一条和下一条数据
+        const { prev , next }  = await articleService.getPrevAndNext(id,result.createTime)
+        data.prev = prev
+        data.next = next
+        data.detail = result
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data,
+        })
+
     }
 }
 

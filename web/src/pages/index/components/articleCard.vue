@@ -11,15 +11,12 @@
     </a>
     <div class="p-5">
       <!-- 标签 -->
-      <div type="success" class="item" v-for="item in props.article?.tags" :key="item._id">
+      <div type="success" class="item" v-for="item in props.article?.tags as Tag[]" :key="item?._id">
         <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
-        <span>{{ item.name }}</span>
+        <span>{{ item?.name }}</span>
       </div>
       <a class="cursor-pointer">
-        <h2
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white title"
-          @click="goToDetail(props.article?._id)"
-        >
+        <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white title" @click="goToDetail(props.article?._id as string)">
           {{ props.article?.title }}
         </h2>
       </a>
@@ -69,6 +66,7 @@ import { defineProps } from "vue"
 import type { ArticleItem } from "@/types/admin/article"
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
+import type { Tag } from "@/types/admin/tags"
 
 // 全局路由对象
 const router = useRouter()
