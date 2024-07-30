@@ -4,6 +4,7 @@ import type { UserInfo } from "@/types/admin/user"
 import { getAuthorInfoAPI, getCategoryAPI, getTagAPI } from "@/api/web/index"
 import type { AddCategory } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
+import { log } from "console"
 
 // 前台全局信息仓库
 export const useWebInfoStore = defineStore(
@@ -57,9 +58,18 @@ export const useWebInfoStore = defineStore(
     // 评论组件显示
     const commentShow = ref<boolean>(false)
 
+    // 当前添加评论文章id或者动态ID
+    const articleId = ref<string>()
+
     // 打开评论框
-    const openComment = (value: boolean) => {
+    const openComment = (value: boolean, articleID: string = "") => {
+      console.log("xax")
+
       commentShow.value = value
+      if (value) {
+        articleId.value = articleID
+        console.log("")
+      }
     }
     return {
       authorInfo,
@@ -72,6 +82,7 @@ export const useWebInfoStore = defineStore(
       showPreview,
       openPreview,
       commentShow,
+      articleId,
       openComment
     }
   },

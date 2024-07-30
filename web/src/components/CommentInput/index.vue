@@ -38,30 +38,36 @@
       <el-row align="middle" style="margin-top: 20px; position: relative">
         <el-button type="primary" size="small" @click="publishComment">发布</el-button>
         <el-button type="danger" size="small" @click="clearComment">清除</el-button>
-        <SvgIcon style="width: 25px; height: 25px; margin-left: 10px" name="emoji" :style="{ color: '#3cbff5' }" />
+        <SvgIcon
+          @click="openEmoji"
+          style="width: 25px; height: 25px; margin-left: 10px"
+          name="emoji"
+          :style="{ color: showEmoji ? '#3cbff5' : '#999' }"
+        />
       </el-row>
     </el-card>
-    <Vue3EmojiPicker ref="emojiPicker" class="emoji" :native="true" />
+    <Vue3EmojiPicker @select="selectEmoji" v-if="showEmoji" ref="emojiPicker" class="emoji animate__animated animate__bounceInUp" :native="true" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import { onClickOutside } from "@vueuse/core"
-import { ref, defineProps } from "vue"
+import { ref } from "vue"
 //@ts-expect-error
 import GaoDeMap from "../GaoDeMap/index.vue"
+import { ElMessage } from "element-plus"
+import dayjs from "dayjs"
+import type { ArticleCommentItem } from "@/types/web/article"
+import { addCommentAPI } from "@/api/web/article"
 
 // 前台全局仓库
 const webInfoStore = useWebInfoStore()
 
-// 接受父组件参数
-const props = defineProps<{
-  articleID: string
-}>()
-
 // 关闭评论组件
 const closeComment = () => {
+  // 表情组件关闭
+  showEmoji.value = false
   webInfoStore.openComment(false)
 }
 
@@ -69,14 +75,14 @@ const closeComment = () => {
 const commentRef = ref<any>(null)
 
 // 点击页面空白处，关闭评论组件
-onClickOutside(commentRef, () => [webInfoStore.openComment(false)])
+onClickOutside(commentRef, () => closeComment())
 
 // 评论数据
-const commentForm = ref({
+const commentForm = ref<ArticleCommentItem>({
   content: "",
   address: "",
   nickname: "",
-  articleID: props.articleID,
+  articleID: webInfoStore.articleId as string,
   time: ""
 })
 
@@ -93,8 +99,28 @@ const selectAddress = (data: any) => {
 }
 
 // 发布评论
-const publishComment = () => {
-  console.log(commentForm.value)
+const publishComment = async () => {
+  // 判断评论昵称与内容是否输入
+  if (commentForm.value.nickname === "" || commentForm.value.content === "") {
+    ElMessage.error("请输入昵称与评论内容")
+    return
+  }
+  // 判断评论内容长度
+  if (commentForm.value.content.length > 100 || commentForm.value.nickname.length > 10) {
+    ElMessage.error("评论内容或昵称长度过长")
+    return
+  }
+  // 获取当前时间
+  commentForm.value.time = dayjs(new Date()).format("YYYY-MM-DD HH:mm")
+  // 发送请求
+  const res = await addCommentAPI(commentForm.value)
+  console.log(res)
+  if (res.code === 200) {
+    ElMessage.success("评论成功")
+    clearComment()
+  } else {
+    ElMessage.error("评论失败")
+  }
 }
 
 // 清除
@@ -103,10 +129,29 @@ const clearComment = () => {
     content: "",
     address: "",
     nickname: "",
-    articleID: props.articleID,
+    articleID: webInfoStore.articleId as string,
     time: ""
   }
   closeComment()
+}
+
+// 当前表情组件显示
+const showEmoji = ref<boolean>(false)
+
+// 点击开启表情组件
+const openEmoji = () => {
+  showEmoji.value = !showEmoji.value
+}
+
+// 表情包组件对象
+const emojiPicker = ref<any>(null)
+
+// 点击页面空白处，关闭表情包组件
+onClickOutside(emojiPicker, () => (showEmoji.value = false))
+
+// 选择表情
+const selectEmoji = (emoji: any) => {
+  commentForm.value.content += emoji.i
 }
 </script>
 

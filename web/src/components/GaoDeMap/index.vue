@@ -1,5 +1,5 @@
 <template>
-  <div class="map">
+  <div class="map" ref="mapRef">
     <el-button @click="openMap">选择地址</el-button>
     <el-card id="container" :class="{ active: showMap }">
       <div style="width: 100%; height: 400px" />
@@ -10,6 +10,7 @@
 <script setup>
 import { onMounted, ref } from "vue"
 import AMapLoader from "@amap/amap-jsapi-loader"
+import { onClickOutside } from "@vueuse/core"
 
 let map = null
 
@@ -22,6 +23,16 @@ const showMap = ref(false)
 const openMap = () => {
   showMap.value = !showMap.value
 }
+
+// 当前组件对象
+const mapRef = ref(null)
+
+// 点击当前组件外时，关闭地图
+onClickOutside(mapRef, () => {
+  if (showMap.value) {
+    showMap.value = false
+  }
+})
 
 onMounted(() => {
   // 加载高德地图api

@@ -1,15 +1,38 @@
 <script setup lang="ts">
 import { useWebInfoStore } from "@/store/modules/webInfo"
-import { onUnmounted } from "vue"
+import { onUnmounted, defineProps, onMounted, ref } from "vue"
+import { getCommentListAPI } from "@/api/web/article"
+import type { ArticleCommentItem } from "@/types/web/article"
 
 // 前台全局仓库
 const webInfoStore = useWebInfoStore()
 
 // 添加评论
 const addComment = () => {
-  webInfoStore.openComment(true)
+  // console.log('adsa');
+  
+  webInfoStore.openComment(true, props.id)
 }
 
+// 接受父组件传递过来的数据
+const props = defineProps<{
+  id: string
+}>()
+
+// 评论列表
+const commentList = ref<ArticleCommentItem[]>([])
+
+// 获取评论列表
+const getCommentList = async () => {
+  const res = await getCommentListAPI(props.id, 1, 5)
+  console.log(res)
+  if (res.code === 200) {
+    commentList.value = res.data
+  }
+}
+onMounted(() => {
+  getCommentList()
+})
 onUnmounted(() => {
   webInfoStore.openComment(false)
 })
@@ -19,21 +42,23 @@ onUnmounted(() => {
     <el-collapse>
       <el-collapse-item title="评论区" :name="1">
         <ul class="list">
-          <li class="item" v-for="item in 4" :key="item">
+          <li class="item" v-for="item in commentList" :key="item._id">
             <div class="info">
-              <span class="name">gdgd</span>
-              <span class="ip"><i>IP:gdgdg</i></span>
-              <span class="time">gdgdgdg</span>
+              <span class="name">{{ item.nickname }}</span>
+              <span class="ip"
+                ><i>IP:{{ item.address }}</i></span
+              >
+              <span class="time">{{ item.time }}</span>
             </div>
 
-            <div class="content">dgdgdgdg</div>
+            <div class="content">{{ item.content }}</div>
             <div class="del">
               <el-icon :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
             </div>
           </li>
 
           <el-row style="width: 100%" justify="center">
-            <el-button class="more" @click="addComment">添加评论</el-button>
+            <el-button class="more" @click.stop="addComment">添加评论</el-button>
             <div class="no-comment">没有更多了~</div>
           </el-row>
         </ul>

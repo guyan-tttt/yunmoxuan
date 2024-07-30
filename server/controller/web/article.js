@@ -52,6 +52,23 @@ const articleController = {
     },
     addComment: async(req,res) => {
         const result = await articleService.addComment(req.body)
+        res.send({
+            code: 200,
+            message: '评论成功',
+        })
+    },
+    getCommentList: async(req,res) => {
+        const { id } = req.params
+        const { page ,pageSize } = req.query
+        const left = (parseInt(page) - 1) * parseInt(pageSize)
+        const right = left + parseInt(pageSize)
+        const { data,total } = await articleService.getCommentList(id,left ,right )
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data,
+            total
+        })
     }
 }
 

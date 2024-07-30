@@ -1,6 +1,7 @@
 import request from "@/utils/request"
 import { ArticleList } from "@/types/admin/article"
-import { ArticleDetail } from "@/types/web/article"
+import { ArticleDetail, ResponseData } from "@/types/web/article"
+import type { ArticleCommentItem, ArticleCommentListResponse } from "@/types/web/article"
 
 // 获取推荐文章
 export const getRecommendArticleAPI = () => {
@@ -20,4 +21,14 @@ export const articleLikeAPI = (id: string) => {
 // 获取文章详情
 export const getArticleDetailAPI = (id: string) => {
   return request.get<any, ArticleDetail>(`/web/article/detail/${id}`)
+}
+
+// 添加文章评论
+export const addCommentAPI = (data: ArticleCommentItem) => {
+  return request.post<any, ResponseData>(`/web/article/comment`, data)
+}
+
+// 获取文章评论列表
+export const getCommentListAPI = (id: string, page: number, pageSize: number) => {
+  return request.get<any, ArticleCommentListResponse>(`/web/article/comment/list/${id}?page=${page}&pageSize=${pageSize}`)
 }

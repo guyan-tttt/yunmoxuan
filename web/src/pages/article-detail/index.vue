@@ -7,7 +7,7 @@ import type { ArticleDetailItem } from "@/types/web/article"
 import dayjs from "dayjs"
 import type { Tag } from "@/types/admin/tags"
 import Comment from "./components/Comment.vue"
-import CommentInput from "@/components/CommentInput/index.vue"
+
 // 为所有pre标签注册点击事件
 const preClick = () => {
   const pres = document.querySelectorAll(".content pre")
@@ -187,12 +187,11 @@ onMounted(async () => {
           </div>
         </div>
         <el-card style="margin-top: 10px" class="dark:bg-gray-800">
-          <Comment />
+          <Comment :id="route.query.id as string" />
         </el-card>
       </div>
     </div>
     <!-- // 评论组件 -->
-    <CommentInput :articleID="article?.detail._id as string" />
   </div>
 </template>
 

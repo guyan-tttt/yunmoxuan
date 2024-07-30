@@ -20,5 +20,7 @@ router.get('/detail/:id',articleController.getDetail)
 // 添加文章评论
 router.post('/comment',articleController.addComment)
 
+// 获取文章评论列表
+router.get('/comment/list/:id',articleController.getCommentList)
 
 module.exports = router;

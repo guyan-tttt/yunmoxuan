@@ -259,7 +259,15 @@ const articleService = {
     })
    },
    addComment: async(data) => {
-    await CommentModel.create(data)
+    await ArticleCommentModel.create(data)
+   },
+   getCommentList: async(id,left,right ) => {
+    const data = await ArticleCommentModel.find({articleID: id}).sort( {createTime: -1} ).skip(left).limit(right)
+    const total = await ArticleCommentModel.countDocuments({articleID: id})
+    return {
+        data,
+        total
+    }
    }
 }
 
