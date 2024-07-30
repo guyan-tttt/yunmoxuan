@@ -17,4 +17,8 @@ router.post('/like',articleController.like)
 // 查询文章详情
 router.get('/detail/:id',articleController.getDetail)
 
+// 添加文章评论
+router.post('/comment',articleController.addComment)
+
+
 module.exports = router;

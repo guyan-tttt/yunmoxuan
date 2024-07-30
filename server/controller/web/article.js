@@ -49,6 +49,9 @@ const articleController = {
             data,
         })
 
+    },
+    addComment: async(req,res) => {
+        const result = await articleService.addComment(req.body)
     }
 }
 

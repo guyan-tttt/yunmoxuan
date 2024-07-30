@@ -2,6 +2,8 @@ const ArticleModel = require('../../model/ArticleModel')
 const CategoryModel = require('../../model/CategoryModel')
 const TagModel = require('../../model/TagModel')
 const UserModel = require('../../model/UserModel')
+const ArticleCommentModel = require('../../model/ArticleComment')
+
 const dayjs = require('dayjs')
 
 const articleService = {
@@ -255,6 +257,9 @@ const articleService = {
     await ArticleModel.findByIdAndUpdate(id, {
         $inc: {viewNum: 1}
     })
+   },
+   addComment: async(data) => {
+    await CommentModel.create(data)
    }
 }
 

@@ -44,6 +44,7 @@ loadSvg(app)
 
 app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall).use(vue3SeamlessScroll, { name: "scroll" })
 app.component("Vue3EmojiPicker", Vue3EmojiPicker)
+
 router.isReady().then(() => {
   app.mount("#app")
 })

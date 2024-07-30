@@ -15,8 +15,6 @@
     <!-- 底部 -->
     <!-- 标签展示组件 -->
     <TagPreview :tagDetail="webInfoStore.tagPreviewInfo as any" v-model="webInfoStore.showPreview" />
-    <!-- // 评论组件 -->
-    <CommentInput />
   </div>
 </template>
 
@@ -28,7 +26,6 @@ import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
 import { onMounted, onUnmounted } from "vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import TagPreview from "@/components/TagPreview/index.vue"
-import CommentInput from "@/components/CommentInput/index.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()

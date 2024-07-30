@@ -1,5 +1,4 @@
 <script setup lang="ts">
-//@ts-expect-error
 import UserCard from "./components/userCard.vue"
 import Banner from "@/components/Banner/Banner.vue"
 import { useSettingsStore } from "@/store/modules/settings"
