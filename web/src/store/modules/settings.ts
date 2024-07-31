@@ -47,11 +47,20 @@ export const useSettingsStore = defineStore("settings", () => {
   const changeNavBg = (value: boolean) => {
     showNavBg.value = value
   }
+
+  // 当前烟花特效是否开启
+  const isFireworks = ref(true)
+  // 开启烟花特效
+  const openFireworks = () => {
+    isFireworks.value = !isFireworks.value
+  }
   return {
     ...state,
     isRefresh,
     setIsRefresh,
     showNavBg,
-    changeNavBg
+    changeNavBg,
+    isFireworks,
+    openFireworks
   }
 })

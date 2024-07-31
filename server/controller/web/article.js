@@ -62,7 +62,7 @@ const articleController = {
         const { page ,pageSize } = req.query
         const left = (parseInt(page) - 1) * parseInt(pageSize)
         const right = left + parseInt(pageSize)
-        const { data,total } = await articleService.getCommentList(id,left ,right )
+        let { data,total } = await articleService.getCommentList(id,left ,right )
         res.send({
             code: 200,
             message: '获取成功',

@@ -55,6 +55,7 @@ const getArticleDetail = async (id: string) => {
 onMounted(async () => {
   await getArticleDetail(route.query.id as string)
   preClick()
+  console.log(route.query.id)
 })
 </script>
 <template>

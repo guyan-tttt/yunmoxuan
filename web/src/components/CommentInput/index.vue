@@ -117,6 +117,8 @@ const publishComment = async () => {
   console.log(res)
   if (res.code === 200) {
     ElMessage.success("评论成功")
+    // 修改仓库信息通知页面刷新
+    webInfoStore.refresh()
     clearComment()
   } else {
     ElMessage.error("评论失败")

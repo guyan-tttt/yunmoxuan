@@ -16,6 +16,7 @@
     <!-- 标签展示组件 -->
     <TagPreview :tagDetail="webInfoStore.tagPreviewInfo as any" v-model="webInfoStore.showPreview" />
     <CommentInput />
+    <ToolBox class="toolbox" />
   </div>
 </template>
 
@@ -28,16 +29,23 @@ import { onMounted, onUnmounted } from "vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import TagPreview from "@/components/TagPreview/index.vue"
 import CommentInput from "@/components/CommentInput/index.vue"
+import ToolBox from "@/components/Toolbox/index.vue"
+import { useSettingsStore } from "@/store/modules/settings"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
+
+// 设置仓库
+const settingsStore = useSettingsStore()
 
 // 初始化动画
 onMounted(() => {
   webInfoStore.getAuthorInfo()
   webInfoStore.getCategoryInfo()
   webInfoStore.getTagsInfo()
-  clickEffect()
+  if (settingsStore.isFireworks) {
+    clickEffect()
+  }
 })
 // 销毁动画
 onUnmounted(() => {
@@ -58,5 +66,10 @@ onUnmounted(() => {
 .fade-enter-to {
   opacity: 1;
   transform: scale(1);
+}
+.toolbox {
+  position: fixed;
+  top: 60%;
+  left: 0;
 }
 </style>

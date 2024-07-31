@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWebInfoStore } from "@/store/modules/webInfo"
-import { onUnmounted, defineProps, onMounted, ref } from "vue"
+import { onUnmounted, defineProps, onMounted, ref, watch, nextTick } from "vue"
 import { getCommentListAPI } from "@/api/web/article"
 import type { ArticleCommentItem } from "@/types/web/article"
 
@@ -9,8 +9,8 @@ const webInfoStore = useWebInfoStore()
 
 // 添加评论
 const addComment = () => {
-  // console.log('adsa');
-  
+  console.log(props.id)
+
   webInfoStore.openComment(true, props.id)
 }
 
@@ -24,12 +24,47 @@ const commentList = ref<ArticleCommentItem[]>([])
 
 // 获取评论列表
 const getCommentList = async () => {
-  const res = await getCommentListAPI(props.id, 1, 5)
+  commentLoading.value = true
+  const res = await getCommentListAPI(props.id, pageData.value.page, pageData.value.pageSize)
   console.log(res)
   if (res.code === 200) {
-    commentList.value = res.data
+    commentList.value = commentList.value.concat(res.data)
+    pageData.value.total = res.total
+    commentLoading.value = false
   }
 }
+
+// 监听仓库中文章评论是否需要刷新
+watch(
+  () => webInfoStore.refreshComment,
+  () => {
+    if (webInfoStore.refreshComment) {
+      commentList.value = []
+      pageData.value.page = 1
+      getCommentList()
+      nextTick(() => {
+        webInfoStore.refreshComment = false
+      })
+    }
+  }
+)
+
+// 分页数据
+const pageData = ref({
+  page: 1,
+  pageSize: 5,
+  total: 0
+})
+
+// 评论区加载
+const commentLoading = ref<boolean>(false)
+
+// 加载下一页评论
+const loadMore = () => {
+  pageData.value.page++
+  getCommentList()
+}
+
 onMounted(() => {
   getCommentList()
 })
@@ -41,25 +76,26 @@ onUnmounted(() => {
   <div class="comment">
     <el-collapse>
       <el-collapse-item title="评论区" :name="1">
-        <ul class="list">
+        <ul class="list" v-loading="commentLoading">
           <li class="item" v-for="item in commentList" :key="item._id">
             <div class="info">
               <span class="name">{{ item.nickname }}</span>
               <span class="ip"
-                ><i>IP:{{ item.address }}</i></span
+                ><i>IP:{{ item.address || "未知" }}</i></span
               >
               <span class="time">{{ item.time }}</span>
             </div>
 
             <div class="content">{{ item.content }}</div>
             <div class="del">
-              <el-icon :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
+              <el-icon size="20" color="#67c23a"><Comment /></el-icon>
             </div>
           </li>
 
           <el-row style="width: 100%" justify="center">
-            <el-button class="more" @click.stop="addComment">添加评论</el-button>
-            <div class="no-comment">没有更多了~</div>
+            <el-button v-if="commentList.length < pageData.total" class="ladomore" @click.stop="loadMore">加载更多</el-button>
+            <div v-else class="no-comment">没有更多了~</div>
+            <el-button class="more" type="primary" @click.stop="addComment">添加评论</el-button>
           </el-row>
         </ul>
 
@@ -139,9 +175,18 @@ onUnmounted(() => {
 .more {
   width: 100%;
   font-size: 16px;
-  color: #999;
+  color: #fff;
   text-align: center;
   padding: 20px 0;
+  margin-top: 20px;
+}
+::v-deep(.el-button + .el-button) {
+  margin-left: 0px;
+}
+.ladomore {
+  @extend .more;
+  color: #999;
+  margin-top: 0;
 }
 .emoji {
   position: absolute;

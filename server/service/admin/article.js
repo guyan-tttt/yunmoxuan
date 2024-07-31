@@ -15,6 +15,7 @@ const articleService = {
         updateTime: Date.now(), // 更新时间
         isDelete: false, // 是否删除
         likeNum: 0, // 点赞数
+        commentNum: 0, // 评论数
     }
     const article = await ArticleModel.create(articleInfo)
     return article
@@ -259,9 +260,14 @@ const articleService = {
     })
    },
    addComment: async(data) => {
+    // 增加评论数
+    await ArticleModel.findByIdAndUpdate(data.articleID, {
+        $inc: {commentNum: 1}
+    })
     await ArticleCommentModel.create(data)
    },
    getCommentList: async(id,left,right ) => {
+
     const data = await ArticleCommentModel.find({articleID: id}).sort( {createTime: -1} ).skip(left).limit(right)
     const total = await ArticleCommentModel.countDocuments({articleID: id})
     return {
