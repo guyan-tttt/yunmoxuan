@@ -2,14 +2,16 @@
 import { ref, defineProps } from "vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import dayjs from "dayjs"
-import { getCommentListAPI, addCommentAPI, deleteCommentAPI } from "@/api/admin/trends"
 import type { CommentItem, CommentFormData, TrendsItem, TrendsPageData } from "@/types/admin/trends"
 import { onClickOutside } from "@vueuse/core"
+import { getCommentListAPI, addCommentAPI, deleteCommentAPI } from "@/api/admin/trends"
+import { addTrendsCommentAPI, getTrendsCommentListAPI } from "@/api/web/trends"
 
 // 接受父组件数据
 const props = defineProps<{
   data: TrendsItem
   province: any[]
+  status: string
 }>()
 
 // 触发父组件
@@ -48,7 +50,13 @@ const submitComment = async () => {
   }
   commentForm.value.time = dayjs(Date.now()).format("YYYY-MM-DD HH:mm")
   // 发送请求
-  const res = await addCommentAPI(commentForm.value)
+  let res: any
+  if (props.status === "admin") {
+    res = await addCommentAPI(commentForm.value)
+  } else {
+    res = await addTrendsCommentAPI(commentForm.value)
+  }
+
   if (res.code === 200) {
     ElMessage.success("评论成功")
     clearComment()
@@ -71,7 +79,12 @@ const loading = ref<boolean>(false)
 // 获取评论列表
 const getCommentList = async () => {
   loading.value = true
-  const res = await getCommentListAPI(pageData.value.page, pageData.value.pageSize, props.data._id)
+  let res: any
+  if (props.status === "admin") {
+    res = await getCommentListAPI(pageData.value.page, pageData.value.pageSize, props.data._id)
+  } else {
+    res = await getTrendsCommentListAPI(pageData.value.page, pageData.value.pageSize, props.data._id)
+  }
   if (res.code == 200) {
     commentList.value = res.data
     pageData.value.total = res.total as number
@@ -203,7 +216,8 @@ const showEmojiPicker = ref<boolean>(false)
 
             <div class="content">{{ item.content }}</div>
             <div class="del">
-              <el-icon @click="delComment(item._id)" :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
+              <el-icon v-if="props.status === 'web'" :size="20"><Comment /></el-icon>
+              <el-icon v-else @click="delComment(item._id)" :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
             </div>
           </li>
 

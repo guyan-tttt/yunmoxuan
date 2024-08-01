@@ -15,13 +15,13 @@ import {
   getProvinceAPI,
   getTrendsWeekAPI
 } from "@/api/admin/trends"
-import Comment from "./modules/Comment.vue"
+import Comment from "./components/Comment.vue"
 import dayjs from "dayjs"
-import Preview from "./modules/Preview.vue"
+import Preview from "./components/Preview.vue"
 import type { AddTrendsFormData, TrendsItem, TrendsPageData } from "@/types/admin/trends"
-import TrendsBar from "./modules/TrendsBar.vue"
-import TrendsPie from "./modules/TrendsPie.vue"
-import TrendsLine from "./modules/TrendsLine.vue"
+import TrendsBar from "./components/TrendsBar.vue"
+import TrendsPie from "./components/TrendsPie.vue"
+import TrendsLine from "./components/TrendsLine.vue"
 
 // 全局路由
 const router = useRouter()
@@ -477,7 +477,7 @@ onMounted(() => {
                     ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ i.commentNum }}</span
                   >
                 </el-row>
-                <Comment :data="i" :province="provinceData" @update="(value) => commentNumChange(i, value)" />
+                <Comment :status="'admin'" :data="i" :province="provinceData" @update="(value) => commentNumChange(i, value)" />
               </el-card>
             </el-col>
             <el-col :span="11" />

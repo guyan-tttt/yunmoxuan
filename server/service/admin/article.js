@@ -264,11 +264,14 @@ const articleService = {
     await ArticleModel.findByIdAndUpdate(data.articleID, {
         $inc: {commentNum: 1}
     })
-    await ArticleCommentModel.create(data)
+    await ArticleCommentModel.create({
+        ...data,
+        createTime: new Date()
+    })
    },
    getCommentList: async(id,left,right ) => {
 
-    const data = await ArticleCommentModel.find({articleID: id}).sort( {createTime: -1} ).skip(left).limit(right)
+    const data = await ArticleCommentModel.find({articleID: id}).sort("-time").skip(left).limit(right)
     const total = await ArticleCommentModel.countDocuments({articleID: id})
     return {
         data,

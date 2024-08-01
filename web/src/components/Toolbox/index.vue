@@ -11,9 +11,13 @@
           </template>
         </el-popover>
       </span>
-      <span style="--i: 1"
-        ><el-icon><WarningFilled /></el-icon
-      ></span>
+      <span style="--i: 1">
+        <el-popover placement="top-start" title="回到顶部" :width="200" trigger="hover" content="点击回到页面顶部">
+          <template #reference>
+            <SvgIcon name="goTop" @click="goTop" />
+          </template>
+        </el-popover>
+      </span>
       <span style="--i: 2"
         ><el-icon><WarningFilled /></el-icon
       ></span>
@@ -76,9 +80,20 @@ watch(
     }
   }
 )
+
+// 回到页顶
+const goTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  })
+}
 </script>
 
 <style scoped lang="scss">
+::v-deep(svg:focus) {
+  outline: none !important;
+}
 ::v-deep(.menu span[data-v-a34aaa1c]) {
   box-shadow: none;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick, ref } from "vue"
+import { onMounted, nextTick, ref , onUnmounted} from "vue"
 import { ElMessage } from "element-plus"
 import { getArticleDetailAPI } from "@/api/web/article"
 import { useRoute } from "vue-router"
@@ -7,6 +7,7 @@ import type { ArticleDetailItem } from "@/types/web/article"
 import dayjs from "dayjs"
 import type { Tag } from "@/types/admin/tags"
 import Comment from "./components/Comment.vue"
+import { useWebInfoStore } from '@/store/modules/webInfo'
 
 // 为所有pre标签注册点击事件
 const preClick = () => {
@@ -28,6 +29,9 @@ const preClick = () => {
     })
   })
 }
+
+// 前台全局仓库
+const webInfoStore = useWebInfoStore()
 
 // 点击复制
 const copy = (e: MouseEvent) => {
@@ -55,7 +59,11 @@ const getArticleDetail = async (id: string) => {
 onMounted(async () => {
   await getArticleDetail(route.query.id as string)
   preClick()
-  console.log(route.query.id)
+  webInfoStore.articleId = route.query.id as string
+})
+
+onUnmounted(() => {
+  webInfoStore.articleId = ""
 })
 </script>
 <template>

@@ -55,9 +55,7 @@ export const addCommentAPI = (data: CommentFormData) => {
 }
 // 获取评论列表
 export const getCommentListAPI = (page: number, pageSize: number, trendsID: string) => {
-  return request.get<any, GetCommentListResponseData>(
-    `/admin/trends/comment/list?page=${page}&pageSize=${pageSize}&trendsID=${trendsID}`
-  )
+  return request.get<any, GetCommentListResponseData>(`/admin/trends/comment/list?page=${page}&pageSize=${pageSize}&trendsID=${trendsID}`)
 }
 // 删除评论
 export const deleteCommentAPI = (id: string) => {

@@ -116,7 +116,7 @@ const addLike = () => {
                 ><el-icon style="margin-right: 10px" :size="18"><ChatRound /></el-icon>{{ props.data.commentNum }}</span
               >
             </el-row>
-            <Comment v-if="commentShow" :data="props.data" :province="props.province" @update="commentUpdate" />
+            <Comment :status="'web'" v-if="commentShow" :data="props.data" :province="props.province" @update="commentUpdate" />
           </el-col>
           <el-col :span="11" />
         </el-row>

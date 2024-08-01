@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import { onClickOutside } from "@vueuse/core"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 //@ts-expect-error
 import GaoDeMap from "../GaoDeMap/index.vue"
 import { ElMessage } from "element-plus"
@@ -155,6 +155,14 @@ onClickOutside(emojiPicker, () => (showEmoji.value = false))
 const selectEmoji = (emoji: any) => {
   commentForm.value.content += emoji.i
 }
+
+// 监听仓库文章id变化,及时更新
+watch(
+  () => webInfoStore.articleId,
+  () => {
+    commentForm.value.articleID = webInfoStore.articleId as string
+  }
+)
 </script>
 
 <style scoped lang="scss">
