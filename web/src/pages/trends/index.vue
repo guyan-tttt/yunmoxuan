@@ -4,15 +4,14 @@
       <div class="title">个人动态</div>
       <div class="desc">须知少时凌云志，曾许人间第一流!</div>
     </div>
-    <el-card v-infinite-scroll="infiniteScroll" infinite-scroll-distance="100px" style="width: 80%; margin: 0 auto; position: relative">
+    <el-card
+      v-infinite-scroll="infiniteScroll"
+      infinite-scroll-distance="100px"
+      style="width: 80%; margin: 0 auto; position: relative; min-height: 100vh"
+      class="container mx-auto max-w-screen-xl mt-5"
+    >
       <el-timeline style="max-width: 90%">
-        <el-timeline-item
-          v-for="(i, index) in trendsList"
-          :key="i._id"
-          color="#409eff"
-          :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')"
-          placement="top"
-        >
+        <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">
               <el-card>
@@ -125,9 +124,9 @@ const getLocation = async () => {
 // 省份数据
 const provinceData = ref<any[]>([])
 // 初始化
-onMounted(() => {
+onMounted(async () => {
+  await getLocation()
   getTrendsList()
-  getLocation()
 })
 </script>
 

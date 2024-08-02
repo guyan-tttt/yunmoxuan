@@ -7,9 +7,7 @@
         <template #content>
           <div class="flex items-center">
             <el-avatar class="mr-3" :size="60" :src="webInfoStore.authorInfo?.avatar" />
-            <span class="text-large font-600 mr-3 animate__animated animate__bounce">
-              {{ webInfoStore.authorInfo?.nickname }}</span
-            >
+            <span class="text-large font-600 mr-3 animate__animated animate__bounce"> {{ webInfoStore.authorInfo?.nickname }}</span>
             <SvgIcon :name="webInfoStore.authorInfo?.gender === 1 ? 'boy' : 'girl'" style="width: 30px; height: 30px" />
             <el-tag>管理员</el-tag>
           </div>
@@ -32,12 +30,7 @@
     </el-card>
     <el-card style="margin-top: 20px">
       <ul class="nav">
-        <li
-          v-for="item in navList"
-          :key="item.id"
-          :class="{ active: activeId === item.id }"
-          @click="activeId = item.id"
-        >
+        <li v-for="item in navList" :key="item.id" :class="{ active: activeId === item.id }" @click="activeId = item.id">
           <el-icon :size="30"><component :is="item.icon" /></el-icon><span>{{ item.name }}</span>
         </li>
         <div class="indicator" />

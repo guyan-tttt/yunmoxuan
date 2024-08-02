@@ -15,6 +15,7 @@ export interface ImageCategoryItem {
   showDeleteIcon?: noolean
   value?: string
   id?: string
+  cover?: string
 }
 
 // 获取分类列表数据

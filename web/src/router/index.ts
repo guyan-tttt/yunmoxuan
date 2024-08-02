@@ -200,7 +200,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-article",
+        path: "/home-article",
         name: "home-article",
         component: () => import("@/pages/article/index.vue"),
         meta: {
@@ -210,7 +210,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-detail",
+        path: "/home-detail",
         name: "home-detail",
         component: () => import("@/pages/article-detail/index.vue"),
         meta: {
@@ -218,7 +218,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-userinfo",
+        path: "/home-userinfo",
         name: "home-userinfo",
         component: () => import("@/pages/userInfo/index.vue"),
         meta: {
@@ -226,7 +226,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-trends",
+        path: "/home-trends",
         name: "home-trends",
         component: () => import("@/pages/trends/index.vue"),
         meta: {
@@ -236,9 +236,28 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-picture",
+        path: "/home-picture",
         name: "home-picture",
         component: () => import("@/pages/picture/index.vue"),
+        redirect: "/home-picture/list",
+        children: [
+          {
+            path: "list",
+            name: "pricture-list",
+            component: () => import("@/pages/picture/components/list.vue"),
+            meta: {
+              hidden: true
+            }
+          },
+          {
+            path: "detail",
+            name: "pricture-detail",
+            component: () => import("@/pages/picture/components/detail.vue"),
+            meta: {
+              hidden: true
+            }
+          }
+        ],
         meta: {
           title: "相册",
           index: 4,
@@ -246,7 +265,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "home-guestbook",
+        path: "/home-guestbook",
         name: "home-guestbook",
         component: () => import("@/pages/guestbook/index.vue"),
         meta: {

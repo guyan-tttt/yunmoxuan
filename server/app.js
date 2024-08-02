@@ -22,8 +22,10 @@ const dashboardRouter = require('./routes/admin/dashboardRouter')
 const indexRouter  = require("./routes/web/indexRouter")
 const articleHomeRouter = require("./routes/web/articleRouter")
 const trendsHomeRouter = require("./routes/web/trendsRouter")
-
+const pictureRouter = require("./routes/web/pictureRouter")
 // 前台路由导入
+
+// 创建服务器
 var app = express();
 
 // 跨域配置，用于前端请求获取后端图片信息
@@ -46,7 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/web/index', indexRouter);
 app.use('/api/web/article', articleHomeRouter);
 app.use("/api/web/trends",trendsHomeRouter)
-
+app.use('/api/web/picture',pictureRouter)
 // token校验
 app.use((req,res,next) => {
 

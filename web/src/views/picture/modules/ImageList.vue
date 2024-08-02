@@ -1,21 +1,9 @@
 <template>
   <div class="container" @contextmenu.prevent="forbidContentMenu">
-    <Waterfall
-      v-if="props.data.length > 0"
-      :list="props.data"
-      :crossOrigin="true"
-      :breakpoints="breakPoints"
-      :lazyload="false"
-    >
+    <Waterfall v-if="props.data.length > 0" :list="props.data" :crossOrigin="true" :breakpoints="breakPoints" :lazyload="false">
       <template #item="{ item, url, index }">
         <div class="card" :name="[index, item]" @mouseleave="closeMenu(item)">
-          <LazyImg
-            class="image"
-            @click="handleClick(url)"
-            style="border-radius: 10px"
-            :url="url"
-            @contextmenu.prevent.stop="showContextMenu(item)"
-          />
+          <LazyImg class="image" @click="handleClick(url)" style="border-radius: 10px" :url="url" @contextmenu.prevent.stop="showContextMenu(item)" />
           <div v-show="item.isShowMenu" id="contextMenu" class="context-menu">
             <ul @mouseleave="closeMenu(item)">
               <li class="menu-item" @click="showInfoPanel(item)">查看属性</li>

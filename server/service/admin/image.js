@@ -26,6 +26,17 @@ const imageService = {
         const data = await imageModel.find({categoryID: categoryID})
         await imageModel.deleteMany({categoryID: categoryID})
         return data
+    },
+    getList: async(categoryID,left,right) => {
+        const data = await imageModel.find({categoryID: categoryID}).sort('-createTime').skip(left).limit(right)
+        data.forEach(item => {
+            item.src = process.env.SERVER_BASE_URL + item.src
+        })
+        const total = await imageModel.countDocuments({categoryID: categoryID})
+        return {
+            data,
+            total
+        }
     }
 }
 
