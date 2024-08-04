@@ -49,8 +49,6 @@ onMounted(() => {
 })
 // 销毁动画
 onUnmounted(() => {
-  console.log("xa")
-
   removeClickEffect()
 })
 </script>

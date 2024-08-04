@@ -49,7 +49,7 @@ export const useSettingsStore = defineStore("settings", () => {
   }
 
   // 当前烟花特效是否开启
-  const isFireworks = ref(true)
+  const isFireworks = ref(false)
   // 开启烟花特效
   const openFireworks = () => {
     isFireworks.value = !isFireworks.value

@@ -21,7 +21,7 @@ const handleData = (data: any) => {
     })
     myChart2.setOption({
       title: {
-        text: "近6个月发布量"
+        text: "近7天发布量"
       },
       tooltip: {
         trigger: "item",

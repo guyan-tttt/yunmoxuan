@@ -3,7 +3,7 @@ import { useUserStore } from "@/store/modules/user"
 import { Plus, Edit, Delete, View, Refresh } from "@element-plus/icons-vue"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
-import { ElInput, ElMessage, ElMessageBox, type UploadInstance, type UploadFile } from "element-plus"
+import { ElMessage, ElMessageBox, type UploadInstance, type UploadFile } from "element-plus"
 import {
   addTrendsAPI,
   getTrendsListAPI,
@@ -40,31 +40,6 @@ const showDialog = ref<boolean>(false)
 // 添加动态
 const addTrends = () => {
   showDialog.value = true
-}
-
-// 输入框组件
-const inputRef = ref<typeof ElInput>()
-
-// 表情选择值
-const selectedEmoji = ref<any>("")
-
-// 选择表情
-const onEmojiSelect = (emoji: any) => {
-  // 当用户选择emoji时，将其插入到textarea中
-
-  if (inputRef.value) {
-    inputRef.value.focus()
-    trendsForm.value.content += emoji.i
-  }
-  selectedEmoji.value = ""
-}
-
-// 表情输入框显示
-const showEmoji = ref<boolean>(false)
-
-// 打开表情输入框
-const openEmoji = () => {
-  showEmoji.value = !showEmoji.value
 }
 
 // 表单数据
@@ -497,24 +472,7 @@ onMounted(() => {
     <el-dialog :title="title" v-model="showDialog">
       <el-form style="margin: 30px" :model="trendsForm">
         <el-form-item required style="position: relative">
-          <el-input
-            v-model="trendsForm.content"
-            ref="inputRef"
-            placeholder="记录美好生活"
-            show-word-limit
-            maxlength="100"
-            type="textarea"
-            :autosize="{
-              minRows: 5,
-              maxRows: 8
-            }"
-            input-style="height: 180px"
-          />
-          <Vue3EmojiPicker class="emoji" :class="{ active: showEmoji }" :native="true" @select="onEmojiSelect" v-model="selectedEmoji" />
-
-          <el-row justify="start" style="width: 100%; margin-top: 20px; margin-right: 20px">
-            <SvgIcon @click="openEmoji" style="width: 30px; height: 30px" name="emoji" :style="{ color: showEmoji ? '#3cbff5' : '#666' }" />
-          </el-row>
+          <my-textarea v-model="trendsForm.content" />
         </el-form-item>
         <el-form-item>
           <el-upload

@@ -10,4 +10,8 @@ router.get('/comment/list', trendsController.getTrendsComments);
 
 // 添加评论
 router.post('/comment/add', trendsController.addTrendsComment);
+
+// 点赞动态
+router.post('/like', trendsController.addTrendsLike);
+
 module.exports = router;

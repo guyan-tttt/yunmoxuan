@@ -1,5 +1,5 @@
 <template>
-  <header class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600" :class="{ active: settingsStore.showNavBg || bgColor }" >
+  <header class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600" :class="{ active: settingsStore.showNavBg || bgColor }">
     <div class="container mx-auto">
       <el-menu class="el-menu" mode="horizontal" :ellipsis="false" router>
         <el-menu-item class="title-li">
@@ -181,8 +181,9 @@ const changeActive = (index: any) => {
 }
 
 .title {
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 800;
+  font-family: "STXingkai";
 }
 
 .title-li:hover {

@@ -2,7 +2,7 @@
   <div>
     <div class="head">
       <div class="title">个人动态</div>
-      <div class="desc">须知少时凌云志，曾许人间第一流!</div>
+      <div class="desc">落霞与孤鹜齐飞，秋水共长天一色!</div>
     </div>
     <el-card
       v-infinite-scroll="infiniteScroll"
@@ -42,7 +42,14 @@
                 </el-row>
                 <el-row justify="end" class="about">
                   <span style="position: relative"
-                    ><SvgIcon class="like" style="margin-right: 10px; color: red" name="like-active" size="18" />{{ i.likeNum }}
+                    ><SvgIcon
+                      class="like animate__animated"
+                      @click="like(i)"
+                      :class="{ animate__heartBeat: activeLike === i._id }"
+                      style="margin-right: 10px; color: red"
+                      name="like-active"
+                      size="18"
+                    />{{ i.likeNum }}
                   </span>
                   <span
                     ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>{{ i.lookNum }}</span
@@ -64,12 +71,14 @@
 
 <script setup lang="ts">
 import { View } from "@element-plus/icons-vue"
-import { getTrendsListAPI } from "@/api/web/trends"
+import { getTrendsListAPI, likeTrendsAPI } from "@/api/web/trends"
 import { onMounted, ref } from "vue"
 import type { TrendsItem } from "@/types/admin/trends"
 import dayjs from "dayjs"
 import Comment from "@/views/trends/components/Comment.vue"
 import { getProvinceAPI } from "@/api/admin/trends"
+import { ElMessage } from "element-plus"
+
 // 动态列表
 const trendsList = ref<TrendsItem[]>([])
 
@@ -123,7 +132,30 @@ const getLocation = async () => {
 
 // 省份数据
 const provinceData = ref<any[]>([])
-// 初始化
+
+// 点赞节流
+const likeThrottle = ref<boolean>(false)
+
+// 点赞激活项
+const activeLike = ref<string>("")
+
+// 点赞
+const like = async (item: TrendsItem) => {
+  if (!likeThrottle.value) {
+    likeThrottle.value = true
+    activeLike.value = item._id
+    item.likeNum++
+    const res = await likeTrendsAPI(item._id)
+    if (res.code === 200) {
+      ElMessage.success("点赞成功")
+    }
+    setTimeout(() => {
+      likeThrottle.value = false
+      activeLike.value = ""
+    }, 1000)
+  }
+}
+
 onMounted(async () => {
   await getLocation()
   getTrendsList()
@@ -248,5 +280,8 @@ i {
   font-size: 16px;
   color: #999;
   margin: 20px 0;
+}
+.like {
+  transition: all 0.3s;
 }
 </style>

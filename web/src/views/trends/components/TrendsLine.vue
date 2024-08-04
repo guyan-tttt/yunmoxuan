@@ -30,7 +30,7 @@ const handleData = (data: any) => {
   // 更新图表数据
   myChart3.setOption({
     title: {
-      text: "近6个月点赞量"
+      text: "近7天点赞量"
     },
     tooltip: {
       trigger: "item"

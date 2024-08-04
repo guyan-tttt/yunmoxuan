@@ -40,6 +40,15 @@ const trendsController = {
             code: 200,
             message: '评论成功',
         })
+    },
+    addTrendsLike: async(req,res) => {
+        const { id } = req.query
+  
+        const result = await trendsService.like(id)
+        res.send({
+            code: 200,
+            message: '点赞成功',
+        })
     }
 }
 

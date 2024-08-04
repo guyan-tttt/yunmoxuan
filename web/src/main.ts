@@ -30,7 +30,7 @@ import "v3-waterfall/dist/style.css"
 import Vue3EmojiPicker from "vue3-emoji-picker"
 import "vue3-emoji-picker/css"
 // Then register the languages you need
-
+import Textarea from "@/components/Textarea/index.vue"
 import vue3SeamlessScroll from "vue3-seamless-scroll"
 hljs.registerLanguage("javascript", javascript)
 
@@ -44,6 +44,7 @@ loadSvg(app)
 
 app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall).use(vue3SeamlessScroll, { name: "scroll" })
 app.component("Vue3EmojiPicker", Vue3EmojiPicker)
+app.component("my-textarea", Textarea)
 
 router.isReady().then(() => {
   app.mount("#app")

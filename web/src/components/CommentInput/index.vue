@@ -22,31 +22,13 @@
         <GaoDeMap @select="selectAddress" />
         <el-icon @click="closeComment"><CircleClose /></el-icon>
       </el-row>
-      <el-input
-        style="background-image: url(../../../assets/layouts/logo.png); background-color: transparent"
-        type="textarea"
-        placeholder="期待能留下足迹~~ ✨ ✨ ✨"
-        maxlength="100"
-        show-word-limit
-        class="content"
-        :input-style="'min-height:200px;'"
-        :autosize="false"
-        resize="none"
-        v-model="commentForm.content"
-      />
+      <my-textarea v-model="commentForm.content" />
 
       <el-row align="middle" style="margin-top: 20px; position: relative">
         <el-button type="primary" size="small" @click="publishComment">发布</el-button>
         <el-button type="danger" size="small" @click="clearComment">清除</el-button>
-        <SvgIcon
-          @click="openEmoji"
-          style="width: 25px; height: 25px; margin-left: 10px"
-          name="emoji"
-          :style="{ color: showEmoji ? '#3cbff5' : '#999' }"
-        />
       </el-row>
     </el-card>
-    <Vue3EmojiPicker @select="selectEmoji" v-if="showEmoji" ref="emojiPicker" class="emoji animate__animated animate__bounceInUp" :native="true" />
   </div>
 </template>
 
@@ -140,21 +122,11 @@ const clearComment = () => {
 // 当前表情组件显示
 const showEmoji = ref<boolean>(false)
 
-// 点击开启表情组件
-const openEmoji = () => {
-  showEmoji.value = !showEmoji.value
-}
-
 // 表情包组件对象
 const emojiPicker = ref<any>(null)
 
 // 点击页面空白处，关闭表情包组件
 onClickOutside(emojiPicker, () => (showEmoji.value = false))
-
-// 选择表情
-const selectEmoji = (emoji: any) => {
-  commentForm.value.content += emoji.i
-}
 
 // 监听仓库文章id变化,及时更新
 watch(

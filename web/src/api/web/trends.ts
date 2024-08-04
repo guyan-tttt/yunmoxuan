@@ -25,3 +25,8 @@ export const getTrendsCommentListAPI = (page: number, pageSize: number, trendsID
 export const addTrendsCommentAPI = (data: CommentFormData) => {
   return request.post<any, ResponseData>("/web/trends/comment/add", data)
 }
+
+// 点赞动态
+export const likeTrendsAPI = (trendsID: string) => {
+  return request.post<any, ResponseData>(`/web/trends/like?id=${trendsID}`)
+}

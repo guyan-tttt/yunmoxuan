@@ -23,6 +23,7 @@ const indexRouter  = require("./routes/web/indexRouter")
 const articleHomeRouter = require("./routes/web/articleRouter")
 const trendsHomeRouter = require("./routes/web/trendsRouter")
 const pictureRouter = require("./routes/web/pictureRouter")
+const guestbookRouter = require("./routes/web/guestbookRouter")
 // 前台路由导入
 
 // 创建服务器
@@ -49,6 +50,7 @@ app.use('/api/web/index', indexRouter);
 app.use('/api/web/article', articleHomeRouter);
 app.use("/api/web/trends",trendsHomeRouter)
 app.use('/api/web/picture',pictureRouter)
+app.use('/api/web/guestbook',guestbookRouter)
 // token校验
 app.use((req,res,next) => {
 

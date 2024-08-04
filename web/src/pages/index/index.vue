@@ -58,7 +58,7 @@ onUnmounted(() => {
 
 <template>
   <div class="index">
-    <Banner />
+    <Banner class="animate__zoomIn animate__animated" />
     <div ref="articleTarget" class="container mx-auto max-w-screen-xl mt-5" :class="{ active: targetIsActive }">
       <div class="grid grid-cols-4">
         <!-- 左边栏 -->

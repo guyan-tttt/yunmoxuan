@@ -68,6 +68,7 @@ import { useRoute } from "vue-router"
 import { getPictureListAPI } from "@/api/web/picture"
 import type { ImageItem } from "@/types/admin/image"
 import { ElMessage, ElMessageBox } from "element-plus"
+//@ts-ignore
 import FileSaver from "file-saver"
 
 // 页面路有对象
