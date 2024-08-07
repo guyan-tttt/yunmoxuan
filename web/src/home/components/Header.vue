@@ -3,16 +3,13 @@
     <div class="container mx-auto">
       <el-menu class="el-menu" mode="horizontal" :ellipsis="false" router>
         <el-menu-item class="title-li">
-          <a href="/" class="flex items-center title">
-            <img style="width: 40px; height: 40px; margin-right: 20px" src="../../assets/layouts/logo.png" alt="" />
-            极客空间
-          </a>
+          <a href="/" class="flex items-center title"> {{ VITE_APP_TITLE }} </a>
         </el-menu-item>
         <div class="flex-grow" />
         <el-menu-item
           :class="{ active: item.meta?.index === activeIndex }"
           v-for="item in routesList"
-          :key="item.meta?.index as string"
+          :key="item.meta?.index"
           @click="changeActive(item.meta?.index)"
           :index="item.path"
         >
@@ -23,7 +20,7 @@
         <el-sub-menu index="2">
           <template #title>
             <el-avatar :size="30" :src="webInfoStore.authorInfo?.avatar" class="mr-2" />
-            极客空间
+            云墨轩
           </template>
           <el-menu-item index="" class="bg-gray-hover" @click="goToManagement">
             <el-icon><Monitor /></el-icon>
@@ -48,9 +45,11 @@ import { ref, watch, computed } from "vue"
 import { useUserStore } from "@/store/modules/user"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import { useWindowScroll } from "@vueuse/core"
-import { usePermissionStore } from "@/store/modules/permission"
 import { useSettingsStore } from "@/store/modules/settings"
 import { useWebInfoStore } from "@/store/modules/webInfo"
+import { constWebRoutes } from "@/router/index"
+
+const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 
 // 路由对象
 const route = useRoute()
@@ -64,9 +63,6 @@ const router = useRouter()
 // 用户仓库对象
 const userStore = useUserStore()
 
-// 页面路有对象
-const permissionStore = usePermissionStore()
-
 // 设置仓库
 const settingsStore = useSettingsStore()
 
@@ -74,17 +70,19 @@ const settingsStore = useSettingsStore()
 const webInfoStore = useWebInfoStore()
 
 const routesList = computed(() => {
-  return permissionStore.routes.find((item) => item.name === "Home")?.children?.filter((item) => !item.meta!.hidden)
+  return constWebRoutes[0].children?.filter((item: any) => !item.meta!.hidden)
 })
 
 // 背景颜色显示
 const bgColor = ref<boolean>(false)
 
+// 需要改变导航栏的页面
+const changeNavList = ["/home-article", "/"]
 // 监听页面滚动
 watch(
   () => y.value,
   () => {
-    if (route.path !== "/") {
+    if (!changeNavList.includes(route.path)) {
       bgColor.value = false
       return
     }
@@ -170,11 +168,6 @@ const changeActive = (index: any) => {
   height: 40px;
 }
 
-.logo-container {
-  /* display: flex;
-    align-items: center; */
-}
-
 .logo-container > a {
   height: 28px;
   width: 128px;
@@ -202,7 +195,7 @@ const changeActive = (index: any) => {
 header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 .el-menu-item.active {
   border-bottom: 1px solid #fff !important;

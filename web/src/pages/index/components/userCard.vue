@@ -12,22 +12,18 @@ const openPreview = (tag: Tag) => {
 </script>
 <template>
   <div class="mb-3 w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <div class="flex justify-end px-4 pt-4" />
-    <div class="flex flex-col items-center pb-6">
-      <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="70" />
+    <div class="flex flex-col items-center pb-6 pt-6 card">
+      <div class="avatar">
+        <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="70" />
+      </div>
       <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
         {{ webInfoStore.authorInfo?.nickname }}
         <SvgIcon :name="webInfoStore.authorInfo?.gender === 1 ? 'boy' : 'girl'" style="width: 25px; height: 25px" />
       </h5>
-      <span class="text-sm text-gray-500 dark:text-gray-400">{{ webInfoStore.authorInfo?.introduction }}</span>
-      <div class="flex mt-4 space-x-3 md:mt-5">
+      <span class="text-sm text-black dark:text-gray-400 content">{{ webInfoStore.authorInfo?.introduction }}</span>
+      <div class="about flex mt-4 space-x-3 md:mt-5">
         <span>
-          <a
-            data-tooltip-target="github-tooltip-bottom"
-            data-tooltip-placement="bottom"
-            :href="webInfoStore.authorInfo?.github"
-            target="_blank"
-          >
+          <a data-tooltip-target="github-tooltip-bottom" data-tooltip-placement="bottom" :href="webInfoStore.authorInfo?.github" target="_blank">
             <SvgIcon name="github" style="width: 30px; height: 30px" />
           </a>
           <div
@@ -41,12 +37,7 @@ const openPreview = (tag: Tag) => {
         </span>
 
         <span>
-          <a
-            :href="webInfoStore.authorInfo?.csdn"
-            data-tooltip-target="csdn-tooltip-bottom"
-            data-tooltip-placement="bottom"
-            target="_blank"
-          >
+          <a :href="webInfoStore.authorInfo?.csdn" data-tooltip-target="csdn-tooltip-bottom" data-tooltip-placement="bottom" target="_blank">
             <SvgIcon name="csdn" style="width: 30px; height: 30px" />
           </a>
           <div
@@ -60,12 +51,7 @@ const openPreview = (tag: Tag) => {
         </span>
 
         <span>
-          <a
-            :href="webInfoStore.authorInfo?.gitee"
-            data-tooltip-target="gitee-tooltip-bottom"
-            data-tooltip-placement="bottom"
-            target="_blank"
-          >
+          <a :href="webInfoStore.authorInfo?.gitee" data-tooltip-target="gitee-tooltip-bottom" data-tooltip-placement="bottom" target="_blank">
             <SvgIcon name="gitee" style="width: 30px; height: 30px" />
           </a>
           <div
@@ -95,13 +81,9 @@ const openPreview = (tag: Tag) => {
     </div>
   </div>
   <!-- 文章分类 -->
-  <div
-    class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-  >
+  <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</h2>
-    <div
-      class="text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-    >
+    <div class="text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <a
         v-for="item in webInfoStore.categoryInfo"
         :key="item._id"
@@ -128,9 +110,7 @@ const openPreview = (tag: Tag) => {
   </div>
 
   <!-- 文章标签 -->
-  <div
-    class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-  >
+  <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</h2>
     <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click="openPreview(item)">
       <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
@@ -153,7 +133,13 @@ const openPreview = (tag: Tag) => {
   text-overflow: ellipsis;
   margin: 0 20px;
 }
-
+.avatar {
+  border-radius: 50%;
+  border: 5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .tag {
   text-align: center;
   vertical-align: middle;
@@ -177,5 +163,15 @@ const openPreview = (tag: Tag) => {
     margin-left: 10px;
     color: #409eff;
   }
+}
+.card {
+  background-image: url(../../../assets/layouts/user-bg.png);
+  background-size: cover;
+  border-radius: 10px;
+}
+.content {
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  padding: 3px;
+  border-radius: 10px;
 }
 </style>

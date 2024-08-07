@@ -4,8 +4,7 @@
       <div class="header">
         <el-avatar :src="props.data?.avatar" alt="Avatar" class="avatar" />
         <h2 class="nickname">
-          {{ props.data?.nickname
-          }}<SvgIcon :name="props.data?.gender === 1 ? 'boy' : 'girl'" style="width: 30px; height: 30px" />
+          {{ props.data?.nickname }}<SvgIcon :name="props.data?.gender === 1 ? 'boy' : 'girl'" style="width: 30px; height: 30px" />
         </h2>
       </div>
       <div class="content">

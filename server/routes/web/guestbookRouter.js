@@ -8,4 +8,6 @@ router.post('/add', guestbookController.add)
 // 获取留言列表
 router.get('/list', guestbookController.getList)
 
+// 获取弹幕墙数据
+router.get('/bullet', guestbookController.getBullet)
 module.exports = router;

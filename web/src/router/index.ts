@@ -180,6 +180,26 @@ export const constantRoutes: RouteRecordRaw[] = [
       hidden: true
     }
   },
+  {
+    path: "/guestbook",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/guestbook/index.vue"),
+        name: "Guestbook",
+        meta: {
+          title: "留言管理",
+          svgIcon: "guestbook",
+          affix: true
+        }
+      }
+    ]
+  }
+]
+
+// 前台静态路由
+export const constWebRoutes = [
   // 前台
   {
     path: "/",
@@ -273,6 +293,16 @@ export const constantRoutes: RouteRecordRaw[] = [
           index: 5,
           icon: "home-guestbook"
         }
+      },
+      {
+        path: "/home-source",
+        name: "home-source",
+        component: () => import("@/pages/source/index.vue"),
+        meta: {
+          title: "资源",
+          index: 6,
+          icon: "home-guestbook"
+        }
       }
     ]
   }
@@ -286,7 +316,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: constantRoutes,
+  routes: constantRoutes.concat(constWebRoutes),
   scrollBehavior: () => {
     return {
       left: 0,

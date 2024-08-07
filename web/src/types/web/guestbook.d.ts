@@ -14,12 +14,13 @@ export interface GuestbookForm {
 
 // 留言项
 export interface GuestbookItem {
-  _id: number
+  _id?: string
   nickname: string
   email: string
   content: string
   avatar: string
   os: string
+  createTime: string
 }
 // 留言列表
 export interface GuestbookListResponse extends ResponseData {

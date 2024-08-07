@@ -36,7 +36,7 @@
         <div class="indicator" />
       </ul>
       <el-tabs v-model="activeId" type="border-card" class="demo-tabs">
-        <el-tab-pane :name="1"> <Info :data="webInfoStore.authorInfo" :tagList="webInfoStore.tagInfo" /> </el-tab-pane>
+        <el-tab-pane :name="1"> <Info :data="webInfoStore.authorInfo as any" :tagList="webInfoStore.tagInfo" /> </el-tab-pane>
         <el-tab-pane :name="2">未开发</el-tab-pane>
         <el-tab-pane :name="3">未开发</el-tab-pane>
         <el-tab-pane :name="4">未开发</el-tab-pane>

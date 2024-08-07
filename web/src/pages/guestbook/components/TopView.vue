@@ -37,10 +37,11 @@ export default {
   height: 100vh;
   position: fixed;
   overflow: hidden;
-  background-image: url(../../../assets/guestbook/guestbook-bg.jpg);
+  background-image: url(https://pic4.zhimg.com/v2-17ec8cd47fa9fcf0b2d1094c5741c7d7_r.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  z-index: -1;
   .el-image {
     width: 100%;
     height: 100%;

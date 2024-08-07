@@ -1,10 +1,12 @@
 <script setup lang="ts">
+//@ts-ignore
 import TopView from "./components/TopView.vue"
 import { ref, onMounted } from "vue"
 import { type FormInstance, ElMessage } from "element-plus"
-import { addGuestBookAPI, getGuestBookListAPI } from "@/api/web/guestbook"
+import { addGuestBookAPI, getGuestBookListAPI, getGuestBookWallAPI } from "@/api/web/guestbook"
 import dayjs from "dayjs"
 import type { GuestbookForm, GuestbookItem } from "@/types/web/guestbook"
+import BulletWall from "@/components/BulletWall/index.vue"
 
 // 表单数据
 const guestbookForm = ref<GuestbookForm>({
@@ -27,11 +29,12 @@ const rules = {
 }
 
 // 表单对象
-const formRef = ref<FormInstance>(null)
+const formRef = ref<FormInstance>()
 
 // 表单提交
 const submitForm = () => {
-  formRef.value?.validate(async (valid) => {
+  //@ts-ignore
+  formRef.value?.validate(async (valid: boolean) => {
     if (valid) {
       const res = await addGuestBookAPI(guestbookForm.value)
       if (res.code === 200) {
@@ -58,9 +61,10 @@ const resetForm = () => {
   }
   pageData.value.page = 1
   getGuestbookList()
+  getBulletWall()
 }
 // 留言列表
-const guestbookList = ref<GuestbookItem>([])
+const guestbookList = ref<GuestbookItem[]>([])
 
 // 获取留言列表
 const getGuestbookList = async () => {
@@ -68,8 +72,7 @@ const getGuestbookList = async () => {
   if (res.code === 200) {
     guestbookList.value = res.data
     pageData.value.total = res.total
-    console.log(res.data);
-    
+    console.log(res.data)
   }
 }
 
@@ -84,10 +87,21 @@ const pageData = ref({
 const changePage = (value: number) => {
   pageData.value.page = value
   getGuestbookList()
-  
+}
+
+// 留言墙数据
+const bulletWallData = ref<GuestbookItem[]>([])
+
+// 获取留言弹幕墙数据
+const getBulletWall = async () => {
+  const res = await getGuestBookWallAPI()
+  if (res.code === 200) {
+    bulletWallData.value = res.data
+  }
 }
 onMounted(() => {
   getGuestbookList()
+  getBulletWall()
 })
 </script>
 
@@ -95,7 +109,9 @@ onMounted(() => {
   <div class="message">
     <!-- top -->
     <TopView name="message" title="留言板" msg="雪糕的甜味你有，九月清晨的完美你有，总之，我喜欢的样貌你都有" />
-
+    <div class="bullet-wall">
+      <BulletWall :data="bulletWallData" />
+    </div>
     <div class="message-wrap">
       <div class="content">
         <!-- 留言表单 -->
@@ -158,6 +174,11 @@ onMounted(() => {
 ::v-deep(.el-textarea__inner) {
   height: 100%;
 }
+.bullet-wall {
+  width: 100vw;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
 
 ::v-deep(.el-button--text) {
   color: #0bbd87;
@@ -178,7 +199,7 @@ onMounted(() => {
     position: relative;
     top: -60px;
     left: 0;
-    transform: translateY(400px);
+    margin-top: 100px;
 
     .content {
       width: 80%;

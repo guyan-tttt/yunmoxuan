@@ -165,6 +165,7 @@ const deleteImage = async (item: ImageItem) => {
 // 下载图片
 const downloadImage = async (item: ImageItem) => {
   const res = await downloadImageAPI(item._id)
+  //@ts-ignore
   FileSaver.saveAs(res, "图片.jpg")
 }
 </script>

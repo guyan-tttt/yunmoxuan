@@ -3,6 +3,7 @@
     <router-link :to="`/home-picture/detail?id=${item._id}`" class="item" v-for="item in pictureCategory" :key="item._id">
       <div class="title">
         <span>{{ item.name }}</span>
+        <p>{{ item.desc }}</p>
       </div>
       <div class="img">
         <img :src="item.cover" alt="" />
@@ -48,6 +49,14 @@ onMounted(() => {
     &:hover {
       filter: saturate(2) drop-shadow(rgba(0, 0, 0, 0.66) 0px 0px 5px);
       transform: translateY(-5px);
+      .title {
+        &::after {
+          width: 80%;
+        }
+        p {
+          transform: translateX(0);
+        }
+      }
     }
     .img {
       img {
@@ -64,9 +73,27 @@ onMounted(() => {
       color: #fff;
       font-weight: 700;
       text-align: left;
-      width: 100px;
+      width: 100%;
+      overflow: hidden;
+      &::after {
+        content: "";
+        width: 0;
+        height: 1px;
+        background-color: #fff;
+        position: absolute;
+        top: 28px;
+        left: -1px;
+        border-radius: 1px;
+        transition: all 0.3s;
+      }
       span {
         font-size: 18px;
+      }
+      p {
+        font-size: 12px;
+        color: #efefef;
+        transform: translateX(100%);
+        transition: all 0.3s;
       }
     }
   }

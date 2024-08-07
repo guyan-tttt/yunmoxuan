@@ -43,7 +43,7 @@ const getArticleList = async () => {
   const res = await getArticleListAPI(pageData.value.page, pageData.value.pageSize, articleType.value)
   console.log(res)
   articleList.value = res.data
-  pageData.value.total = res.total
+  pageData.value.total = res.total as number
   if (res.total === 0) {
     ElMessage.info("没有数据了")
   }
@@ -146,7 +146,7 @@ const searchObj = ref<FormInstance>()
 
 // 搜索
 const search = () => {
-  searchObj.value.validate(async (valid: boolean) => {
+  searchObj.value?.validate(async (valid: boolean) => {
     if (valid) {
       const res = await searchArticleAPI(
         pageData.value.page,
@@ -169,7 +169,7 @@ const search = () => {
 
 // 清空
 const clear = () => {
-  searchObj.value.resetFields()
+  searchObj.value?.resetFields()
   searchInfo.value = {
     categoryID: "",
     tagID: ""
@@ -292,18 +292,8 @@ onMounted(() => {
     <el-card class="con">
       <el-row justify="space-between">
         <div class="role-operate" style="margin-bottom: 10px">
-          <el-button v-if="articleType !== 4" size="default" type="primary" @click="addArticle" :icon="Plus"
-            >添加文章</el-button
-          >
-          <el-button
-            v-else
-            size="default"
-            type="danger"
-            @click="deleteAll"
-            :icon="Delete"
-            :disabled="delArlIDList.length === 0"
-            >批量删除</el-button
-          >
+          <el-button v-if="articleType !== 4" size="default" type="primary" @click="addArticle" :icon="Plus">添加文章</el-button>
+          <el-button v-else size="default" type="danger" @click="deleteAll" :icon="Delete" :disabled="delArlIDList.length === 0">批量删除</el-button>
         </div>
         <el-form ref="searchObj" :model="searchInfo" :rules="ruleSearch" class="demo-form-inline" inline>
           <el-form-item label="标签名称" prop="tagID">
@@ -359,42 +349,16 @@ onMounted(() => {
               inactive-text="草稿"
               inline-prompt
             />
-            <el-switch
-              v-else
-              v-model="row.isDelete"
-              @change="restoreArticle(row._id)"
-              active-text="已删除"
-              inactive-text="未删除"
-              inline-prompt
-            />
+            <el-switch v-else v-model="row.isDelete" @change="restoreArticle(row._id)" active-text="已删除" inactive-text="未删除" inline-prompt />
           </template>
         </el-table-column>
 
         <el-table-column prop="desc" align="center" label="操作">
           <template v-slot="{ row }">
-            <el-button
-              v-if="articleType !== 4"
-              type="success"
-              :name="row"
-              @click="previewArticle(row._id)"
-              :icon="InfoFilled"
-              circle
-            />
+            <el-button v-if="articleType !== 4" type="success" :name="row" @click="previewArticle(row._id)" :icon="InfoFilled" circle />
             <el-button v-if="articleType !== 4" type="primary" @click="updateArticle(row._id)" :icon="Edit" circle />
-            <el-button
-              v-if="articleType !== 4"
-              type="danger"
-              @click="deleteArticle(row._id)"
-              :icon="DeleteFilled"
-              circle
-            />
-            <el-button
-              v-if="articleType === 4"
-              type="danger"
-              @click="deleteArticlePermanently(row._id)"
-              :icon="DeleteFilled"
-              >删除</el-button
-            >
+            <el-button v-if="articleType !== 4" type="danger" @click="deleteArticle(row._id)" :icon="DeleteFilled" circle />
+            <el-button v-if="articleType === 4" type="danger" @click="deleteArticlePermanently(row._id)" :icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

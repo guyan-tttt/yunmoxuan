@@ -16,6 +16,12 @@ const guestbookService = {
             data,
             total
         }
+    },
+    getBullet:async() => {
+        const data = await guestbookModel.find().sort({
+            createTime: -1
+        })
+        return data
     }
 }
 

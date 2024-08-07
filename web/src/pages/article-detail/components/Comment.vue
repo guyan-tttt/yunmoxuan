@@ -88,7 +88,7 @@ onUnmounted(() => {
 
             <div class="content">{{ item.content }}</div>
             <div class="del">
-              <el-icon size="20" color="#67c23a"><Comment /></el-icon>
+              <!-- <el-icon size="20" color="#67c23a"><Comment /></el-icon> -->
             </div>
           </li>
 

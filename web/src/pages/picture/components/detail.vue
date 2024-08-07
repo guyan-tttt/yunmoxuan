@@ -138,7 +138,7 @@ const showDialog = (item: ImageItem) => {
 
 // 图片下载
 const download = (item: ImageItem) => {
-  ElMessageBox.confirm("温馨提示！", "本站图片仅供学习使用，不可用于商用！", {
+  ElMessageBox.confirm("本站图片仅供学习使用，不可用于商用！", "温馨提示！", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"

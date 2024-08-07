@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import UserCard from "./components/userCard.vue"
-import Banner from "@/components/Banner/Banner.vue"
 import { useSettingsStore } from "@/store/modules/settings"
 import { onMounted, onUnmounted, ref } from "vue"
 import { useIntersectionObserver } from "@vueuse/core"
@@ -8,6 +7,9 @@ import ArticleCard from "./components/articleCard.vue"
 import { getRecommendArticleAPI } from "@/api/web/article"
 import type { ArticleItem } from "@/types/admin/article"
 import { useRouter } from "vue-router"
+import IndexBg from "./components/IndexBg.vue"
+import TypeWrite from "./components/TypeWrite.vue"
+const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 
 // 全局路由对象
 const router = useRouter()
@@ -58,13 +60,20 @@ onUnmounted(() => {
 
 <template>
   <div class="index">
-    <Banner class="animate__zoomIn animate__animated" />
+    <IndexBg />
+    <div class="index-title">
+      <h1>{{ VITE_APP_TITLE }}</h1>
+      <TypeWrite />
+      <div class="icon">
+        <el-icon :size="30" color="#fff"><ArrowDownBold /></el-icon>
+      </div>
+    </div>
     <div ref="articleTarget" class="container mx-auto max-w-screen-xl mt-5" :class="{ active: targetIsActive }">
       <div class="grid grid-cols-4">
         <!-- 左边栏 -->
         <div class="col-span-4 px-3 md:col-span-3 sm:col-span-4">
-          <div class="article-title">
-            <h4>文章推荐</h4>
+          <div class="article-title bg-white dark:bg-gray-800">
+            <h4 class="text-black dark:text-white">文章推荐</h4>
             <span @click="showMore">查看更多</span>
           </div>
           <!-- 文章列表 -->
@@ -86,6 +95,40 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
+.index-title {
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  position: relative;
+  h1 {
+    font-size: 70px;
+    font-weight: 800;
+    letter-spacing: 5px;
+    font-family: "STKaiti";
+  }
+  .icon {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: twinkle 0.7s linear infinite alternate;
+  }
+  @keyframes twinkle {
+    to {
+      opacity: 0.5;
+      transform: scale(0.9) translateY(0) translateX(-50%);
+    }
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(-10px) translateX(-50%);
+    }
+  }
+}
+
 .sticky {
   position: sticky;
   top: 60px;
@@ -140,7 +183,7 @@ onUnmounted(() => {
 
 .article-title {
   width: 100%;
-  background-color: #fff;
+  // background-color: #fff;
   margin-bottom: 20px;
   border-radius: 10px;
   display: flex;
@@ -149,7 +192,7 @@ onUnmounted(() => {
   padding: 0 20px;
   h4 {
     font-size: 20px;
-    color: rgb(48, 49, 51);
+    // color: rgb(48, 49, 51);
     cursor: pointer;
   }
   span {

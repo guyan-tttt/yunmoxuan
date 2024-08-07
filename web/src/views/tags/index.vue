@@ -150,7 +150,7 @@ const getTagList = async () => {
   const res = await getTagListAPI(pageData.value.page, pageData.value.pageSize)
   tagList.value = res.data
 
-  pageData.value.total = res.total
+  pageData.value.total = res.total as number
 }
 
 // 标签详情
@@ -256,34 +256,14 @@ onMounted(() => {
     <!-- 添加标签弹框 -->
     <el-drawer @closed="cancel" v-model="drawerShow" :title="drawerTitle">
       <div class="form">
-        <el-form
-          ref="formRef"
-          :rules="rules"
-          :model="tagsForm"
-          style="max-width: 600px"
-          status-icon
-          label-width="auto"
-          class="demo-ruleForm"
-        >
+        <el-form ref="formRef" :rules="rules" :model="tagsForm" style="max-width: 600px" status-icon label-width="auto" class="demo-ruleForm">
           <el-form-item label="标签名" prop="name">
             <el-input v-model="tagsForm.name" type="text" autocomplete="off" />
           </el-form-item>
           <el-form-item label="图标">
-            <el-popover
-              placement="bottom"
-              title="温馨提示！"
-              :width="200"
-              trigger="hover"
-              content="此处上传文件只允许上传SVG后缀名的图标文件"
-            >
+            <el-popover placement="bottom" title="温馨提示！" :width="200" trigger="hover" content="此处上传文件只允许上传SVG后缀名的图标文件">
               <template #reference>
-                <el-upload
-                  class="avatar-uploader"
-                  action=""
-                  :show-file-list="false"
-                  :auto-upload="false"
-                  :on-change="uploadIcon"
-                >
+                <el-upload class="avatar-uploader" action="" :show-file-list="false" :auto-upload="false" :on-change="uploadIcon">
                   <img v-if="selectIcon || tagsForm.icon" :src="selectIcon || tagsForm.icon" class="icon" />
                   <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                 </el-upload>

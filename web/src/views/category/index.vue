@@ -90,7 +90,7 @@ const getCategoryList = async () => {
   if (res.code === 200) {
     // console.log(res)
     categoryList.value = res.data
-    pageData.value.total = res.total
+    pageData.value.total = res.total as number
   }
 }
 
@@ -132,7 +132,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="category">
-    <el-card >
+    <el-card>
       <div class="role-operate" style="margin-bottom: 20px">
         <el-button size="default" type="primary" @click="addCategory">添加分类</el-button>
       </div>

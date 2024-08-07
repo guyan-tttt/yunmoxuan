@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 import type { UserInfo } from "@/types/admin/user"
 import { getAuthorInfoAPI, getCategoryAPI, getTagAPI } from "@/api/web/index"
-import type { AddCategory } from "@/types/admin/category"
+import type { CategoryItem } from "@/types/admin/category"
 import type { Tag } from "@/types/admin/tags"
 
 // 前台全局信息仓库
@@ -21,7 +21,7 @@ export const useWebInfoStore = defineStore(
     }
 
     // 分类信息
-    const categoryInfo = ref<AddCategory[]>([])
+    const categoryInfo = ref<CategoryItem[]>([])
 
     // 获取分类列表项
     const getCategoryInfo = async () => {

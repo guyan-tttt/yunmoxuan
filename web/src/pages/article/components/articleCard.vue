@@ -97,6 +97,24 @@ const goToDetail = (id: string) => {
   position: relative;
   overflow: hidden;
   color: #fff;
+  transition: all 0.3s;
+  animation: cardShow linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 10%;
+  &:hover {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+    transform: translateY(-10px);
+  }
+}
+@keyframes cardShow {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .bg {
   height: 200px;

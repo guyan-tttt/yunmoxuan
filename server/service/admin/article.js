@@ -24,22 +24,22 @@ const articleService = {
     let data  = []
     let total = 0
     if(articleType === 1) {
-        const articleList = await ArticleModel.find({isDelete: false}).skip(left).limit(right)
+        const articleList = await ArticleModel.find({isDelete: false}).skip(left).limit(right).sort( { createTime: -1 } )
         data = articleList.concat([])
         total = await ArticleModel.countDocuments({isDelete: false})
     } else if(articleType === 2) {
         // 查询已发布的文章
-        const articleList = await ArticleModel.find({isDelete: false, isPublish: true}).skip(left).limit(right)
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: true}).skip(left).limit(right).sort( { createTime: -1 } )
         data = articleList.concat([])
         total = await ArticleModel.countDocuments({isDelete: false, isPublish: true})
     } else if(articleType === 3) {
         // 查询未发布的文章
-        const articleList = await ArticleModel.find({isDelete: false, isPublish: false}).skip(left).limit(right)
+        const articleList = await ArticleModel.find({isDelete: false, isPublish: false}).skip(left).limit(right).sort( { createTime: -1 } )
         data = articleList.concat([])
         total = await ArticleModel.countDocuments({isDelete: false, isPublish: false})
     } else if(articleType === 4) {
         // 查询已删除的文章
-        const articleList = await ArticleModel.find({isDelete: true}).skip(left).limit(right)
+        const articleList = await ArticleModel.find({isDelete: true}).skip(left).limit(right).sort( { createTime: -1 } )
         data = articleList.concat([])
         total = await ArticleModel.countDocuments({isDelete: true})
     }

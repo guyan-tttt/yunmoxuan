@@ -20,6 +20,14 @@ const guestbookController = {
             data,
             total
         })
+    },
+    getBullet: async(req,res) => {
+        const result = await guestbookService.getBullet();
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data:result
+        })
     }
 }
 

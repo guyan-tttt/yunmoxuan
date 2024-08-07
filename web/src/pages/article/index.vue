@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import ArticleCard from "./components/articleCard.vue"
 import { getArticleListAPI, articleLikeAPI } from "@/api/web/article"
-import { ref, onMounted } from "vue"
+import { ref, onMounted, onUnmounted } from "vue"
 import { ArticleItem } from "@/types/admin/article"
 import { ElMessage } from "element-plus"
+import Banner from "@/components/Banner/Banner.vue"
+import { useSettingsStore } from "@/store/modules/settings"
+
+// 设置对象
+const settings = useSettingsStore()
 
 // 分页数据
 const pageData = ref({
@@ -48,13 +53,23 @@ const addLike = async (item: ArticleItem) => {
     ElMessage.success("点赞成功")
   }
 }
+const changeNavBg = (value: boolean) => {
+  settings.changeNavBg(value)
+}
+
 // 初始化
 onMounted(() => {
+  changeNavBg(false)
   getArticleList()
+})
+
+onUnmounted(() => {
+  changeNavBg(true)
 })
 </script>
 <template>
   <div>
+    <Banner class="animate__zoomIn animate__animated" />
     <div class="container mx-auto max-w-screen-xl mt-5">
       <div class="grid grid-cols-4">
         <div class="col-span-4 px-3" style="width: 80%; margin: 0 auto">

@@ -216,7 +216,7 @@ const showEmojiPicker = ref<boolean>(false)
 
             <div class="content">{{ item.content }}</div>
             <div class="del">
-              <el-icon v-if="props.status === 'web'" :size="20"><Comment /></el-icon>
+              <el-icon v-if="props.status === 'web'" :size="20"><ChatDotRound /></el-icon>
               <el-icon v-else @click="delComment(item._id)" :size="20" color="#E73037"><CircleCloseFilled /></el-icon>
             </div>
           </li>

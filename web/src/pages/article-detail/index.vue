@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick, ref , onUnmounted} from "vue"
+import { onMounted, nextTick, ref, onUnmounted } from "vue"
 import { ElMessage } from "element-plus"
 import { getArticleDetailAPI } from "@/api/web/article"
 import { useRoute } from "vue-router"
@@ -7,7 +7,7 @@ import type { ArticleDetailItem } from "@/types/web/article"
 import dayjs from "dayjs"
 import type { Tag } from "@/types/admin/tags"
 import Comment from "./components/Comment.vue"
-import { useWebInfoStore } from '@/store/modules/webInfo'
+import { useWebInfoStore } from "@/store/modules/webInfo"
 
 // 为所有pre标签注册点击事件
 const preClick = () => {
@@ -436,7 +436,7 @@ onUnmounted(() => {
   border: 1px solid #dfe2e5;
 }
 
-:deep(.article-content a) {
+:deep(.pre a) {
   color: #167bc2;
 }
 

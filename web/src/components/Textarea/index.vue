@@ -57,7 +57,7 @@ const change = (value: string) => {
 
 const showEmoji = ref(false)
 
-const selectEmoji = (emoji: string) => {
+const selectEmoji = (emoji: any) => {
   content.value += emoji.i
   change(content.value)
 }

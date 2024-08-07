@@ -16,6 +16,7 @@ const imageCategory = require('./routes/admin/imageCategory')
 const imageRouter = require('./routes/admin/imageRouter')
 const trendsRouter = require('./routes/admin/trendsRouter')
 const dashboardRouter = require('./routes/admin/dashboardRouter')
+const guestbookRouter = require('./routes/admin/guestbookRouter')
 // 路由导入
 
 // 前台路由导入
@@ -23,7 +24,7 @@ const indexRouter  = require("./routes/web/indexRouter")
 const articleHomeRouter = require("./routes/web/articleRouter")
 const trendsHomeRouter = require("./routes/web/trendsRouter")
 const pictureRouter = require("./routes/web/pictureRouter")
-const guestbookRouter = require("./routes/web/guestbookRouter")
+const guestbookHomeRouter = require("./routes/web/guestbookRouter")
 // 前台路由导入
 
 // 创建服务器
@@ -50,7 +51,7 @@ app.use('/api/web/index', indexRouter);
 app.use('/api/web/article', articleHomeRouter);
 app.use("/api/web/trends",trendsHomeRouter)
 app.use('/api/web/picture',pictureRouter)
-app.use('/api/web/guestbook',guestbookRouter)
+app.use('/api/web/guestbook',guestbookHomeRouter)
 // token校验
 app.use((req,res,next) => {
 
@@ -97,6 +98,7 @@ app.use('/api/admin/article',articleRouter)
 app.use('/api/admin/imageCategory',imageCategory)
 app.use('/api/admin/image',imageRouter)
 app.use('/api/admin/trends',trendsRouter)
+app.use('/api/admin/guestbook', guestbookRouter)
 // 路由挂载区域
 
 // catch 404 and forward to error handler
