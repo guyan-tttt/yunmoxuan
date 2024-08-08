@@ -195,6 +195,22 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       }
     ]
+  },
+  {
+    path: "/source",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/source/index.vue"),
+        name: "Source",
+        meta: {
+          title: "资源管理",
+          svgIcon: "source",
+          affix: true
+        }
+      }
+    ]
   }
 ]
 

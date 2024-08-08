@@ -7,9 +7,7 @@ export const addArticleAPI = (data: FormData) => {
 
 // 获取文章列表
 export const getArticleListAPI = (page: number, pageSize: number, articleType: number) => {
-  return request.get<any, ArticleList>(
-    `/admin/article/list?page=${page}&pageSize=${pageSize}&articleType=${articleType}`
-  )
+  return request.get<any, ArticleList>(`/admin/article/list?page=${page}&pageSize=${pageSize}&articleType=${articleType}`)
 }
 
 // 获取文章详情
@@ -42,13 +40,7 @@ export const changePublishStatusAPI = (data: any) => {
  * @returns 返回文章列表
  */
 // 搜索文章
-export const searchArticleAPI = (
-  page: number,
-  pageSize: number,
-  articleType: number,
-  tagsID: string,
-  categoryID: string
-) => {
+export const searchArticleAPI = (page: number, pageSize: number, articleType: number, tagsID: string, categoryID: string) => {
   return request.get<any, ArticleList>(
     `/admin/article/search?page=${page}&pageSize=${pageSize}&tagsID=${tagsID}&categoryID=${categoryID}&articleType=${articleType}`
   )
