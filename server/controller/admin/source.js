@@ -25,6 +25,21 @@ const sourceController = {
             msg: '获取成功',
             data: list
         })
+    },
+    addSource: async(req,res) => {
+        // 判断参数
+        const { name,desc,logo,groupId,groupName, link,bg } = req.body
+        if( !name || !desc || !logo || !groupId || !groupName || !link || !bg)  {
+            return res.json({ code: 400, msg: '参数错误' });
+        }
+        await sourceService.addSource({
+            name,desc,logo,groupId,groupName, link,bg
+        });
+
+        res.send({
+            code: 200,
+            message: '添加成功'
+        })
     }
 }
 

@@ -8,5 +8,7 @@ router.post('/addGroup', sourceController.addGroup);
 // 获取分组列表
 router.get('/groupList', sourceController.groupList);
 
+// 添加资源
+router.post('/addSource', sourceController.addSource);
 module.exports = router;
 
