@@ -144,6 +144,8 @@ const download = (item: ImageItem) => {
     type: "warning"
   })
     .then(async () => {
+      console.log(item.src)
+
       FileSaver.saveAs(item.src, "图片.png")
     })
     .catch(() => {})

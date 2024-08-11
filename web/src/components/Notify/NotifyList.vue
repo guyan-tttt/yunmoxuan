@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { type ListItem } from "./data"
-
+import dayjs from "dayjs"
 interface Props {
   list: ListItem[]
+  type: string
 }
 
 const props = defineProps<Props>()
@@ -18,16 +19,14 @@ const props = defineProps<Props>()
             <span class="card-title">{{ item.title }}</span>
             <el-tag v-if="item.extra" :type="item.status" effect="plain" size="small">{{ item.extra }}</el-tag>
           </span>
-          <div class="card-time">{{ item.datetime }}</div>
+          <div class="card-time">{{ dayjs(item.createTime).format("YYYY-MM-DD HH:mm") }}</div>
         </div>
-        <div v-if="item.avatar" class="card-avatar">
-          <img :src="item.avatar" width="34" />
+        <div class="card-avatar">
+          <img src="../../assets/layouts/logo.png" width="34" />
         </div>
       </div>
     </template>
-    <div class="card-body">
-      {{ item.description ?? "No Data" }}
-    </div>
+    <div class="card-body" v-html="item.content" />
   </el-card>
 </template>
 

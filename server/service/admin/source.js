@@ -27,6 +27,41 @@ const sourceService = {
             createTime: new Date(),
             updateTime: new Date()
         })
+    },
+    updateSource: async(data) => {
+        const source = await SourceModel.findOneAndUpdate({
+            _id: data._id
+        }, {
+            ...data,
+            updateTime: new Date()
+        }).exec();
+        return source;
+    },
+    delSource: async(id) => {
+        const source = await SourceModel.deleteOne({
+            _id: id
+        })
+        return source;
+    },
+    updateGroup: async(data) => {
+        await SourceGroup.findOneAndUpdate({
+            _id: data._id
+        }, {
+            ...data,
+            updateTime: new Date()
+        }).exec();
+    },
+    findSource: async(groupId) => {
+        const source = await SourceModel.find({
+            groupId
+        }).exec();
+        return source;
+    },
+    delGroup: async(id) => {
+        const group = await SourceGroup.deleteOne({
+            _id: id
+        }).exec();
+        return group;
     }
 }
 

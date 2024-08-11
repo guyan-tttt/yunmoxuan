@@ -144,7 +144,7 @@ onMounted(() => {
           <div class="panel">
             <div class="panel-title animate__animated animate__bounce">⏩ 快捷入口</div>
             <div class="quick-entry">
-              <div class="entry-item" v-for="item in noHiddenRoutes" :key="item.path">
+              <div class="entry-item" v-for="item in noHiddenRoutes.slice(0,6)" :key="item.path">
                 <router-link class="entry-item" :to="item.path">
                   <div class="entry-icon">
                     <SvgIcon class="icon" :name="item.children![0].meta?.svgIcon as string" />

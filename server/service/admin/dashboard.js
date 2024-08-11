@@ -4,6 +4,7 @@ const TagModel = require('../../model/TagModel')
 const ImageModel = require('../../model/ImageModel')
 const TrendsModel = require('../../model/TrendsModel')
 const TrendsCommentModel = require('../../model/TrendsComment')
+const JournalModel = require('../../model/JournalModel')
 
 
 const dashboardService = {
@@ -38,6 +39,17 @@ const dashboardService = {
         // 查询动态评论信息
         const trendsComment = await TrendsCommentModel.find({}).limit(20)
         data.push(...trendsComment)
+        return data
+    },
+    addJournal: async(title, content) => {
+        await JournalModel.create({
+            title,
+            content,
+            createTime: Date.now()
+        })
+    },
+    journal: async(left,right) => {
+        const data = await JournalModel.find({}).sort('-createTime').skip(left).limit(right)
         return data
     }
 }

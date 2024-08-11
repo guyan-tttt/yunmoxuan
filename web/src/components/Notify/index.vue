@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue"
+import { ref, computed  ,onMounted } from "vue"
 import { ElMessage } from "element-plus"
 import { Bell } from "@element-plus/icons-vue"
 import NotifyList from "./NotifyList.vue"
-import { type ListItem, notifyData, messageData, todoData } from "./data"
+import { type ListItem, notifyData, messageData } from "./data"
+import { getSystemJournalListAPI } from "@/api/admin/dashboard"
 
 type TabName = "通知" | "消息" | "待办"
 
@@ -36,18 +37,27 @@ const data = ref<DataItem[]>([
     name: "消息",
     type: "danger",
     list: messageData
-  },
-  // 待办数据
-  {
-    name: "待办",
-    type: "warning",
-    list: todoData
   }
 ])
 
 const handleHistory = () => {
   ElMessage.success(`跳转到${activeName.value}历史页面`)
 }
+
+// 系统日志
+const systemJournal = ref<any>([])
+
+// 获取系统日志
+const getSystemJournal = async () => {
+  const res = await getSystemJournalListAPI(1, 5)
+  if (res.code === 200) {
+    systemJournal.value = res.data
+  }
+}
+
+onMounted(() => {
+  getSystemJournal()
+})
 </script>
 
 <template>
@@ -70,7 +80,8 @@ const handleHistory = () => {
               <el-badge :value="item.list.length" :max="badgeMax" :type="item.type" />
             </template>
             <el-scrollbar height="400px">
-              <NotifyList :list="item.list" />
+              <NotifyList v-if="activeName === '通知'" :list="systemJournal" type="journal" />
+              <!-- <NotifyList v-else :list="item.list" /> -->
             </el-scrollbar>
           </el-tab-pane>
         </el-tabs>

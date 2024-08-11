@@ -15,6 +15,7 @@ import SearchMenu from "@/components/SearchMenu/index.vue"
 import { useDevice } from "@/hooks/useDevice"
 import { useLayoutMode } from "@/hooks/useLayoutMode"
 import Refresh from "@/components/Refresh/index.vue"
+import SystemJournal from "../SystemJournal/index.vue"
 
 const { isMobile } = useDevice()
 const { isTop } = useLayoutMode()
@@ -48,15 +49,11 @@ const goUserInfo = () => {
 
 <template>
   <div class="navigation-bar">
-    <Hamburger
-      v-if="!isTop || isMobile"
-      :is-active="appStore.sidebar.opened"
-      class="hamburger"
-      @toggle-click="toggleSidebar"
-    />
+    <Hamburger v-if="!isTop || isMobile" :is-active="appStore.sidebar.opened" class="hamburger" @toggle-click="toggleSidebar" />
     <Breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
     <Sidebar v-if="isTop && !isMobile" class="sidebar" />
     <div class="right-menu">
+      <SystemJournal />
       <SearchMenu v-if="showSearchMenu" class="right-menu-item" />
       <Refresh />
       <Screenfull v-if="showScreenfull" class="right-menu-item" />

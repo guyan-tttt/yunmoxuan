@@ -82,10 +82,7 @@ const imageUploadSubmit = async () => {
   imageFormData.value.fileList.forEach((item: any) => {
     formData.append("files", item)
   })
-  formData.append(
-    "categoryName",
-    imageCategoryList.value.find((item: any) => item._id === imageFormData.value.categoryID)!.name
-  )
+  formData.append("categoryName", imageCategoryList.value.find((item: any) => item._id === imageFormData.value.categoryID)!.name)
   const res = await uploadImageAPI(formData)
   if (res.code === 200) {
     ElMessage.success("上传成功")
@@ -124,11 +121,7 @@ const imageListPagination = ref<ImagePage>({
 
 // 获取图片列表
 const getImageList = async () => {
-  const res = await getImageListAPI(
-    imageListPagination.value.page,
-    imageListPagination.value.pageSize,
-    currentCategory.value as string
-  )
+  const res = await getImageListAPI(imageListPagination.value.page, imageListPagination.value.pageSize, currentCategory.value as string)
 
   if (res.code === 200) {
     // 如果图片列表为空，则禁用滚动加载
@@ -192,12 +185,7 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div
-    class="picture"
-    v-infinite-scroll="load"
-    :infinite-scroll-disabled="scrollDisabled"
-    :infinite-scroll-distance="0"
-  >
+  <div class="picture" v-infinite-scroll="load" :infinite-scroll-disabled="scrollDisabled" :infinite-scroll-distance="0">
     <el-row justify="space-between" style="min-height: 800px">
       <el-col :span="16" class=".limit-box animate__animated animate__fadeInLeft">
         <el-card>
@@ -211,13 +199,9 @@ onMounted(async () => {
             <el-form style="margin-left: 20px; width: 100%">
               <el-form-item>
                 <el-select v-model="imageFormData.categoryID" style="width: 28%">
-                  <el-option
-                    v-for="item in imageCategoryList"
-                    :key="item._id"
-                    :value="item._id as string"
-                    :label="item.name"
-                    >{{ item.name }}</el-option
-                  >
+                  <el-option v-for="item in imageCategoryList" :key="item._id" :value="item._id as string" :label="item.name">{{
+                    item.name
+                  }}</el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -239,9 +223,7 @@ onMounted(async () => {
             </el-form>
           </el-row>
           <el-row>
-            <el-button @click="imageUploadSubmit" type="primary" size="large" style="margin-left: 20px"
-              >上传提交</el-button
-            >
+            <el-button @click="imageUploadSubmit" type="primary" size="large" style="margin-left: 20px">上传提交</el-button>
           </el-row>
           <el-row>
             <div class="title animate__animated animate__swing">
