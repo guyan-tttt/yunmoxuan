@@ -61,7 +61,7 @@ onUnmounted(() => {
 <template>
   <div class="index">
     <IndexBg />
-    <div class="index-title">
+    <div class="index-title animate__bounce animate__animated">
       <h1>{{ VITE_APP_TITLE }}</h1>
       <TypeWrite />
       <div class="icon">

@@ -13,7 +13,7 @@ const openPreview = (tag: Tag) => {
 <template>
   <div class="mb-3 w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col items-center pb-6 pt-6 card">
-      <div class="avatar">
+      <div class="avatar" @click="$router.push('/home-userInfo')">
         <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="70" />
       </div>
       <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
@@ -112,7 +112,7 @@ const openPreview = (tag: Tag) => {
   <!-- 文章标签 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</h2>
-    <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click="openPreview(item)">
+    <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click.stop="openPreview(item)">
       <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
       <span>{{ item.name }}</span>
     </div>

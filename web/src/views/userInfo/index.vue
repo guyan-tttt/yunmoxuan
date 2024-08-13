@@ -105,7 +105,7 @@ const formRef = ref<any>()
         <el-input v-model="userInfo.username" clearable />
       </el-form-item>
       <el-form-item label="用户密码" prop="password">
-        <el-input v-model="userInfo.password" type="password" clearable />
+        <el-input v-model="userInfo.password" type="password" clearable show-password />
       </el-form-item>
       <el-form-item label="用户昵称" prop="nickname">
         <el-input v-model="userInfo.nickname" clearable />

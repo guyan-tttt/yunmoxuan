@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+  <div class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 card">
     <a class="cursor-pointer">
       <el-image
         class="rounded-t-lg"
@@ -124,10 +124,14 @@ const goToDetail = (id: string) => {
   margin-left: 20px;
   background-color: #ecf5ff;
   border-radius: 4px;
-  box-shadow: 0px 2px 4px rgba(16, 39, 58, 0.1);
+  box-shadow: 0px 2px 20px #fff;
   span {
     margin-left: 10px;
     color: #409eff;
   }
+}
+
+.card {
+  box-shadow: 0px 2px 20px #999;
 }
 </style>

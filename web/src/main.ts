@@ -33,6 +33,8 @@ import "vue3-emoji-picker/css"
 import Textarea from "@/components/Textarea/index.vue"
 import vue3SeamlessScroll from "vue3-seamless-scroll"
 hljs.registerLanguage("javascript", javascript)
+// 导入websocket
+import "@/utils/websokcet"
 
 const app = createApp(App)
 

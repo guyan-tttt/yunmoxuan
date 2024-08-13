@@ -116,6 +116,7 @@ const openTagPreview = (tag: Tag) => {
     margin-left: 20px;
     background-color: #ecf5ff;
     border-radius: 4px;
+    cursor: pointer;;
     span {
       margin-left: 10px;
       color: #409eff;

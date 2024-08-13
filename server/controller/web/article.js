@@ -1,5 +1,6 @@
 const articleService = require('../../service/admin/article')
-
+const dashboardService = require('../../service/admin/dashboard')
+const websocket = require('../../websocket/app')
 const articleController = {
     getRecommends: async(req,res) => {
         const result = await articleService.getRecommends()
@@ -52,6 +53,12 @@ const articleController = {
     },
     addComment: async(req,res) => {
         const result = await articleService.addComment(req.body)
+        // 添加消息
+        const title = req.body.nickname + '评论了你的文章'
+        const content = req.body.content
+        await dashboardService.addMessage(title,content)
+        // 发送消息通知前端更新消息通知
+        websocket.broadcast(JSON.stringify({ type: 'newMessage',message: '更新消息' }));
         res.send({
             code: 200,
             message: '评论成功',

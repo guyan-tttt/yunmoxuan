@@ -7,6 +7,8 @@ var logger = require('morgan');
 const JWT = require('./utils/JWT')
 const cors = require('cors');
 
+
+
 // 后台路由导入
 const userRouter = require('./routes/admin/userRouter');
 const tagsRouter = require('./routes/admin/tagsRouter');
@@ -29,12 +31,15 @@ const guestbookHomeRouter = require("./routes/web/guestbookRouter")
 const sourceHomeRouter = require("./routes/web/sourceRouter")
 // 前台路由导入
 
+// 导入websocket
+const WebSocket = require('./websocket/app')
+
 // 创建服务器
 var app = express();
 
 // 跨域配置，用于前端请求获取后端图片信息
 app.use(cors({
-  origin: 'http://localhost:3333' // 只允许 http://localhost:3000 这个域名
+  origin: 'http://118.31.237.92' // 只允许 http://localhost:3000 这个域名
 }));
 
 // view engine setup

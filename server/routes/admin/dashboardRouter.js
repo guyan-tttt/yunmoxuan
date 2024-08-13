@@ -13,4 +13,18 @@ router.post('/journal', dashboardController.addJournal)
 
 // 获取系统日志
 router.get('/journal', dashboardController.journal)
+
+// 删除日志
+router.delete('/journal/:id', dashboardController.delJournal)
+
+// 阅读日志
+router.put("/journal/:id", dashboardController.readJournal)
+
+// 获取通知消息
+router.get('/message', dashboardController.message)
+
+// 阅读消息
+router.put("/message/:id", dashboardController.readMessage)
+
+
 module.exports = router;

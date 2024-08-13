@@ -33,7 +33,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       /** 接口代理 */
       proxy: {
         "/api/": {
-          target: "http://localhost:3000",
+          target: "http://118.31.237.92:3000",
           ws: true,
           /** 是否允许跨域 */
           changeOrigin: true

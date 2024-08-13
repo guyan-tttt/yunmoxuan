@@ -5,7 +5,7 @@
     <!-- 导航栏 -->
     <!-- 主题内容 -->
     <router-view v-slot="{ Component, route }">
-      <transition name="fade">
+      <transition name="fade" :class="{ active: route.path === '/' }">
         <component :is="Component" :key="route.fullPath" class="app-container-grow" />
       </transition>
     </router-view>
@@ -56,14 +56,17 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .fade-enter-from {
   opacity: 0;
-  transform: scale(0);
+  transform: translateY(-100px);
 }
 .fade-enter-active {
   transition: all 0.5s;
 }
 .fade-enter-to {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0);
+  &.active {
+    transform: translateY(-55px);
+  }
 }
 .toolbox {
   position: fixed;

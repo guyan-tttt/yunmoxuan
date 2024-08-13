@@ -14,4 +14,7 @@ router.get('/category',indexController.category);
 // 获取文章标签
 router.get('/tag',indexController.tag);
 
+// 获取日志列表
+router.get('/journal',indexController.journal);
+
 module.exports = router; 

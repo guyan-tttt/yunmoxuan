@@ -31,7 +31,7 @@ const addText = () => {
       clearInterval(timer)
       return setTimeout(() => {
         delText()
-      }, 1000)
+      }, 2000)
     }
     content.value += arr[i]
     i++

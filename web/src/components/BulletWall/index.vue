@@ -101,7 +101,7 @@ const insertBullet = () => {
       bulletWallData.value.slice(start, end).forEach((item: any) => {
         startBullet(item)
       })
-    }, i * 1000)
+    }, i * 2000)
   }
 }
 

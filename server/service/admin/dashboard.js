@@ -45,12 +45,69 @@ const dashboardService = {
         await JournalModel.create({
             title,
             content,
+            createTime: Date.now(),
+            type: 1,
+            view: false
+        })
+    },
+    journal: async(left,right,view) => {
+        let data = []
+        if(view) {
+            data = await JournalModel.find({
+                type: 1,
+                view: false
+            }).sort('-createTime')
+        } else {
+           data = await JournalModel.find({
+                type: 1
+            }).sort('-createTime').skip(left).limit(right)
+        }
+        
+        const total = await JournalModel.find({type: 1,view: false}).countDocuments()
+        return {
+            data,
+            total
+        }
+    },
+    delJournal: async(id) => {
+        await JournalModel.findByIdAndDelete(id)
+    },
+    readJournal: async(id) => {
+        await JournalModel.findByIdAndUpdate(id, {
+            view: true
+        })
+    },
+    // 添加消息
+    addMessage: async(title,content) => {
+        await JournalModel.create({
+            title,
+            content,
+            type: 2,
+            view: false,
             createTime: Date.now()
         })
     },
-    journal: async(left,right) => {
-        const data = await JournalModel.find({}).sort('-createTime').skip(left).limit(right)
-        return data
+    message: async(left,right,view) => {
+        let data = []
+        if(view) {
+            data = await JournalModel.find({
+                type: 2,
+                view: false
+            }).sort('-createTime')
+        } else {
+            data = await JournalModel.find({
+                type: 2
+            }).sort('-createTime').skip(left).limit(right)
+        }
+        return {
+            data,
+            total: await JournalModel.find({type: 2,view: false}).countDocuments()
+        }
+    },
+    readMessage: async(id) => {
+        await JournalModel.findByIdAndUpdate(id, {
+            view: true
+        })
     }
 }
 module.exports = dashboardService

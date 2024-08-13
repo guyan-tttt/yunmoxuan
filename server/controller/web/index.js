@@ -2,6 +2,7 @@ const userService = require("../../service/admin/user")
 const imageService = require("../../service/admin/image")
 const categoryService = require("../../service/admin/category")
 const tagsService = require("../../service/admin/tags")
+const dashboardService = require("../../service/admin/dashboard")
 
 const indexController =  {
     user: async(req,res) => {
@@ -43,6 +44,26 @@ const indexController =  {
             message: "获取成功",
             data: result
         })
+    },
+    journal: async(req,res) => {
+        const { page, pageSize } = req.query
+        if(!page || !pageSize) {
+            res.json({
+                code: 400,
+                message: '参数错误'
+            })
+        }
+        // 根据分页数据返回列表数据
+        const left = (parseInt(page) - 1) * parseInt(pageSize)
+        const right = left + parseInt(pageSize)
+        const { data, total} = await dashboardService.journal(left,right);
+        
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data,
+            total
+        });
     }
 }
 

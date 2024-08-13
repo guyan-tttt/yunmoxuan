@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts" />
 
 <style scoped lang="scss">
 .index-bg {

@@ -18,14 +18,10 @@
         </div>
       </div>
     </el-card>
-    <ContextMenu :options="options">
-      <el-card style="height: 800px" />
-    </ContextMenu>
   </div>
 </template>
 
 <script setup lang="ts">
-import ContextMenu from "@/components/ContextMenu/index.vue"
 import SourceCard from "@/views/source/components/SourceCard.vue"
 import { getSourceListAPI } from "@/api/web/source"
 import type { GroupItem } from "@/types/admin/source"

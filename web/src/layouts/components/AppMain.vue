@@ -27,7 +27,7 @@ watch(
       <router-view v-slot="{ Component, route }">
         <transition name="fade">
           <keep-alive :include="tagsViewStore.cachedViews">
-            <component :is="Component" :key="route.path" v-if="!isCreateRouter" class="app-container-grow" />
+            <component :is="Component" :key="route.fullPath" v-if="!isCreateRouter" class="app-container-grow" />
           </keep-alive>
         </transition>
       </router-view>

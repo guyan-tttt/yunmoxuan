@@ -25,8 +25,8 @@ const loading = ref(false)
 const codeUrl = ref("")
 /** 登录表单数据 */
 const loginFormData: any = reactive({
-  username: "admin",
-  password: "123456",
+  username: "",
+  password: "",
   code: "V3Admin"
 })
 /** 登录表单校验规则 */
@@ -96,14 +96,7 @@ const goBackHome = () => {
       <div class="content">
         <el-form ref="loginFormRef" :model="loginFormData" :rules="loginFormRules" @keyup.enter="handleLogin">
           <el-form-item prop="username">
-            <el-input
-              v-model.trim="loginFormData.username"
-              placeholder="用户名"
-              type="text"
-              tabindex="1"
-              :prefix-icon="User"
-              size="large"
-            />
+            <el-input v-model.trim="loginFormData.username" placeholder="用户名" type="text" tabindex="1" :prefix-icon="User" size="large" />
           </el-form-item>
           <el-form-item prop="password">
             <el-input
@@ -119,15 +112,7 @@ const goBackHome = () => {
             />
           </el-form-item>
           <el-form-item prop="code">
-            <el-input
-              v-model.trim="loginFormData.code"
-              placeholder="验证码"
-              type="text"
-              tabindex="3"
-              :prefix-icon="Key"
-              maxlength="7"
-              size="large"
-            >
+            <el-input v-model.trim="loginFormData.code" placeholder="验证码" type="text" tabindex="3" :prefix-icon="Key" maxlength="7" size="large">
               <template #append>
                 <el-image :src="codeUrl" draggable="false">
                   <template #placeholder>
@@ -144,9 +129,7 @@ const goBackHome = () => {
               </template>
             </el-input>
           </el-form-item>
-          <el-button class="login-btn" :loading="loading" type="primary" size="large" @click.prevent="handleLogin"
-            >登 录</el-button
-          >
+          <el-button class="login-btn" :loading="loading" type="primary" size="large" @click.prevent="handleLogin">登 录</el-button>
           <div class="help">
             <span @click="goBackHome">返回前台</span>
             <span>忘记密码？</span>
