@@ -41,7 +41,6 @@ const dashboardController = {
                 message: '参数错误'
             })
         }
-        console.log(view,32424);
         // 根据分页数据返回列表数据
         const left = (parseInt(page) - 1) * parseInt(pageSize)
         const right = left + parseInt(pageSize)

@@ -189,7 +189,14 @@ onUnmounted(() => {
     font-size: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+    cursor:
+      var(--cursor-pointer) 50 50,
+      pointer !important;
+    svg {
+      cursor:
+        var(--cursor-pointer) 50 50,
+        pointer !important;
+    }
     user-select: none;
     transition: all 0.5s;
     &:nth-child(1) {

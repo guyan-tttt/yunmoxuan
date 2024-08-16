@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import SourceCard from "@/views/source/components/SourceCard.vue"
+import SourceCard from "@/views/sources/components/SourceCard.vue"
 import { getSourceListAPI } from "@/api/web/source"
 import type { GroupItem } from "@/types/admin/source"
 import { ref, onMounted } from "vue"

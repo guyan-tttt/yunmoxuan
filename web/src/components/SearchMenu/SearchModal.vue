@@ -171,13 +171,7 @@ const handleReleaseUpOrDown = () => {
     <template v-else>
       <p>搜索结果</p>
       <el-scrollbar ref="scrollbarRef" max-height="40vh" always>
-        <SearchResult
-          ref="searchResultRef"
-          v-model="activeRouteName"
-          :list="resultList"
-          :isPressUpOrDown="isPressUpOrDown"
-          @click="handleEnter"
-        />
+        <SearchResult ref="searchResultRef" v-model="activeRouteName" :list="resultList" :isPressUpOrDown="isPressUpOrDown" @click="handleEnter" />
       </el-scrollbar>
     </template>
     <template #footer>

@@ -69,16 +69,23 @@ onUnmounted(() => {
 </script>
 <template>
   <div>
-    <Banner class="animate__zoomIn animate__animated" />
+    <Banner />
     <div class="container mx-auto max-w-screen-xl mt-5">
       <div class="grid grid-cols-4">
         <div class="col-span-4 px-3" style="width: 80%; margin: 0 auto">
-          <ArticleCard v-for="(item, index) in articleList" :key="item._id" :index="index" :article="item" @addLike="addLike(item)" />
+          <ArticleCard
+            v-cursor-pointer
+            v-for="(item, index) in articleList"
+            :key="item._id"
+            :index="index"
+            :article="item"
+            @addLike="addLike(item)"
+          />
         </div>
       </div>
     </div>
     <el-row justify="center" style="width: 100%">
-      <div class="more" @click="loadMore" v-if="showMore">
+      <div v-cursor-pointer class="more" @click="loadMore" v-if="showMore">
         <span>加载更多</span>
       </div>
       <div class="nomore" v-else>到底了~💫</div>
@@ -96,7 +103,6 @@ onUnmounted(() => {
   display: inline-block;
   text-align: center;
   margin: 0 auto;
-  cursor: pointer;
   background: #fff;
   border-radius: 100px;
   padding: 10px 35px;

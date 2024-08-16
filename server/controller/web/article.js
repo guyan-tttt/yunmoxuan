@@ -76,6 +76,15 @@ const articleController = {
             data,
             total
         })
+    },
+    search: async(req,res) => {
+        const { keyword } = req.query
+        const data = await articleService.search(keyword)
+        res.send({
+            code: 200,
+            message: '获取成功',
+            data
+        })
     }
 }
 

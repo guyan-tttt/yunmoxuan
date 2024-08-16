@@ -36,6 +36,9 @@ hljs.registerLanguage("javascript", javascript)
 // 导入websocket
 import "@/utils/websokcet"
 
+// 导入自定义指令
+import initDirective from "@/directive/index"
+
 const app = createApp(App)
 
 /** 加载插件 */
@@ -43,6 +46,7 @@ loadPlugins(app)
 /** 加载全局 SVG */
 loadSvg(app)
 /** 加载自定义指令 */
+initDirective(app)
 
 app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall).use(vue3SeamlessScroll, { name: "scroll" })
 app.component("Vue3EmojiPicker", Vue3EmojiPicker)

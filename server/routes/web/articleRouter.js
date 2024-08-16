@@ -23,4 +23,6 @@ router.post('/comment',articleController.addComment)
 // 获取文章评论列表
 router.get('/comment/list/:id',articleController.getCommentList)
 
+// 搜索文章
+router.get('/search',articleController.search)
 module.exports = router;

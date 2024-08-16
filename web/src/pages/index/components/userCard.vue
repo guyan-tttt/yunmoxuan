@@ -83,7 +83,7 @@ const openPreview = (tag: Tag) => {
   <!-- 文章分类 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</h2>
-    <div class="text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+    <div class="category text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <a
         v-for="item in webInfoStore.categoryInfo"
         :key="item._id"
@@ -159,6 +159,9 @@ const openPreview = (tag: Tag) => {
   margin-left: 20px;
   background-color: #ecf5ff;
   border-radius: 4px;
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
   span {
     margin-left: 10px;
     color: #409eff;
@@ -173,5 +176,15 @@ const openPreview = (tag: Tag) => {
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
   padding: 3px;
   border-radius: 10px;
+}
+.about svg {
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
+}
+.category a {
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
 }
 </style>

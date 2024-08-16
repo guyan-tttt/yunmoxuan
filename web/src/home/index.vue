@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-cursor-default>
     <!-- 导航栏 -->
     <Header />
     <!-- 导航栏 -->
@@ -72,5 +72,7 @@ onUnmounted(() => {
   position: fixed;
   top: 60%;
   left: 0;
+}
+.home {
 }
 </style>

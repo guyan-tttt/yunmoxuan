@@ -102,6 +102,9 @@ const goToDetail = (id: string) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
   &:hover {
     color: #409eff;
   }
@@ -133,5 +136,10 @@ const goToDetail = (id: string) => {
 
 .card {
   box-shadow: 0px 2px 20px #999;
+}
+::v-deep(.el-image img) {
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer;
 }
 </style>

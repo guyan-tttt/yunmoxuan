@@ -166,19 +166,19 @@ onUnmounted(() => {
 
 .category-item:hover {
   text-decoration: underline;
-  cursor: pointer;
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
 }
 
 .tag-item:hover {
-  cursor: pointer;
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer !important;
 }
 
 .el-tag:hover {
   background-color: var(--el-color-info-light-8);
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .article-title {
@@ -193,10 +193,14 @@ onUnmounted(() => {
   h4 {
     font-size: 20px;
     // color: rgb(48, 49, 51);
-    cursor: pointer;
+    cursor:
+      var(--cursor-pointer) 50 50,
+      pointer !important;
   }
   span {
-    cursor: pointer;
+    cursor:
+      var(--cursor-pointer) 50 50,
+      pointer !important;
   }
 }
 </style>

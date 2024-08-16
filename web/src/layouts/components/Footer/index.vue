@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
+const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer class="layout-footer">MIT © 2021-PRESENT {{ VITE_APP_TITLE }}</footer>
+  <footer class="layout-footer">© 2024-{{ year }} Provide By {{ VITE_APP_TITLE }}</footer>
 </template>
 
 <style lang="scss" scoped>

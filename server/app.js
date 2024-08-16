@@ -39,7 +39,7 @@ var app = express();
 
 // 跨域配置，用于前端请求获取后端图片信息
 app.use(cors({
-  origin: 'http://118.31.237.92' // 只允许 http://localhost:3000 这个域名
+  origin: 'http://localhost:3333' // 只允许 http://localhost:3000 这个域名
 }));
 
 // view engine setup

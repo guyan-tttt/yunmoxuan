@@ -1,7 +1,7 @@
 <template>
   <div class="toolbox">
     <div class="menu" :class="{ active: isOpenToolbox }" ref="menuRef">
-      <div class="btn">
+      <div class="btn" v-cursor-pointer>
         <SvgIcon class="toolbox btn" name="toolbox" @click="openToolbox" />
       </div>
       <span style="--i: 0">
@@ -19,11 +19,15 @@
         </el-popover>
       </span>
       <span style="--i: 2"
-        ><el-icon><WarningFilled /></el-icon
+        ><el-icon> <SearchMenu /> </el-icon
       ></span>
-      <span style="--i: 3"
-        ><el-icon><WarningFilled /></el-icon
-      ></span>
+      <span style="--i: 3">
+        <el-popover placement="top-start" title="开启鼠标样式" :width="200" trigger="hover" content="开启或关闭鼠标皮肤">
+          <template #reference>
+            <SvgIcon name="cursor" @click="mouseSkin" />
+          </template>
+        </el-popover>
+      </span>
       <span style="--i: 4"
         ><el-icon><WarningFilled /></el-icon
       ></span>
@@ -45,6 +49,8 @@ import { ref, watch } from "vue"
 import { onClickOutside } from "@vueuse/core"
 import { useSettingsStore } from "@/store/modules/settings"
 import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
+import SearchMenu from "../Search/index.vue"
+
 // 是否展开工具箱
 const isOpenToolbox = ref<boolean>(false)
 
@@ -64,7 +70,7 @@ onClickOutside(menuRef, () => {
 // 设置仓库
 const settingsStore = useSettingsStore()
 
-// 点击切换烟花开关
+// 1.点击切换烟花开关
 const toggleFireWork = () => {
   settingsStore.openFireworks()
 }
@@ -81,12 +87,17 @@ watch(
   }
 )
 
-// 回到页顶
+//2. 回到页顶
 const goTop = () => {
   window.scrollTo({
     top: 0,
     behavior: "smooth"
   })
+}
+
+// 开启鼠标皮肤
+const mouseSkin = () => {
+  settingsStore.openMouseSkin()
 }
 </script>
 
@@ -118,7 +129,7 @@ const goTop = () => {
   align-items: center;
   padding: 10px;
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+
   transition: all 1.25s;
 }
 .menu span {
@@ -132,7 +143,9 @@ const goTop = () => {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  cursor: pointer;
+  cursor:
+    var(--cursor-pointer) 50 50,
+    pointer;
   transform-origin: 100px;
   transition-delay: calc(0.1s * var(--i));
   transition: all 0.5s;

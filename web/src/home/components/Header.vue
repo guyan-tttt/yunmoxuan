@@ -7,6 +7,7 @@
         </el-menu-item>
         <div class="flex-grow" />
         <el-menu-item
+          v-cursor-pointer
           :class="{ active: item.meta?.index === activeIndex }"
           v-for="item in routesList"
           :key="item.meta?.index"
@@ -129,14 +130,20 @@ const changeActive = (index: any) => {
 
 <style scoped lang="scss">
 .container {
-  max-width: 1260px;
+  width: 100vw;
 }
 
 .header-container {
   border-bottom: solid 1px var(--el-menu-border-color);
   background-color: transparent;
+
   .el-menu-item {
     color: #fff;
+  }
+  ::v-deep(.el-menu-item) {
+    cursor:
+      var(--cursor-pointer) 50 50,
+      pointer !important;
   }
   &.active {
     background-color: #fff;

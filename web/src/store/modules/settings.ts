@@ -54,6 +54,22 @@ export const useSettingsStore = defineStore("settings", () => {
   const openFireworks = () => {
     isFireworks.value = !isFireworks.value
   }
+  // 鼠标皮肤
+  const isMouseSkin = ref<boolean>(false)
+
+  // 开启鼠标皮肤
+  const openMouseSkin = () => {
+    // 切换
+    const home = document.querySelector(".home") as any
+    if (isMouseSkin.value) {
+      home?.style.setProperty("--cursor-default", "default")
+      home?.style.setProperty("--cursor-pointer", "pointer")
+    } else {
+      home?.style.setProperty("--cursor-default", "var(--default")
+      home?.style.setProperty("--cursor-pointer", "var(--pointer")
+    }
+    isMouseSkin.value = !isMouseSkin.value
+  }
   return {
     ...state,
     isRefresh,
@@ -61,6 +77,8 @@ export const useSettingsStore = defineStore("settings", () => {
     showNavBg,
     changeNavBg,
     isFireworks,
-    openFireworks
+    openFireworks,
+    isMouseSkin,
+    openMouseSkin
   }
 })

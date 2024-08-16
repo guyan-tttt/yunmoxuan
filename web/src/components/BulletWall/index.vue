@@ -90,8 +90,6 @@ const stop = (item: any) => {
 
 // 批量插入弹幕
 const insertBullet = () => {
-  console.log(trackNum.value)
-
   for (let i = 0; i < Math.ceil(bulletWallData.value.length / trackNum.value); i++) {
     const start = i * trackNum.value
     const end = (i + 1) * trackNum.value
@@ -127,7 +125,7 @@ const assignTrack = (item: any) => {
 // 随机取色
 const getRandomColor = function () {
   const colorAngle = Math.floor(Math.random() * 360)
-  const color = "hsla(" + colorAngle + ",100%,50%,1)"
+  const color = "#fff"
   return color
 }
 

@@ -32,3 +32,8 @@ export const addCommentAPI = (data: ArticleCommentItem) => {
 export const getCommentListAPI = (id: string, page: number, pageSize: number) => {
   return request.get<any, ArticleCommentListResponse>(`/web/article/comment/list/${id}?page=${page}&pageSize=${pageSize}`)
 }
+
+// 搜索文章
+export const searchArticleAPI = (keyword: string) => {
+  return request.get<any, ArticleList>(`/web/article/search?keyword=${keyword}`)
+}

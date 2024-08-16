@@ -277,6 +277,15 @@ const articleService = {
         data,
         total
     }
+   },
+   search: async(keyword) => {
+        const data = await ArticleModel.find({isDelete: false, isPublish: true}).where("title").regex(keyword).sort( {createTime: -1} )
+        for(let item of data) {
+            item.cover = process.env.SERVER_BASE_URL + item.cover
+            const category = await CategoryModel.findById(item.categoryID)
+            item.aboutInfo = category
+        }
+        return data
    }
 }
 
