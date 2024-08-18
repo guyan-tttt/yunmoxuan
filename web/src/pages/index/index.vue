@@ -47,6 +47,13 @@ const showMore = () => {
   router.push("/home-article")
 }
 
+// 点击划入主内容区
+const scrollIndex = () => {
+  window.scrollTo({
+    top: articleTarget.value?.offsetTop - 80,
+    behavior: "smooth"
+  })
+}
 onMounted(() => {
   changeNavBg(false)
   getRecommendArticle()
@@ -65,7 +72,7 @@ onUnmounted(() => {
       <h1>{{ VITE_APP_TITLE }}</h1>
       <TypeWrite />
       <div class="icon">
-        <el-icon :size="30" color="#fff"><ArrowDownBold /></el-icon>
+        <el-icon :size="30" color="#fff" @click="scrollIndex"><ArrowDownBold /></el-icon>
       </div>
     </div>
     <div ref="articleTarget" class="container mx-auto max-w-screen-xl mt-5" :class="{ active: targetIsActive }">
@@ -116,6 +123,12 @@ onUnmounted(() => {
     left: 50%;
     transform: translateX(-50%);
     animation: twinkle 0.7s linear infinite alternate;
+    .el-icon {
+      cursor: var(--cursor-pointer);
+    }
+    svg {
+      cursor: var(--cursor-pointer);
+    }
   }
   @keyframes twinkle {
     to {

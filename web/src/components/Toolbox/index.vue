@@ -28,9 +28,13 @@
           </template>
         </el-popover>
       </span>
-      <span style="--i: 4"
-        ><el-icon><WarningFilled /></el-icon
-      ></span>
+      <span style="--i: 4">
+        <el-popover placement="top-start" title="开启鼠标拖尾" :width="200" trigger="hover" content="开启或关闭鼠标拖尾">
+          <template #reference>
+            <SvgIcon name="trail" @click="openMouseTrail" />
+          </template>
+        </el-popover>
+      </span>
       <span style="--i: 5"
         ><el-icon><WarningFilled /></el-icon
       ></span>
@@ -45,11 +49,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { ref, watch  ,onMounted } from "vue"
 import { onClickOutside } from "@vueuse/core"
 import { useSettingsStore } from "@/store/modules/settings"
 import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"
 import SearchMenu from "../Search/index.vue"
+
+//@ts-ignore
+import { mouseTrail, removeMouseTrail } from "./component//MouseTrail.js"
 
 // 是否展开工具箱
 const isOpenToolbox = ref<boolean>(false)
@@ -99,6 +106,23 @@ const goTop = () => {
 const mouseSkin = () => {
   settingsStore.openMouseSkin()
 }
+
+// 鼠标拖尾是否开启
+const isOpenMouseTrail = ref(false)
+
+// 开启鼠标拖尾
+const openMouseTrail = () => {
+  if (isOpenMouseTrail.value) {
+    removeMouseTrail()
+  } else {
+    mouseTrail()
+  }
+  isOpenMouseTrail.value = !isOpenMouseTrail.value
+}
+
+// onMounted(() => {
+//   snow()
+// })
 </script>
 
 <style scoped lang="scss">

@@ -17,4 +17,7 @@ router.get('/tag',indexController.tag);
 // 获取日志列表
 router.get('/journal',indexController.journal);
 
+// 添加访问记录
+router.post('/visit',indexController.addVisit);
+
 module.exports = router; 

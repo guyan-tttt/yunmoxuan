@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <router-link :to="`/home-picture/detail?id=${item._id}`" class="item" v-for="item in pictureCategory" :key="item._id">
+    <router-link :to="`/home-picture/detail?id=${item._id}`" class="item" v-for="item in pictureCategory" :key="item._id" v-cursor-pointer>
       <div class="title">
         <span>{{ item.name }}</span>
         <p>{{ item.desc }}</p>

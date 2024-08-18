@@ -1,6 +1,8 @@
 .home {
   --default: url("../assets/cursor/default.ico");
   --pointer: url("../assets//cursor/pointer.ico");
+  --text: url("../assets//cursor/text.ico");
   --cursor-default: default;
   --cursor-pointer: pointer;
+  --cursor-text: text;
 }

@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const JWT = require('./utils/JWT')
 const cors = require('cors');
-
+var expressip = require('express-ip');
 
 
 // 后台路由导入
@@ -36,6 +36,9 @@ const WebSocket = require('./websocket/app')
 
 // 创建服务器
 var app = express();
+
+// 挂载插件获取ip
+app.use(expressip().getIpInfoMiddleware);
 
 // 跨域配置，用于前端请求获取后端图片信息
 app.use(cors({

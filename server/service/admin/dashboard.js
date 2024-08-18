@@ -5,7 +5,7 @@ const ImageModel = require('../../model/ImageModel')
 const TrendsModel = require('../../model/TrendsModel')
 const TrendsCommentModel = require('../../model/TrendsComment')
 const JournalModel = require('../../model/JournalModel')
-
+const VisitLogModel = require('../../model/VisitLogModel')
 
 const dashboardService = {
     statistics: async() => {
@@ -108,6 +108,13 @@ const dashboardService = {
         await JournalModel.findByIdAndUpdate(id, {
             view: true
         })
+    },
+    addVisit: async(data) => {
+        await VisitLogModel.create({
+            ...data,
+            createTime: Date.now()
+        })
+        return await VisitLogModel.find().countDocuments()
     }
 }
 module.exports = dashboardService

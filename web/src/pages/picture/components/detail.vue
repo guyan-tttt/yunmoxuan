@@ -5,6 +5,7 @@
         <el-popover placement="top-end" :width="100" trigger="contextmenu">
           <template #reference>
             <el-image
+              v-cursor-pointer
               lazy
               :src="item.src"
               :zoom-rate="1.2"
@@ -224,5 +225,8 @@ onMounted(() => {
       all 1s,
       box-shadow 1s ease-out 0.1s;
   }
+}
+::v-deep(.el-image img) {
+  cursor: var(--cursor-pointer);
 }
 </style>

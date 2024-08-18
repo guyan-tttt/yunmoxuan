@@ -3,6 +3,7 @@ const imageService = require("../../service/admin/image")
 const categoryService = require("../../service/admin/category")
 const tagsService = require("../../service/admin/tags")
 const dashboardService = require("../../service/admin/dashboard")
+const useragent = require('useragent')
 
 const indexController =  {
     user: async(req,res) => {
@@ -64,6 +65,26 @@ const indexController =  {
             data,
             total
         });
+    },
+    addVisit: async(req,res) => {
+        const ip = req.ipInfo.ip // 系统ip
+        const agent = req.headers['user-agent'] // 用户代理
+        const osInfo = useragent.parse(agent)
+        const browser = osInfo.toString().split("/")[0]
+        const os = osInfo.os.toString()
+        const data = {
+            ip,
+            browser,
+            os
+        }
+        console.log(data);
+        const total = await dashboardService.addVisit(data)
+
+        res.send({
+            code: 200,
+            message: "获取成功",
+            data: total
+        })
     }
 }
 

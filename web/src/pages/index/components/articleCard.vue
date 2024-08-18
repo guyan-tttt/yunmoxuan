@@ -1,13 +1,7 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 card">
     <a class="cursor-pointer">
-      <el-image
-        class="rounded-t-lg"
-        :src="props.article?.cover"
-        fit="contain"
-        :preview-src-list="[props.article?.cover]"
-        :hide-on-click-modal="true"
-      />
+      <el-image class="rounded-t-lg" :src="props.article?.cover" fit="contain" :hide-on-click-modal="true" />
     </a>
     <div class="p-5">
       <!-- 标签 -->

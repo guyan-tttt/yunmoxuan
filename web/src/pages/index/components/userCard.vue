@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import type { Tag } from "@/types/admin/tags"
+import OfficialAccount from "./OfficialAccount.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
@@ -80,6 +81,8 @@ const openPreview = (tag: Tag) => {
       </div>
     </div>
   </div>
+  <!-- 微信公众号 -->
+  <OfficialAccount />
   <!-- 文章分类 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</h2>

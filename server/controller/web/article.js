@@ -4,7 +4,6 @@ const websocket = require('../../websocket/app')
 const articleController = {
     getRecommends: async(req,res) => {
         const result = await articleService.getRecommends()
-        console.log(result);
         res.send({
             code: 200,
             message: '获取成功',

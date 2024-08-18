@@ -9,7 +9,12 @@ const userController = {
 
         // 登录逻辑
         const result = await userService.login(username,password)
-        if(result._id) {
+        if(!result) {
+            res.send({
+                code: 401,
+                message: '账号或密码错误'
+            })
+        } else {
             // 生成token
             const token = JWT.generate({
                 id: result._id,
@@ -22,11 +27,6 @@ const userController = {
                 code: 200,
                 message: '登录成功',
                 token: token
-            })
-        } else {
-            res.send({
-                code: 500,
-                message: '登录失败'
             })
         }
         

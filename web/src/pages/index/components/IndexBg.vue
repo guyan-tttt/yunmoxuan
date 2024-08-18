@@ -4,7 +4,13 @@
   </div>
 </template>
 
-<script setup lang="ts" />
+<script setup lang="ts">
+// import snow from "@/components/Toolbox/component/SnowflakeEffect.js"
+// import { onMounted } from "vue"
+// onMounted(() => {
+//   // snow(document.querySelector(".index-bg")!)
+// })
+</script>
 
 <style scoped lang="scss">
 .index-bg {
@@ -14,7 +20,7 @@
   top: 0;
   left: 0;
   z-index: -1;
-  background: url(https://cdn.pixabay.com/photo/2023/03/29/02/59/woman-7884470_1280.jpg) no-repeat;
+  background: url(../../../assets/layouts/index-bg.webp) no-repeat;
   background-size: cover;
   transition: all 0.5s;
 }

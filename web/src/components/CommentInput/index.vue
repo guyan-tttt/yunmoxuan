@@ -164,4 +164,8 @@ watch(
 .el-card {
   overflow: visible;
 }
+
+::v-deep(.el-input) {
+  cursor: var(--cursor-text);
+}
 </style>

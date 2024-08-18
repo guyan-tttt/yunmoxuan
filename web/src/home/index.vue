@@ -47,6 +47,8 @@ onMounted(() => {
     clickEffect()
   }
 })
+// 添加访问记录
+
 // 销毁动画
 onUnmounted(() => {
   removeClickEffect()
@@ -74,5 +76,6 @@ onUnmounted(() => {
   left: 0;
 }
 .home {
+
 }
 </style>

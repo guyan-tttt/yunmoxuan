@@ -12,6 +12,7 @@
       :key="item.id"
       :class="`bullet-${item.status}`"
       @animationend="stop(item)"
+      v-cursor-pointer
     >
       <div class="avatar">
         <el-avatar v-if="item.avatar" :size="40" :src="item.avatar" />
@@ -124,7 +125,7 @@ const assignTrack = (item: any) => {
 
 // 随机取色
 const getRandomColor = function () {
-  const colorAngle = Math.floor(Math.random() * 360)
+  // const colorAngle = Math.floor(Math.random() * 360)
   const color = "#fff"
   return color
 }

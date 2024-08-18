@@ -1,12 +1,16 @@
 <script setup>
 import { onMounted, ref, onUnmounted } from "vue"
+import { addVisitAPI } from "@/api/web/index"
 
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 const VITE_APP_VERSION = import.meta.env.VITE_APP_VERSION
+
 // 计算当前时间
 const nowYear = new Date().getFullYear()
+
 // 钟表表情
 const clockFace = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]
+
 // 获取当前时间
 const getTime = () => {
   const date = new Date()
@@ -52,12 +56,26 @@ const getTimeDiff = () => {
     second
   }
 }
+
 // 计时器
 const timer = ref()
+
 // 时间差
 const timeDiff = ref(getTimeDiff())
 
+// 添加访问记录
+const addVisit = async () => {
+  const res = await addVisitAPI()
+  // console.log(res)
+  if (res.code == 200) {
+    visitNum.value = res.data
+  }
+}
+
+const visitNum = ref(0)
+
 onMounted(() => {
+  addVisit()
   timer.value = setInterval(() => {
     timeDiff.value = getTimeDiff()
   }, 1000)
@@ -75,6 +93,7 @@ onUnmounted(() => {
           <div class="name">
             ©2024 - {{ nowYear }} By {{ VITE_APP_TITLE }} —— <span>@ {{ VITE_APP_VERSION }}</span>
           </div>
+          <div class="viewNum">🤩 本站访问量: {{ visitNum }}次</div>
           <div class="run">
             {{ getTime() }} 本站居然运行了 {{ timeDiff.day }} 天{{ timeDiff.hour }} 小时 {{ timeDiff.minute }} 分 {{ timeDiff.second }} 秒
           </div>
@@ -180,7 +199,7 @@ footer {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      height: 50px;
+      // height: 50px;
       color: #666;
       font-family: "KaiTi";
       .top {
@@ -196,7 +215,8 @@ footer {
             vertical-align: middle;
           }
         }
-        .run {
+        .run,
+        .viewNum {
           margin-top: 10px;
           font-size: 14px;
           color: #999;
@@ -204,6 +224,7 @@ footer {
       }
       .bottom {
         --br: 6px;
+        // flex: 1;
         display: flex;
         align-items: center;
         background-color: #fff;
@@ -214,16 +235,17 @@ footer {
         border-radius: var(--br);
         max-width: 250px;
         margin-top: 10px;
+        background-color: var(--primary-color);
         .left {
           background-color: var(--primary-color);
-          margin: 0;
-          height: 100%;
+          // height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           color: #fff;
           padding-left: 10px;
           border-radius: var(--br) 0 0 var(--br);
+          font-size: 14px;
         }
         .right {
           display: flex;

@@ -1,5 +1,5 @@
 import request from "@/utils/request"
-import type { UserInfoResponseData } from "@/types/admin/user"
+import type { UserInfoResponseData, ResponseData } from "@/types/admin/user"
 import type { ImageListResponse } from "@/types/admin/image"
 import type { GetCategoryListResponse } from "@/types/admin/category"
 import type { GetTagsResponseData } from "@/types/admin/tags"
@@ -27,4 +27,9 @@ export const getTagAPI = () => {
 // 获取日志列表
 export const getJournalAPI = (page: number, pageSize: number) => {
   return request.get<any, LogResponse>(`/web/index/journal?page=${page}&pageSize=${pageSize}`)
+}
+
+// 添加网站访问记录
+export const addVisitAPI = () => {
+  return request.post<any, ResponseData>("/web/index/visit")
 }

@@ -328,4 +328,10 @@ onMounted(() => {
 ::v-deep(.number) {
   border-radius: 5px;
 }
+::v-deep(.el-pager li) {
+  cursor: var(--cursor-pointer);
+}
+::v-deep(.el-button) {
+  cursor: var(--cursor-pointer);
+}
 </style>
