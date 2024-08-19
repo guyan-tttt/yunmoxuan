@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch  ,onMounted } from "vue"
+import { ref, watch } from "vue"
 import { onClickOutside } from "@vueuse/core"
 import { useSettingsStore } from "@/store/modules/settings"
 import { clickEffect, removeClickEffect } from "@/utils/clickAnimate"

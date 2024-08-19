@@ -1,4 +1,3 @@
-const { log } = require('console')
 const articleService = require('../../service/admin/article')
 const renameFile = require('../../utils/renameFile')
 const fs = require('fs')

@@ -20,6 +20,7 @@ const trendsRouter = require('./routes/admin/trendsRouter')
 const dashboardRouter = require('./routes/admin/dashboardRouter')
 const guestbookRouter = require('./routes/admin/guestbookRouter')
 const sourceRouter = require('./routes/admin/sourceRouter')
+const animationRouter = require('./routes/admin/animationRouter')
 // 路由导入
 
 // 前台路由导入
@@ -111,6 +112,7 @@ app.use('/api/admin/image',imageRouter)
 app.use('/api/admin/trends',trendsRouter)
 app.use('/api/admin/guestbook', guestbookRouter)
 app.use('/api/admin/source',sourceRouter)
+app.use('/api/admin/animation',animationRouter)
 // 路由挂载区域
 
 // catch 404 and forward to error handler

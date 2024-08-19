@@ -214,13 +214,7 @@ onMounted(() => {
       <el-row justify="center">
         <el-check-tag checked>{{ title }}</el-check-tag></el-row
       >
-      <el-form
-        ref="formRef"
-        :rules="rules"
-        :model="articleForm"
-        label-width="auto"
-        style="max-width: 800px; margin: 20px auto"
-      >
+      <el-form ref="formRef" :rules="rules" :model="articleForm" label-width="auto" style="max-width: 800px; margin: 20px auto">
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="articleForm.title" placeholder="请输入文章标题" />
         </el-form-item>
@@ -252,42 +246,15 @@ onMounted(() => {
           />
         </el-form-item>
         <el-form-item label="文章封面" prop="cover">
-          <el-upload
-            class="avatar-uploader"
-            action=""
-            :show-file-list="false"
-            :on-change="imageUpload"
-            :auto-upload="false"
-          >
+          <el-upload class="avatar-uploader" action="" :show-file-list="false" :on-change="imageUpload" :auto-upload="false">
             <img v-if="articleForm.cover" :src="articleForm.cover" class="cover" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
         <el-form-item label="文章选项">
-          <el-switch
-            v-model="articleForm.isOriginal"
-            class="mt-2"
-            style="margin-left: 24px"
-            inline-prompt
-            active-text="原创"
-            inactive-text="转载"
-          />
-          <el-switch
-            v-model="articleForm.isTop"
-            class="mt-2"
-            style="margin-left: 24px"
-            inline-prompt
-            active-text="置顶"
-            inactive-text="默认"
-          />
-          <el-switch
-            v-model="articleForm.isPublish"
-            class="mt-2"
-            style="margin-left: 24px"
-            inline-prompt
-            active-text="发布"
-            inactive-text="草稿"
-          />
+          <el-switch v-model="articleForm.isOriginal" class="mt-2" style="margin-left: 24px" inline-prompt active-text="原创" inactive-text="转载" />
+          <el-switch v-model="articleForm.isTop" class="mt-2" style="margin-left: 24px" inline-prompt active-text="置顶" inactive-text="默认" />
+          <el-switch v-model="articleForm.isPublish" class="mt-2" style="margin-left: 24px" inline-prompt active-text="发布" inactive-text="草稿" />
         </el-form-item>
         <el-form-item label="文章作者" prop="authorID">
           <el-select v-model="articleForm.authorID" placeholder="请选择文章作者">

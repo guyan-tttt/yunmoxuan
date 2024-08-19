@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <el-dialog v-model="dialogShow" :show-close="false" width="40%" class="search" @closed="$emit('update:modelValue', false)">
+    <el-dialog v-model="dialogShow" :show-close="false" width="40%" class="search" @closed="$emit('update:modelValue', false)" title="📜搜索文章">
       <el-autocomplete
         v-model="state"
         :fetch-suggestions="querySearch"

@@ -224,6 +224,33 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       }
+    ],
+    meta: {
+      hidden: true
+    }
+  },
+  {
+    path: "/animation",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/animation/index.vue"),
+        name: "Animation",
+        meta: {
+          title: "追番管理",
+          svgIcon: "animation",
+          affix: true
+        }
+      },
+      {
+        path: "add",
+        component: () => import("@/views/animation/add.vue"),
+        name: "AddAnimation",
+        meta: {
+          hidden: true
+        }
+      }
     ]
   }
 ]
