@@ -1,24 +1,30 @@
 <template>
-  <article class="card">
+  <article class="card" :style="{ backgroundImage: `url(${props.data.cover})` }">
     <div class="temporary_text">
-      <div class="title">🌟完美世界</div>
-      <span class="score">💫9.5分</span>
+      <div class="title">🌟{{ props.data.name }}</div>
+      <span class="score">💫{{ props.data.score.toFixed(1) }}分</span>
     </div>
     <div class="card_content">
       <span class="card_title">
-        <div class="title">完美世界</div>
-        <div class="fire">🔥19873</div>
-        <div class="category">🔖3D</div>
+        <div class="title">{{ props.data.name }}</div>
+        <div class="fire">🔥{{ props.data.hot }}</div>
+        <div class="category">🔖{{ props.data.type }}</div>
       </span>
-      <span class="card_subtitle">VIP用户每周五10点更新1集</span>
-      <p class="card_description">
-        本作动画生，为应劫而至，他身化亿万血雨，洒落万古岁月，经历无数时空的熬炼gddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd，岁月长河的洗礼，他化万古，他化自在。看男主石昊如何一生极致辉煌，造就无尽传说。
-      </p>
+      <span class="card_subtitle" v-if="props.data.status === 0">自{{ props.data.remark }}起停更</span>
+      <span class="card_subtitle" v-if="props.data.status === 1">自{{ props.data.remark }}起VIP用户每周五10点更新1集</span>
+      <span class="card_subtitle" v-if="props.data.status === 2">至{{ props.data.remark }}完结</span>
+      <p class="card_description">📄{{ props.data.desc }}</p>
     </div>
   </article>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { defineProps } from "vue"
+
+const props = defineProps<{
+  data: any
+}>()
+</script>
 
 <style lang="scss" scoped>
 /* From Uiverse.io by eslam-hany */
@@ -31,7 +37,6 @@
   background: #131313;
   overflow: hidden;
   border-radius: 20px;
-  background: url(https://www.4kbizhi.com/d/file/2024/07/01/small093702duOyt1719797822.jpg);
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -52,11 +57,17 @@
   padding: 6px 12px;
   color: #fff;
   transform: translateY(50px);
-  margin-left: 24px;
+  // margin-left: 24px;
   transition: all 0.25s;
   display: flex;
   justify-content: space-between;
   font-family: "KaiTi", sans-serif;
+  flex-wrap: nowrap;
+  .title {
+    flex: 1;
+    text-align: center;
+    // font-size: 25px;
+  }
   .score {
     font-size: 12px;
     background-color: #409eff;

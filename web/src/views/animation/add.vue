@@ -43,6 +43,13 @@
             <el-radio v-for="item in status" :key="item.value" :value="item.value" size="large">{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-popover placement="bottom" title="备注类型" :width="200" trigger="click" content="即为动漫停更时间/播出时间/完结时间">
+            <template #reference>
+              <el-input type="date" v-model="animationForm.remark" />
+            </template>
+          </el-popover>
+        </el-form-item>
         <el-form-item>
           <el-button class="btn" @click="cancel">取消</el-button>
           <el-button class="btn" type="primary" @click="handleSubmit">提交</el-button>
@@ -56,13 +63,14 @@
 import { ref } from "vue"
 import { addAnimationAPI } from "@/api/admin/animation"
 import { useRouter } from "vue-router"
-import { ElMessage } from "element-plus"
+import { ElMessage, type FormInstance } from "element-plus"
+import { AnimeItem } from "@/types/admin/animation"
 
 // 全局路由
 const router = useRouter()
 
 // 表单数据
-const animationForm = ref({
+const animationForm = ref<AnimeItem>({
   name: "",
   desc: "",
   cover: "",
@@ -71,7 +79,9 @@ const animationForm = ref({
   type: "",
   hot: 0,
   file: null,
-  status: 1
+  status: 1,
+  // 备注
+  remark: ""
 })
 
 // 动漫状态
@@ -90,7 +100,7 @@ const status = [
   }
 ]
 // 表单校验
-const rules = {
+const rules: any = {
   name: [
     { required: true, message: "请输入名称", trigger: "blur" },
     { min: 2, max: 10, message: "长度在 2 到 20 个字符", trigger: "blur" }
@@ -156,7 +166,8 @@ const rules = {
       },
       trigger: "blur"
     }
-  ]
+  ],
+  remark: [{ required: true, message: "请输入备注", trigger: "blur" }]
 }
 // 上传图片
 const handleBg = (file: any) => {
@@ -166,7 +177,7 @@ const handleBg = (file: any) => {
 }
 
 // 表单对象
-const animationRef = ref<null>()
+const animationRef = ref<FormInstance>()
 
 // 点击提交
 const handleSubmit = () => {
@@ -181,8 +192,9 @@ const handleSubmit = () => {
       formData.append("link", animationForm.value.link)
       formData.append("type", animationForm.value.type)
       formData.append("hot", animationForm.value.hot + "")
-      formData.append("file", animationForm.value.file)
-      formData.append("status", animationForm.value.status)
+      formData.append("file", animationForm.value.file as any)
+      formData.append("status", animationForm.value.status + "")
+      formData.append("remark", animationForm.value.remark)
       const res = await addAnimationAPI(formData)
       if (res.code === 200) {
         ElMessage.success("添加成功")
@@ -204,8 +216,9 @@ const cancel = () => {
     type: "1",
     hot: 0,
     cover: "",
-    status: "1",
-    file: null
+    status: 1,
+    file: null,
+    remark: ""
   }
   animationRef.value?.resetFields()
   router.back()

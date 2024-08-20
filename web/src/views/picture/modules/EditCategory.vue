@@ -155,30 +155,15 @@ const formRef = ref()
             <i>————{{ item.createTime }}</i>
           </div>
           <div class="right">
-            <el-icon
-              size="20"
-              :class="{ active: !item.showDeleteIcon }"
-              @click.stop="showDeleteIcon(item)"
-              color="#267ee8"
+            <el-icon size="20" :class="{ active: !item.showDeleteIcon }" @click.stop="showDeleteIcon(item)" color="#267ee8"
               ><WarningFilled
             /></el-icon>
-            <el-icon
-              size="20"
-              :class="{ active: item.showDeleteIcon }"
-              color="#E73037"
-              @click.stop="deleteCategory(item)"
+            <el-icon size="20" :class="{ active: item.showDeleteIcon }" color="#E73037" @click.stop="deleteCategory(item)"
               ><CircleCloseFilled
             /></el-icon>
           </div>
         </div>
-        <el-input
-          :ref="setRefAction"
-          @blur="changeItem(item)"
-          size="large"
-          autofocus
-          v-show="item.isEdit"
-          v-model="item.value"
-        />
+        <el-input :ref="setRefAction" @blur="changeItem(item)" size="large" autofocus v-show="item.isEdit" v-model="item.value" />
       </div>
     </div>
     <el-dialog v-model="addCategoryDialog" title="添加分组" width="500">
@@ -191,16 +176,11 @@ const formRef = ref()
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-row justify="center"
-          ><el-button @click="cancel">取消</el-button>
-          <el-button type="primary" @click="confirm"> 确认 </el-button></el-row
-        >
+        <el-row justify="center"><el-button @click="cancel">取消</el-button> <el-button type="primary" @click="confirm"> 确认 </el-button></el-row>
       </template>
     </el-dialog>
     <el-divider />
-    <el-card style="width: 100%" shadow="hover"
-      >以上图片分组在删除时会自动清空分组下所有的照片信息，因此在删除时请用户谨慎删除</el-card
-    >
+    <el-card style="width: 100%" shadow="hover">以上图片分组在删除时会自动清空分组下所有的照片信息，因此在删除时请用户谨慎删除</el-card>
   </div>
 </template>
 

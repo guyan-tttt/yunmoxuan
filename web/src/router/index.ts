@@ -250,6 +250,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           hidden: true
         }
+      },
+      {
+        path: "detail",
+        component: () => import("@/views/animation/detail.vue"),
+        name: "AnimationDetail",
+        meta: {
+          hidden: true
+        }
       }
     ]
   }
