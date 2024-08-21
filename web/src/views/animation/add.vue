@@ -6,7 +6,7 @@
           <el-icon :size="26"> <Back /></el-icon>
           <span>返回</span>
         </div>
-        <div class="title">⭐添加动漫⭐</div>
+        <div class="title">⭐{{ title }}⭐</div>
       </el-row>
     </el-card>
     <el-card>
@@ -60,14 +60,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import { addAnimationAPI } from "@/api/admin/animation"
-import { useRouter } from "vue-router"
+import { ref, onMounted, computed } from "vue"
+import { addAnimationAPI, getAnimationDetailAPI, updateAnimationAPI } from "@/api/admin/animation"
+import { useRouter, useRoute } from "vue-router"
 import { ElMessage, type FormInstance } from "element-plus"
 import { AnimeItem } from "@/types/admin/animation"
 
 // 全局路由
 const router = useRouter()
+
+// 页面路由
+const route = useRoute()
 
 // 表单数据
 const animationForm = ref<AnimeItem>({
@@ -171,6 +174,9 @@ const rules: any = {
 }
 // 上传图片
 const handleBg = (file: any) => {
+  if (route.query.id) {
+    deleteImg.value = animationForm.value.cover
+  }
   const img = URL.createObjectURL(file.raw)
   animationForm.value.cover = img
   animationForm.value.file = file.raw
@@ -181,26 +187,38 @@ const animationRef = ref<FormInstance>()
 
 // 点击提交
 const handleSubmit = () => {
-  console.log(animationForm.value)
-
   animationRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      const formData = new FormData()
-      formData.append("name", animationForm.value.name)
-      formData.append("desc", animationForm.value.desc)
-      formData.append("score", animationForm.value.score + "")
-      formData.append("link", animationForm.value.link)
-      formData.append("type", animationForm.value.type)
-      formData.append("hot", animationForm.value.hot + "")
-      formData.append("file", animationForm.value.file as any)
-      formData.append("status", animationForm.value.status + "")
-      formData.append("remark", animationForm.value.remark)
-      const res = await addAnimationAPI(formData)
-      if (res.code === 200) {
-        ElMessage.success("添加成功")
-        cancel()
+      if (route.query.id) {
+        const formData = new FormData()
+        for (const key in animationForm.value) {
+          // @ts-ignore
+          formData.append(key, animationForm.value[key])
+        }
+        formData.append("deleteImg", deleteImg.value || "")
+        const res = await updateAnimationAPI(formData)
+        if (res.code === 200) {
+          ElMessage.success("更新成功")
+          cancel()
+        }
       } else {
-        ElMessage.error(res.message)
+        const formData = new FormData()
+        formData.append("name", animationForm.value.name)
+        formData.append("desc", animationForm.value.desc)
+        formData.append("score", animationForm.value.score + "")
+        formData.append("link", animationForm.value.link)
+        formData.append("type", animationForm.value.type)
+        formData.append("hot", animationForm.value.hot + "")
+        formData.append("file", animationForm.value.file as any)
+        formData.append("status", animationForm.value.status + "")
+        formData.append("remark", animationForm.value.remark)
+        const res = await addAnimationAPI(formData)
+        if (res.code === 200) {
+          ElMessage.success("添加成功")
+          cancel()
+        } else {
+          ElMessage.error(res.message)
+        }
       }
     }
   })
@@ -223,6 +241,29 @@ const cancel = () => {
   animationRef.value?.resetFields()
   router.back()
 }
+
+// 页面标题
+const title = computed(() => {
+  return route.query.id ? "更新动画" : "添加动画"
+})
+
+// 获取动漫详情
+const getAnimationDetail = async (id: string) => {
+  const res = await getAnimationDetailAPI(id)
+  if (res.code === 200) {
+    animationForm.value = res.data
+  }
+}
+// 更新时需要删除的图片
+const deleteImg = ref<string>()
+
+onMounted(() => {
+  // 判断是否是更新
+  if (route.query.id) {
+    // 获动漫详情
+    getAnimationDetail(route.query.id as string)
+  }
+})
 </script>
 
 <style scoped lang="scss">

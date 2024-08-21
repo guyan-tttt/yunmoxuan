@@ -1,3 +1,5 @@
+import { ImageItem } from "./image"
+
 // 基本返回类型
 export interface ResponseData {
   code: number
@@ -19,6 +21,7 @@ export interface AnimeItem {
   remark: string // 备注 即为停更/完结时间,
   _id?: string
   file?: any
+  imgList?: ImageItem[]
 }
 
 // 动漫列表返回类型
@@ -30,4 +33,10 @@ export interface AnimeListResponse extends ResponseData {
 // 动漫详情返回
 export interface AnimeDetailResponse extends ResponseData {
   data: AnimeItem
+}
+
+// 动漫图片列表返回
+export interface AnimeImageListResponse extends ResponseData {
+  data: Array<ImageItem>
+  total: number
 }

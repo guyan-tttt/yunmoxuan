@@ -91,6 +91,9 @@ const submit = async () => {
   const res = await uploadAnimationImageAPI(formData)
   if (res.code === 200) {
     ElMessage.success("上传成功")
+    closeDialog()
+  } else {
+    ElMessage.error("上传失败")
   }
 }
 </script>

@@ -14,12 +14,19 @@ router.get('/list', animationController.list)
 router.get('/detail', animationController.detail)
 
 // 更新动漫
-// router.post('/update', upload.single('file'), animationController.update)
+router.put('/update', upload.single('file'), animationController.update)
+
 // 删除动漫
-// router.post('/delete', animationController.del)
+router.delete('/del', animationController.del)
 
 // 添加动漫图片
 router.post('/addImg', upload.array('files',10), animationController.addImg)
+
+// 获取图片信息
+router.get('/imgList', animationController.imgList)
+
+// 删除动漫图片
+// router.post('/deleteImg', animationController.delImg)
 
 
 

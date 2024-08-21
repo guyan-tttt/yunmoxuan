@@ -17,8 +17,8 @@
           </template>
           <template #extra>
             <div class="flex items-center">
-              <el-button type="primary" :icon="Edit">修改动漫</el-button>
-              <el-button type="danger" class="ml-2" :icon="Delete">删除动漫</el-button>
+              <el-button type="primary" :icon="Edit" @click="$router.push(`/animation/add?id=${route.query.id}`)">修改动漫</el-button>
+              <el-button type="danger" class="ml-2" :icon="Delete" @click="deleteAnimation">删除动漫</el-button>
             </div>
           </template>
 
@@ -51,25 +51,52 @@
         </el-col>
       </el-col>
     </el-card>
-    <el-card>
-      <div class="list">
-        <el-image class="item" v-for="item in animationDetail?.imgList" :key="item._id" :src="item.src" />
-      </div>
+    <el-card style="background-color: #f6f6f6" v-if="animationDetail?.imgList?.length === 0">
+      <el-empty image="https://img.ixintu.com/download/jpg/202001/9c3ccf72134f4a28d4c8344d4505f2f0.jpg!con" />
     </el-card>
-    <AddImage v-model="showModal" :data="animationDetail" />
+    <el-card v-else>
+      <div class="list">
+        <el-image
+          lazy
+          hide-on-click-modal
+          class="item"
+          :initial-index="index"
+          v-for="(item, index) in animationDetail?.imgList"
+          :key="item._id"
+          :src="item.src"
+          :preview-src-list="imgList"
+        />
+      </div>
+      <el-row justify="center" class="mt-5">
+        <el-pagination
+          style="margin: 0"
+          background
+          layout="prev, pager, next"
+          :total="pageData.total"
+          v-model:page-size="pageData.pageSize"
+          v-model:current-page="pageData.page"
+          @current-change="changePage"
+        />
+      </el-row>
+    </el-card>
+    <AddImage v-model="showModal" :data="animationDetail" @update:modelValue="updateImageList" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { Edit, Delete, CirclePlusFilled } from "@element-plus/icons-vue"
-import { getAnimationDetailAPI } from "@/api/admin/animation"
-import { onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { getAnimationDetailAPI, getAnimationImageListAPI, deleteAnimationAPI } from "@/api/admin/animation"
+import { onMounted, ref, computed } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import { AnimeItem } from "@/types/admin/animation"
 import AddImage from "./component/addImage.vue"
+import { ElMessage, ElMessageBox } from "element-plus"
 
 // 页面路由
 const route = useRoute()
+
+// 全局路由
+const router = useRouter()
 
 // 动漫信息
 const animationDetail = ref<AnimeItem>()
@@ -91,8 +118,65 @@ const showModal = ref(false)
 const openModel = () => {
   showModal.value = true
 }
+
+// 图片预览
+const imgList = computed(() => {
+  return animationDetail.value?.imgList?.map((item) => {
+    return item.src
+  })
+})
+
+// 更新图片
+const updateImageList = () => {
+  getAnimationDetail()
+}
+
+// 获取动漫图片列表
+const getAnimationImageList = async () => {
+  const res = await getAnimationImageListAPI(route.query.id as string, pageData.value.page, pageData.value.pageSize)
+  if (res.code === 200) {
+    animationDetail.value!.imgList = res.data
+    pageData.value.total = res.total
+  }
+}
+
+// 分页数据
+const pageData = ref({
+  page: 1,
+  pageSize: 20,
+  total: 0
+})
+
+// 切换分页
+const changePage = (page: number) => {
+  pageData.value.page = page
+  getAnimationImageList()
+}
+
+// 删除动漫
+const deleteAnimation = async () => {
+  ElMessageBox.confirm("确定删除该动漫吗？", "温馨提示", {
+    type: "warning",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消"
+  })
+    .then(async () => {
+      const res = await deleteAnimationAPI(route.query.id as string)
+      if (res.code === 200) {
+        ElMessage.success("删除动漫成功")
+        router.back()
+      } else if (res.code === 201) {
+        ElMessage.error(res.message)
+      } else {
+        ElMessage.error("删除动漫失败")
+      }
+    })
+    .catch(() => {})
+}
+
 onMounted(() => {
   getAnimationDetail()
+  getAnimationImageList()
 })
 </script>
 
@@ -100,7 +184,7 @@ onMounted(() => {
 .detail {
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  // background-position: center;
   min-height: 300px;
   color: #fff !important;
 }
@@ -128,6 +212,7 @@ onMounted(() => {
 .list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   .item {
     width: 210px;
