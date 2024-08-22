@@ -194,17 +194,32 @@ const isLoad = ref<boolean>(false)
 
 // 滚动加载逻辑
 const load = async () => {
+  // if (isLoad.value) return
+  // if (trendsList.value.length > 0) {
+  //   if (!throttle.value && trendsList.value.length < pageData.value.total) {
+  //     throttle.value = true
+  //     pageData.value.page++
+  //     getTrendsList()
+  //     setTimeout(() => {
+  //       throttle.value = true
+  //     }, 1000)
+  //   } else if (trendsList.value.length === pageData.value.total) {
+  //     ElMessage.info("没有更多数据了")
+  //     isLoad.value = true
+  //   }
+  // }
   if (isLoad.value) return
-  if (trendsList.value.length > 0) {
-    if (!throttle.value && trendsList.value.length < pageData.value.total) {
-      throttle.value = true
-      pageData.value.page++
-      await getTrendsList()
-      throttle.value = true
-    } else if (trendsList.value.length === pageData.value.total) {
-      ElMessage.info("没有更多数据了")
-      isLoad.value = true
-    }
+  if (!throttle.value && trendsList.value.length < pageData.value.total) {
+    throttle.value = true
+    pageData.value.page++
+    getTrendsList()
+    setTimeout(() => {
+      throttle.value = false
+    }, 1000)
+  } else {
+    ElMessage.info("没有更多数据了")
+    isLoad.value = true
+    throttle.value = true
   }
 }
 

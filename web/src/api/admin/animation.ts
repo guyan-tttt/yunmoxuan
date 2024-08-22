@@ -1,6 +1,6 @@
 import request from "@/utils/request"
 import { AnimeListResponse, ResponseData, AnimeDetailResponse, AnimeImageListResponse } from "@/types/admin/animation"
-
+import type { ImageItem } from "@/types/admin/image"
 // 添加动漫
 export const addAnimationAPI = (data: FormData) => {
   return request.post<any, ResponseData>("/admin/animation/add", data)
@@ -45,4 +45,9 @@ export const deleteAnimationAPI = (id: string) => {
 // 更新动漫
 export const updateAnimationAPI = (data: FormData) => {
   return request.put<any, ResponseData>("/admin/animation/update", data)
+}
+
+// 删除动漫图片
+export const deleteAnimationImgAPI = (data: ImageItem[]) => {
+  return request.post<any, ResponseData>("/admin/animation/delImg", data)
 }

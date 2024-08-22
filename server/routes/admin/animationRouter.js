@@ -26,7 +26,7 @@ router.post('/addImg', upload.array('files',10), animationController.addImg)
 router.get('/imgList', animationController.imgList)
 
 // 删除动漫图片
-// router.post('/deleteImg', animationController.delImg)
+router.post('/delImg', animationController.delImg)
 
 
 

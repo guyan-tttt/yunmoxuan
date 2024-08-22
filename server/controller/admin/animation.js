@@ -144,6 +144,26 @@ const animationController = {
 
 
 
+    },
+    delImg: async(req,res) => {
+        const imgs = req.body
+        if(!imgs) {
+            res.json({
+                code: 401,
+                message: '参数错误'
+            })
+        }
+        // 删除图片
+        imgs.forEach(item => {
+            const src = item.src.replace(process.env.SERVER_BASE_URL,"")
+            fs.unlinkSync(path.join(__dirname,"../../public",src))
+        })
+        // 删除图片记录
+        const result = await animationService.delImg(imgs.map((item) => item.id))
+        res.send({
+            code: 200,
+            message: '删除成功'
+        })
     }
 
 }

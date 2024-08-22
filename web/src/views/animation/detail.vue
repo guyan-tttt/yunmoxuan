@@ -37,10 +37,12 @@
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 1">自{{ animationDetail?.remark }}起VIP用户每周五10点更新1集</el-tag>
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 2">至{{ animationDetail?.remark }}完结</el-tag>
             </el-descriptions-item>
-            <el-descriptions-item label="播放平台">
-              <el-tag>
-                <a href="cacxascascdac"><el-image src="" /></a
-              ></el-tag>
+            <el-descriptions-item label="播放平台" class-name="link">
+              <template #default>
+                <a style="width: 20px; height: 20px" :href="animationDetail?.link" target="_blank"
+                  ><el-image style="width: 20px; height: 20px" :src="`${animationDetail?.link.split('com')[0]}com/favicon.ico`"
+                /></a>
+              </template>
             </el-descriptions-item>
           </el-descriptions>
           <p class="mt-4 text-sm text">{{ animationDetail?.desc }}</p>
@@ -48,13 +50,22 @@
         <el-col>
           <el-divider />
           <el-button @click="openModel" size="large" :icon="CirclePlusFilled" circle type="success" />
+          <el-button
+            class="deleteBtn"
+            :class="{ active: deleteImgList.length > 0 }"
+            @click="deleteAnimationImg"
+            size="large"
+            :icon="DeleteFilled"
+            circle
+            type="danger"
+          />
         </el-col>
       </el-col>
     </el-card>
     <el-card style="background-color: #f6f6f6" v-if="animationDetail?.imgList?.length === 0">
       <el-empty image="https://img.ixintu.com/download/jpg/202001/9c3ccf72134f4a28d4c8344d4505f2f0.jpg!con" />
     </el-card>
-    <el-card v-else>
+    <el-card v-else @click="deleteImgList = []">
       <div class="list">
         <el-image
           lazy
@@ -65,8 +76,11 @@
           :key="item._id"
           :src="item.src"
           :preview-src-list="imgList"
+          @contextmenu.prevent="deleteImg(item)"
+          :class="{ active: deleteImgList.some((i: any) => i.id === item._id) }"
         />
       </div>
+
       <el-row justify="center" class="mt-5">
         <el-pagination
           style="margin: 0"
@@ -84,13 +98,14 @@
 </template>
 
 <script setup lang="ts">
-import { Edit, Delete, CirclePlusFilled } from "@element-plus/icons-vue"
-import { getAnimationDetailAPI, getAnimationImageListAPI, deleteAnimationAPI } from "@/api/admin/animation"
+import { Edit, Delete, CirclePlusFilled, DeleteFilled } from "@element-plus/icons-vue"
+import { getAnimationDetailAPI, getAnimationImageListAPI, deleteAnimationAPI, deleteAnimationImgAPI } from "@/api/admin/animation"
 import { onMounted, ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { AnimeItem } from "@/types/admin/animation"
 import AddImage from "./component/addImage.vue"
 import { ElMessage, ElMessageBox } from "element-plus"
+import type { ImageItem } from "@/types/admin/image"
 
 // 页面路由
 const route = useRoute()
@@ -135,7 +150,8 @@ const updateImageList = () => {
 const getAnimationImageList = async () => {
   const res = await getAnimationImageListAPI(route.query.id as string, pageData.value.page, pageData.value.pageSize)
   if (res.code === 200) {
-    animationDetail.value!.imgList = res.data
+    //@ts-ignore
+    animationDetail.value.imgList = res.data
     pageData.value.total = res.total
   }
 }
@@ -170,6 +186,45 @@ const deleteAnimation = async () => {
       } else {
         ElMessage.error("删除动漫失败")
       }
+    })
+    .catch(() => {})
+}
+// 需要删除的图片
+const deleteImgList = ref<any[]>([])
+
+// 双击将当前图片添加到删除列表
+const deleteImg = (item: ImageItem) => {
+  //  判断是否是需要删除
+  if (!deleteImgList.value.some((i: any) => i.id === item._id)) {
+    deleteImgList.value.push({
+      id: item._id,
+      src: item.src
+    })
+  } else {
+    deleteImgList.value = deleteImgList.value.filter((i) => i.id !== item._id)
+  }
+}
+
+// 批量删除
+const deleteAnimationImg = () => {
+  ElMessageBox.confirm("确定删除图片吗？", "温馨提示", {
+    type: "warning",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消"
+  })
+    .then(async () => {
+      const res = await deleteAnimationImgAPI(deleteImgList.value)
+      if (res.code === 200) {
+        ElMessage.success("删除动漫图片成功")
+        // router.back()
+        deleteImgList.value = []
+        getAnimationImageList()
+      } else if (res.code === 201) {
+        ElMessage.error(res.message)
+      } else {
+        ElMessage.error("删除动漫失败")
+      }
+      // console.log(deleteImgList.value)
     })
     .catch(() => {})
 }
@@ -223,6 +278,7 @@ onMounted(() => {
     overflow: hidden;
     cursor: pointer;
     border-radius: 10px;
+    transition: all 0.3s;
     ::v-deep(img) {
       transition: all 0.3s;
       &:hover {
@@ -230,6 +286,28 @@ onMounted(() => {
         transform: translateY(-5px);
       }
     }
+    &.active {
+      box-shadow: 0 0 10px red;
+      border: 1px solid red;
+      transform: scale(1.1);
+    }
   }
+}
+.deleteBtn {
+  opacity: 0;
+  transform: scale(0);
+  margin-left: 30px;
+  transition: all 0.3s;
+  &.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+::v-deep(.link) {
+  display: inline-block;
+  line-height: 20px;
+  width: 20px !important;
+  height: 20px !important;
+  transform: translateY(4px);
 }
 </style>

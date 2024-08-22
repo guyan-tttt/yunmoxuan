@@ -20,7 +20,7 @@ initTheme()
 /* 定义滚动条的轨道样式 */
 ::-webkit-scrollbar {
   width: 5px !important; /* 水平滚动条宽度 */
-  width: 0px !important; /* 垂直滚动条宽度 */
+  /* 垂直滚动条宽度 */
 }
 
 /* 定义滚动条的滑块样式 */
@@ -33,5 +33,4 @@ initTheme()
 ::-webkit-scrollbar-track {
   background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) !important; /* 轨道颜色 */
 }
-
 </style>

@@ -44,7 +44,10 @@ const animationService = {
     },
     update: async(_id,name,desc,type,hot,score,status,link, cover, remark) =>  {
         await animationModel.updateOne({ _id }, { $set: { name, desc, type, hot, score, status, link, cover, remark, updateTime: new Date() } })
-    } 
+    } ,
+    delImg: async(ids) => {
+        await imageModel.deleteMany({ _id: { $in: ids } })
+    }
 }
 
 module.exports = animationService;
