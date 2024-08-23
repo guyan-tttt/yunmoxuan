@@ -8,7 +8,7 @@ const upload = multer({ dest: 'public/images/user/' })
 router.post('/login', userController.login)
 
 // 获取用户个人信息
-router.get('/userInfo', userController.getUserInfo)
+router.get('/info', userController.getUserInfo)
 
 // 修改个人信息
 router.post('/update', upload.single("file"),userController.updateUserInfo)

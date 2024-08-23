@@ -3,16 +3,16 @@ var router = express.Router();
 const indexController = require('../../controller/web/index')
 
 // 获取作者信息
-router.get('/user',indexController.user);
+router.get('/user/info',indexController.user);
 
 // 获取轮播图
-router.get('/banner',indexController.banner);
+router.get('/banner/list',indexController.banner);
 
 // 获取分类列表
-router.get('/category',indexController.category);
+router.get('/categorys',indexController.category);
 
 // 获取文章标签
-router.get('/tag',indexController.tag);
+router.get('/tags',indexController.tag);
 
 // 获取日志列表
 router.get('/journal',indexController.journal);

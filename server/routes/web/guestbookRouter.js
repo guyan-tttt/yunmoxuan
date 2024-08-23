@@ -6,8 +6,8 @@ const guestbookController = require('../../controller/web/guestbook.js')
 router.post('/add', guestbookController.add)
 
 // 获取留言列表
-router.get('/list', guestbookController.getList)
+router.get('/lists', guestbookController.getList)
 
 // 获取弹幕墙数据
-router.get('/bullet', guestbookController.getBullet)
+router.get('/bullets', guestbookController.getBullet)
 module.exports = router;

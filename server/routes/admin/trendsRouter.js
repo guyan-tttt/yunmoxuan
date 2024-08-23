@@ -38,5 +38,5 @@ router.delete("/comment/del",trendsController.commentDel)
 router.get("/week",trendsController.trendsWeek)
 
 // 获取动态统计数据
-router.get("/statistics",trendsController.statistics)
+router.get("/statistic",trendsController.statistics)
 module.exports =  router

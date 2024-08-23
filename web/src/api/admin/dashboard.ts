@@ -3,12 +3,12 @@ import type { StatisticResponse, LogData, ResponseData, LogResponse } from "@/ty
 // 获取首页统计数据
 
 export const getDashboardStatisticsAPI = () => {
-  return request.get<any, StatisticResponse>("/admin/dashboard/statistics")
+  return request.get<any, StatisticResponse>("/admin/dashboard/statistic")
 }
 
 // 获取通知公告信息
 export const getDashboardNoticeAPI = () => {
-  return request.get<any, any>("/admin/dashboard/notice")
+  return request.get<any, any>("/admin/dashboard/notices")
 }
 
 // 添加系统日志
@@ -18,7 +18,7 @@ export const addSystemJournalAPI = (data: LogData) => {
 
 // 获取系统日志列表
 export const getSystemJournalListAPI = (page: number, pageSize: number, view?: boolean) => {
-  return request.get<any, LogResponse>("/admin/dashboard/journal", {
+  return request.get<any, LogResponse>("/admin/dashboard/journals", {
     params: {
       page,
       pageSize,
@@ -39,7 +39,7 @@ export const readJournalAPI = (id: string) => {
 
 // 获取通知消息
 export const getNotificationAPI = (page: number, pageSize: number, view?: boolean) => {
-  return request.get<any, LogResponse>("/admin/dashboard/message", {
+  return request.get<any, LogResponse>("/admin/dashboard/messages", {
     params: {
       page,
       pageSize,

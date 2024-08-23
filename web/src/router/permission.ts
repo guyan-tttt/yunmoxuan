@@ -23,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
     next()
   }
 
-  next()
+  // next()
 })
 
 router.afterEach((to) => {

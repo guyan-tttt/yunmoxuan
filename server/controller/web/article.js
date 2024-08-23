@@ -3,6 +3,7 @@ const dashboardService = require('../../service/admin/dashboard')
 const websocket = require('../../websocket/app')
 const articleController = {
     getRecommends: async(req,res) => {
+        console.log(111);
         const result = await articleService.getRecommends()
         res.send({
             code: 200,

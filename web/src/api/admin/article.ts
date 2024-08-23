@@ -63,5 +63,5 @@ export const deleteArticleAll = (data: any) => {
 
 // 获取文章统计量
 export const getArticleStatisticsAPI = () => {
-  return request.get<any, ArticleStatisticsData>(`/admin/article/statistics`)
+  return request.get<any, ArticleStatisticsData>(`/admin/article/statistic`)
 }

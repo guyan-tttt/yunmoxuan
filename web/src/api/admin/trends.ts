@@ -69,5 +69,5 @@ export const getTrendsWeekAPI = () => {
 
 // 获取动态统计量
 export const getTrendsStatisticsAPI = () => {
-  return request.get<any, GetTrendsStatisticsResponseData>("/admin/trends/statistics")
+  return request.get<any, GetTrendsStatisticsResponseData>("/admin/trends/statistic")
 }

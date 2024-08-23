@@ -35,6 +35,6 @@ router.delete('/delArticle/:id',articleController.delArticlePermanently)
 router.post('/delAll',articleController.delArticleAll)
 
 // 获取文章统计量
-router.get('/statistics',articleController.statistics)
+router.get('/statistic',articleController.statistics)
 
 module.exports = router;

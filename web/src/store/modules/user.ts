@@ -9,7 +9,7 @@ import { getUserInfoAPI } from "@/api/admin/user"
 export const useUserStore = defineStore(
   "user",
   () => {
-    const token = ref<string>(getToken() || "")
+    const token = ref<string>()
     const roles = ref<string[]>([])
     const username = ref<string>("")
     const userInfo = ref<any>()
@@ -54,9 +54,13 @@ export const useUserStore = defineStore(
      * @return {void}
      */
     const setUserToken = (value: string) => {
+      console.log(value)
+
       token.value = value
+      console.log(token.value)
+
       // 存到本地
-      setToken(value)
+      // setToken(value)
     }
     /**
      * 设置用户信息
@@ -68,7 +72,7 @@ export const useUserStore = defineStore(
       if (res.code === 200) {
         userInfo.value = res.data
       } else {
-        logout()
+        // logout()
       }
     }
 

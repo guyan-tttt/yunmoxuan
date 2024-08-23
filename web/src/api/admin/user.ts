@@ -7,7 +7,7 @@ export const loginAPI = (data: LoginRequestData) => {
 }
 // 获取个人信息
 export const getUserInfoAPI = () => {
-  return request.get<any, UserInfoResponseData>("/admin/user/userInfo")
+  return request.get<any, UserInfoResponseData>("/admin/user/info")
 }
 
 // 修改个人信息

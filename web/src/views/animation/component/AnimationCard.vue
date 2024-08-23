@@ -31,7 +31,7 @@ const props = defineProps<{
 /* From Uiverse.io by Kemboi-Dun */
 .card {
   position: relative;
-  width: 300px;
+  width: 280px;
   height: 150px;
   color: #2e2d31;
   background: #131313;

@@ -7,7 +7,7 @@ export const addGuestBookAPI = (data: GuestbookForm) => {
 
 // 获取留言列表
 export const getGuestBookListAPI = (page: number, pageSize: number) => {
-  return request.get<any, GuestbookListResponse>("/web/guestbook/list", {
+  return request.get<any, GuestbookListResponse>("/web/guestbook/lists", {
     params: {
       page,
       pageSize
@@ -17,5 +17,5 @@ export const getGuestBookListAPI = (page: number, pageSize: number) => {
 
 // 获取留言墙数据
 export const getGuestBookWallAPI = () => {
-  return request.get<any, GuestbookListResponse>("/web/guestbook/bullet")
+  return request.get<any, GuestbookListResponse>("/web/guestbook/bullets")
 }

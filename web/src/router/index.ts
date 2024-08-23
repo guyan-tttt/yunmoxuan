@@ -368,6 +368,34 @@ export const constWebRoutes = [
           index: 6,
           icon: "home-source"
         }
+      },
+      {
+        path: "/home-animation",
+        name: "home-animation",
+
+        meta: {
+          title: "追番",
+          index: 7,
+          icon: "home-animation"
+        },
+        children: [
+          {
+            path: "",
+            name: "AnimationList",
+            component: () => import("@/pages/animation/index.vue"),
+            meta: {
+              hidden: true
+            }
+          },
+          {
+            path: "detail",
+            name: "AnimationDetail",
+            component: () => import("@/pages/animation/detail.vue"),
+            meta: {
+              hidden: true
+            }
+          }
+        ]
       }
     ]
   }

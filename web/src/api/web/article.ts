@@ -5,12 +5,14 @@ import type { ArticleCommentItem, ArticleCommentListResponse } from "@/types/web
 
 // 获取推荐文章
 export const getRecommendArticleAPI = () => {
-  return request.get<any, ArticleList>("/web/article/recommends")
+  console.log("dadadd")
+
+  return request.get<any, ArticleList>("/web/article/recommendArticle")
 }
 
 // 获取去文章列表
 export const getArticleListAPI = (page: number, pageSize: number) => {
-  return request.get<any, ArticleList>("/web/article/list", { params: { page, pageSize } })
+  return request.get<any, ArticleList>("/web/article/articleList", { params: { page, pageSize } })
 }
 
 // 文章点赞

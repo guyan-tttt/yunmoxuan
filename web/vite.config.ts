@@ -32,7 +32,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       strictPort: false,
       /** 接口代理 */
       proxy: {
-        "/api/": {
+        "/api": {
           target: "http://localhost:3000",
           ws: true,
           /** 是否允许跨域 */

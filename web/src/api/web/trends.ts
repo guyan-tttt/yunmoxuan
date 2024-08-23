@@ -3,7 +3,7 @@ import type { GetTrendsListResponseData, ResponseData, CommentFormData, GetComme
 
 // 获取动态列表
 export const getTrendsListAPI = (page: number, pageSize: number) => {
-  return request.get<any, GetTrendsListResponseData>("/web/trends/list", {
+  return request.get<any, GetTrendsListResponseData>("/web/trends/lists", {
     params: {
       page,
       pageSize

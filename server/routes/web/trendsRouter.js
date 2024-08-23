@@ -3,7 +3,7 @@ var router = express.Router();
 var trendsController = require('../../controller/web/trends');
 
 // 获取动态列表
-router.get('/list', trendsController.getTrends);
+router.get('/lists', trendsController.getTrends);
 
 // 获取评论列表
 router.get('/comment/list', trendsController.getTrendsComments);

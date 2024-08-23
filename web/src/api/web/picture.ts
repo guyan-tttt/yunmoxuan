@@ -4,7 +4,7 @@ import type { ImageListResponse } from "@/types/admin/image"
 
 // 获取图片分类
 export const getPictureCategoryAPI = () => {
-  return request.get<any, GetCategoryListResponse>("/web/picture/category")
+  return request.get<any, GetCategoryListResponse>("/web/picture/category/list")
 }
 
 // 获取图片列表

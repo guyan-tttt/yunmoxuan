@@ -53,6 +53,7 @@ const handleLogin = () => {
       // 关闭按钮加载
       loading.value = false
       // 判断登录状态
+      console.log(res)
       if (res.code === 200) {
         // 保存token
         userStore.setUserToken(res.token)
