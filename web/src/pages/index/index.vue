@@ -68,7 +68,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="index">
+  <div class="index" :class="{ mobile: settings.isMobile }">
     <IndexBg />
     <div class="index-title animate__bounce animate__animated">
       <h1>{{ VITE_APP_TITLE }}</h1>
@@ -77,7 +77,7 @@ onUnmounted(() => {
         <el-icon :size="30" color="#fff" @click="scrollIndex"><ArrowDownBold /></el-icon>
       </div>
     </div>
-    <div ref="articleTarget" class="container mx-auto max-w-screen-xl mt-5" :class="{ active: targetIsActive }">
+    <div ref="articleTarget" class="container mx-auto max-w-screen-xl mt-5" :class="{ active: targetIsActive || settings.isMobile }">
       <div class="grid grid-cols-4">
         <!-- 左边栏 -->
         <div class="col-span-4 px-3 md:col-span-3 sm:col-span-4">
@@ -104,6 +104,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
+.index {
+  font-size: 20px;
+  &.mobile {
+    font-size: 16px;
+  }
+}
 .index-title {
   width: 100%;
   height: calc(100vh - 60px);
@@ -114,7 +120,7 @@ onUnmounted(() => {
   color: #fff;
   position: relative;
   h1 {
-    font-size: 70px;
+    font-size: 3.5em;
     font-weight: 800;
     letter-spacing: 5px;
     font-family: "STKaiti";

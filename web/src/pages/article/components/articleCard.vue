@@ -3,14 +3,14 @@
     <div class="bg">
       <img :src="$props.article?.cover" alt="" />
     </div>
-    <div class="text" @click="goToDetail(props.article._id as string)" :class="{ even: props.index % 2 === 0 }">
-      <div class="left">
+    <div class="text" @click="goToDetail(props.article._id as string)" :class="{ even: props.index % 2 === 0 && !settingStore.isMobile }">
+      <div class="left" v-if="!settingStore.isMobile">
         <img class="cover" :src="$props.article?.cover" alt="" />
       </div>
       <div class="right">
         <div class="top">
           <div class="date">🕛 {{ dayjs(props.article?.createTime).format("YYYY/MM/DD") }}</div>
-          <div class="category">📜 {{ props.article?.aboutInfo.category.name }}</div>
+          <div class="category" v-if="!settingStore.isMobile">📜 {{ props.article?.aboutInfo.category.name }}</div>
         </div>
         <div class="name">{{ props.article?.title }}</div>
         <p class="desc">{{ props.article?.desc }}</p>
@@ -19,7 +19,7 @@
             <img :src="i.icon" alt="" />
           </div>
         </div>
-        <div class="about">
+        <div class="about" v-if="!settingStore.isMobile">
           <span style="position: relative"
             ><SvgIcon
               @click.stop="addLike"
@@ -49,6 +49,9 @@ import type { Tag } from "@/types/admin/tags"
 import dayjs from "dayjs"
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import { useSettingsStore } from "@/store/modules/settings"
+
+const settingStore = useSettingsStore()
 
 // 接受父组件按数据
 const props = defineProps<{
@@ -101,6 +104,7 @@ const goToDetail = (id: string) => {
   animation: cardShow linear;
   animation-timeline: view();
   animation-range: entry 0% cover 10%;
+  width: 100%;
   &:hover {
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
     transform: translateY(-10px);
@@ -117,7 +121,7 @@ const goToDetail = (id: string) => {
   }
 }
 .bg {
-  height: 200px;
+  height: 10em;
   width: 100%;
   background-size: cover;
   border-radius: 0.5rem;
@@ -136,7 +140,7 @@ const goToDetail = (id: string) => {
 .text {
   display: flex;
   align-items: center;
-  height: 200px;
+  height: 10em;
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -183,19 +187,20 @@ const goToDetail = (id: string) => {
     }
     .name {
       margin-top: 10px;
-      font-size: 20px;
+      font-size: 1em;
       font-weight: bold;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 400px;
+      max-width: 20em;
+      width: 100%;
     }
     .desc {
-      width: 400px;
+      width: 20em;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 14px;
+      font-size: 0.7em;
     }
     .tags {
       display: flex;

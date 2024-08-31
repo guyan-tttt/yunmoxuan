@@ -389,7 +389,7 @@ export const constWebRoutes = [
           },
           {
             path: "detail",
-            name: "AnimationDetail",
+            name: "AnimationHomeDetail",
             component: () => import("@/pages/animation/detail.vue"),
             meta: {
               hidden: true

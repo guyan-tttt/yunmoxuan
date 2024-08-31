@@ -8,6 +8,8 @@ import dayjs from "dayjs"
 import type { Tag } from "@/types/admin/tags"
 import Comment from "./components/Comment.vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
+import { useSettingsStore } from "@/store/modules/settings"
+const settingsStore = useSettingsStore()
 
 // 为所有pre标签注册点击事件
 const preClick = () => {
@@ -68,7 +70,7 @@ onUnmounted(() => {
 </script>
 <template>
   <!-- 文章详情 -->
-  <div class="mx-auto max-w-screen-xl mt-5 mb-3">
+  <div class="mx-auto max-w-screen-xl mt-5 mb-3 article-list" :class="{ mobile: settingsStore.isMobile }">
     <div class="grid grid-cols-4">
       <div class="article col-span-4 px-3 mb-3">
         <div class="bg-white border border-gray-200 p-5 rounded-lg dark:bg-gray-800 dark:border-gray-700">
@@ -76,7 +78,7 @@ onUnmounted(() => {
 
           <!-- 文章主体 -->
           <article>
-            <h1 class="mt-2 dark:text-white">
+            <h1 class="mt-2 dark:text-white" style="font-size: 1.6em">
               {{ article?.detail.title }}
               <span v-if="article?.detail.isOriginal" class="origial">原创</span>
               <span v-else class="noorigial">转载</span>
@@ -87,7 +89,7 @@ onUnmounted(() => {
                 {{ article?.detail.aboutInfo.author }}
               </el-row>
             </div>
-            <div class="text-gray-400 text-sm flex items-center article-mata">
+            <div class="text-gray-400 text-sm flex items-center article-mata" v-if="!settingsStore.isMobile">
               <svg
                 class="inline w-3 h-3 mr-2 text-gray-400 dark:text-white"
                 aria-hidden="true"
@@ -205,6 +207,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
+.article-list {
+  font-size: 20px;
+  &.mobile {
+    font-size: 14px;
+  }
+}
 .next-prev {
   width: 150px;
   overflow: hidden;
@@ -220,7 +228,7 @@ onUnmounted(() => {
   margin-bottom: 0;
   line-height: 1.3;
   word-wrap: break-word;
-  font-size: 32px;
+  font-size: 1.6em;
   font-weight: 700;
   color: #292525;
 }
@@ -272,7 +280,7 @@ onUnmounted(() => {
   color: #f8f8f2;
   border-radius: 5px;
   padding: 10px 0 0;
-  font-size: 17px;
+  font-size: 0.8em;
   padding-left: 15px;
   padding-top: 35px;
   position: relative;
@@ -519,5 +527,8 @@ onUnmounted(() => {
 
 .el-tag:hover {
   background-color: var(--el-color-info-light-8);
+}
+.content {
+  font-size: 0.8em;
 }
 </style>

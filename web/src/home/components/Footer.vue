@@ -117,7 +117,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <div class="like">
+      <div class="like mt-5">
         <div class="title">
           <span>关于我的</span>
         </div>

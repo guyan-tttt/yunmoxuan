@@ -37,7 +37,6 @@
     "element-plus": "2.7.3",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.10.0",
-    "js-cookie": "3.0.5",
     "lodash-es": "4.17.21",
     "mitt": "^3.0.1",
     "normalize.css": "8.0.1",
@@ -53,8 +52,6 @@
     "vue3-count-to": "^1.1.2",
     "vue3-emoji-picker": "^1.1.8",
     "vue3-seamless-scroll": "^2.0.1",
-    "vxe-table": "4.6.17",
-    "vxe-table-plugin-element": "4.0.3",
     "xe-utils": "3.5.26"
   },
   "devDependencies": {

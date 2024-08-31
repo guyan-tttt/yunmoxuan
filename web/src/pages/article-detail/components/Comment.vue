@@ -3,9 +3,12 @@ import { useWebInfoStore } from "@/store/modules/webInfo"
 import { onUnmounted, defineProps, onMounted, ref, watch, nextTick } from "vue"
 import { getCommentListAPI } from "@/api/web/article"
 import type { ArticleCommentItem } from "@/types/web/article"
+import { useSettingsStore } from "@/store/modules/settings"
 
 // 前台全局仓库
 const webInfoStore = useWebInfoStore()
+
+const settingsStore = useSettingsStore()
 
 // 添加评论
 const addComment = () => {
@@ -95,7 +98,7 @@ onUnmounted(() => {
           <el-row style="width: 100%" justify="center">
             <el-button v-if="commentList.length < pageData.total" class="ladomore" @click.stop="loadMore">加载更多</el-button>
             <div v-else class="no-comment">没有更多了~</div>
-            <el-button class="more" type="primary" @click.stop="addComment">添加评论</el-button>
+            <el-button v-if="!settingsStore.isMobile" class="more" type="primary" @click.stop="addComment">添加评论</el-button>
           </el-row>
         </ul>
 
@@ -121,7 +124,7 @@ onUnmounted(() => {
       position: relative;
       .info {
         .name {
-          font-size: 14px;
+          font-size: 0.7em;
           font-weight: 600;
         }
         .ip {

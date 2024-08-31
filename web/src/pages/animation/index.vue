@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="animation" :class="{ mobile: settingStore.isMobile }">
     <div class="head">
       <div class="title">动漫追番</div>
       <div class="desc">人生最大的风险就是不冒任何风险！</div>
     </div>
     <el-card class="container mx-auto max-w-screen-xl mt-5">
-      <el-row v-loading="loading" gap="8" class="mt-5">
+      <el-row v-loading="loading" gap="8" class="mt-5" justify="center">
         <AnimationCard @click="toDetail(item._id)" v-for="item in animationData" :key="item._id" :data="item" />
       </el-row>
       <el-row justify="center" class="mt-5">
@@ -31,7 +31,9 @@ import { ref, onMounted } from "vue"
 import { getAnimationListAPI } from "@/api/web/animation"
 import type { AnimeItem } from "@/types/admin/animation"
 import { useRouter } from "vue-router"
+import { useSettingsStore } from "@/store/modules/settings"
 
+const settingStore = useSettingsStore()
 // 全局路由
 const router = useRouter()
 
@@ -80,6 +82,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.animation {
+  font-size: 20px;
+  &.mobile {
+    font-size: 14px;
+    .head {
+      height: 100px;
+    }
+  }
+}
 .head {
   background-image: url(../../assets/picture/pricture-bg.jpg);
   background-repeat: no-repeat;
@@ -97,13 +108,13 @@ onMounted(() => {
     text-align: center;
     text-shadow: 0 0.1875rem 0.3125rem #1c1f21;
     letter-spacing: 2px;
-    font-size: 35px;
+    font-size: 1.7em;
     margin-bottom: 15px;
     font-weight: 700;
   }
   .desc {
     @extend .title;
-    font-size: 18px;
+    font-size: 0.9em;
   }
 }
 </style>

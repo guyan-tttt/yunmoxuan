@@ -40,9 +40,11 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   .item {
     flex: 1;
+    min-width: 200px;
     border-radius: 10px;
     position: relative;
     transition: all 0.3s;

@@ -23,5 +23,6 @@
   background: url(../../../assets/layouts/index-bg.webp) no-repeat;
   background-size: cover;
   transition: all 0.5s;
+  background-position: center;
 }
 </style>

@@ -60,12 +60,13 @@ onMounted(() => {
 
 <style scoped lang="scss">
 p {
-  font-size: 35px;
+  font-size: 1.5em;
   margin-top: 15px;
   font-family: "STKaiti";
   position: relative;
   display: flex;
   align-items: center;
+  text-align: center;
   .line {
     padding: 0;
     margin: 0;

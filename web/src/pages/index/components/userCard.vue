@@ -2,13 +2,17 @@
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import type { Tag } from "@/types/admin/tags"
 import OfficialAccount from "./OfficialAccount.vue"
+import { useSettingsStore } from "@/store/modules/settings"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
 
+const settingsStore = useSettingsStore()
 // 点击打开弹框预览
 const openPreview = (tag: Tag) => {
-  webInfoStore.openPreview(tag)
+  if (!settingsStore.isMobile) {
+    webInfoStore.openPreview(tag)
+  }
 }
 </script>
 <template>

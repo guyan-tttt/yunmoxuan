@@ -10,6 +10,8 @@ import { useSettingsStore } from "@/store/modules/settings"
 // 设置对象
 const settings = useSettingsStore()
 
+const settingsStore = useSettingsStore()
+
 // 分页数据
 const pageData = ref({
   page: 1,
@@ -69,10 +71,10 @@ onUnmounted(() => {
 </script>
 <template>
   <div>
-    <Banner />
-    <div class="container mx-auto max-w-screen-xl mt-5">
+    <Banner v-if="!settingsStore.isMobile" />
+    <div class="mx-auto max-w-screen-xl mt-5" :class="{ container: !settingsStore.isMobile }">
       <div class="grid grid-cols-4">
-        <div class="col-span-4 px-3" style="width: 80%; margin: 0 auto">
+        <div class="col-span-4 px-3 article-list" :class="{ mobile: settingsStore.isMobile }" style="width: 80%; margin: 0 auto">
           <ArticleCard
             v-cursor-pointer
             v-for="(item, index) in articleList"
@@ -94,6 +96,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
+.article-list {
+  font-size: 20px;
+  &.mobile {
+    font-size: 14px;
+  }
+}
 .container {
   display: flex;
   flex-direction: column;

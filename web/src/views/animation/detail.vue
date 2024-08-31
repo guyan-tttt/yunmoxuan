@@ -34,7 +34,9 @@
             >
             <el-descriptions-item label="备注">
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 0">自{{ animationDetail?.remark }}起停更</el-tag>
-              <el-tag class="card_subtitle" v-if="animationDetail?.status === 1">自{{ animationDetail?.remark }}起VIP用户每周五10点更新1集</el-tag>
+              <el-tag class="card_subtitle" v-if="animationDetail?.status === 1"
+                >自{{ animationDetail?.remark }}起VIP用户每周{{ dateList[new Date(animationDetail.remark).getDay()] }}10点更新1集</el-tag
+              >
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 2">至{{ animationDetail?.remark }}完结</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="播放平台" class-name="link">
@@ -78,6 +80,7 @@
           :preview-src-list="imgList"
           @contextmenu.prevent="deleteImg(item)"
           :class="{ active: deleteImgList.some((i: any) => i.id === item._id) }"
+          fit="cover"
         />
       </div>
 
@@ -143,7 +146,7 @@ const imgList = computed(() => {
 
 // 更新图片
 const updateImageList = () => {
-  getAnimationDetail()
+  getAnimationImageList()
 }
 
 // 获取动漫图片列表
@@ -228,6 +231,8 @@ const deleteAnimationImg = () => {
     })
     .catch(() => {})
 }
+
+const dateList = ["日", "一", "二", "三", "四", "五", "六"]
 
 onMounted(() => {
   getAnimationDetail()

@@ -16,7 +16,7 @@
     <!-- 标签展示组件 -->
     <TagPreview :tagDetail="webInfoStore.tagPreviewInfo as any" v-model="webInfoStore.showPreview" />
     <CommentInput />
-    <ToolBox class="toolbox" />
+    <ToolBox class="toolbox" v-if="!settingsStore.isMobile" />
   </div>
 </template>
 
@@ -74,8 +74,5 @@ onUnmounted(() => {
   position: fixed;
   top: 60%;
   left: 0;
-}
-.home {
-
 }
 </style>

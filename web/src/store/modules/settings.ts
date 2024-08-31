@@ -70,6 +70,16 @@ export const useSettingsStore = defineStore("settings", () => {
     }
     isMouseSkin.value = !isMouseSkin.value
   }
+
+  const isMobile = ref(false)
+  // 判断是否是移动端
+  // 计算是否是移动端
+  const setIsMobile = () => {
+    if (window.innerWidth <= 1000) isMobile.value = true
+    else isMobile.value = false
+    console.log("isMobile", isMobile.value, window.innerWidth)
+  }
+
   return {
     ...state,
     isRefresh,
@@ -79,6 +89,8 @@ export const useSettingsStore = defineStore("settings", () => {
     isFireworks,
     openFireworks,
     isMouseSkin,
-    openMouseSkin
+    openMouseSkin,
+    isMobile,
+    setIsMobile
   }
 })

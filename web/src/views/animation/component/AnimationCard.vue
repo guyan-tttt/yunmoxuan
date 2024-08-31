@@ -11,7 +11,9 @@
         <div class="category">🔖{{ props.data.type }}</div>
       </span>
       <span class="card_subtitle" v-if="props.data.status === 0">自{{ props.data.remark }}起停更</span>
-      <span class="card_subtitle" v-if="props.data.status === 1">自{{ props.data.remark }}起VIP用户每周五10点更新1集</span>
+      <span class="card_subtitle" v-if="props.data.status === 1"
+        >自{{ props.data.remark }}起VIP用户每周{{ dateList[new Date(props.data.remark).getDay()] }}10点更新1集</span
+      >
       <span class="card_subtitle" v-if="props.data.status === 2">至{{ props.data.remark }}完结</span>
       <p class="card_description">📄{{ props.data.desc }}</p>
     </div>
@@ -24,6 +26,8 @@ import { defineProps } from "vue"
 const props = defineProps<{
   data: any
 }>()
+
+const dateList = ["日", "一", "二", "三", "四", "五", "六"]
 </script>
 
 <style lang="scss" scoped>

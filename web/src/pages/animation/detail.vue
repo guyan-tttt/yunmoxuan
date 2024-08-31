@@ -28,7 +28,9 @@
             >
             <el-descriptions-item label="备注">
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 0">自{{ animationDetail?.remark }}起停更</el-tag>
-              <el-tag class="card_subtitle" v-if="animationDetail?.status === 1">自{{ animationDetail?.remark }}起VIP用户每周五10点更新1集</el-tag>
+              <el-tag class="card_subtitle" v-if="animationDetail?.status === 1"
+                >自{{ animationDetail?.remark }}起VIP用户每周{{ dateList[new Date(animationDetail.remark).getDay()] }}10点更新1集</el-tag
+              >
               <el-tag class="card_subtitle" v-if="animationDetail?.status === 2">至{{ animationDetail?.remark }}完结</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="播放平台" class-name="link">
@@ -60,6 +62,7 @@
           :key="item._id"
           :src="item.src"
           :preview-src-list="imgList"
+          fit="cover"
         />
       </div>
 
@@ -134,6 +137,7 @@ const changePage = (page: number) => {
   pageData.value.page = page
   getAnimationImageList()
 }
+const dateList = ["日", "一", "二", "三", "四", "五", "六"]
 
 onMounted(() => {
   getAnimationDetail()

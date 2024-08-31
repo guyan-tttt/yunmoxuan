@@ -1,5 +1,9 @@
 <template>
-  <header class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600" :class="{ active: settingsStore.showNavBg || bgColor }">
+  <header
+    v-if="!settingsStore.isMobile"
+    class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600"
+    :class="{ active: settingsStore.showNavBg || bgColor }"
+  >
     <div class="container mx-auto">
       <el-menu class="el-menu" mode="horizontal" :ellipsis="false" router>
         <el-menu-item class="title-li">
@@ -38,17 +42,19 @@
       </el-menu>
     </div>
   </header>
+  <MobileHeader v-else />
 </template>
 
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router"
-import { ref, watch, computed } from "vue"
+import { ref, watch, computed, onMounted } from "vue"
 import { useUserStore } from "@/store/modules/user"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import { useWindowScroll } from "@vueuse/core"
 import { useSettingsStore } from "@/store/modules/settings"
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import { constWebRoutes } from "@/router/index"
+import MobileHeader from "./MobileHeader.vue"
 
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 
@@ -126,6 +132,10 @@ const activeIndex = ref(route.meta?.index || 0)
 const changeActive = (index: any) => {
   activeIndex.value = index
 }
+
+onMounted(() => {
+  settingsStore.setIsMobile()
+})
 </script>
 
 <style scoped lang="scss">

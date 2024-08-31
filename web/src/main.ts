@@ -14,8 +14,6 @@ import "uno.css"
 import "normalize.css"
 import "element-plus/dist/index.css"
 import "element-plus/theme-chalk/dark/css-vars.css"
-import "vxe-table/lib/style.css"
-import "vxe-table-plugin-element/dist/style.css"
 import "@/styles/index.scss"
 // 代码高亮
 import hljs from "highlight.js/lib/core"

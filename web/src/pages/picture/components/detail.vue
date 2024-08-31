@@ -14,6 +14,8 @@
               :preview-src-list="srcList"
               :initial-index="index"
               fit="cover"
+              class="pir"
+              hide-on-click-modal
             />
           </template>
           <el-tooltip class="box-item" effect="dark" content="详情" placement="top-start">
@@ -161,6 +163,7 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
   .item {
     width: 210px;
     height: 110px;
