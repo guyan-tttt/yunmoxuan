@@ -172,7 +172,7 @@ const showEmojiPicker = ref<boolean>(false)
             maxlength="10"
             show-word-limit
           />
-          <el-select v-model="commentForm.ip" placeholder="请选择省份" style="width: 150px; margin-bottom: 10px; margin-left: 20px">
+          <el-select v-model="commentForm.ip" placeholder="请选择省份" style="width: 150px; margin-bottom: 10px">
             <el-option v-for="item in props.province" :key="item" :label="item.name" :value="item.name" />
           </el-select>
         </el-row>
@@ -249,16 +249,16 @@ const showEmojiPicker = ref<boolean>(false)
       position: relative;
       .info {
         .name {
-          font-size: 14px;
+          font-size: 0.7em;
           font-weight: 600;
         }
         .ip {
-          font-size: 12px;
+          font-size: 0.6em;
           color: #999;
           margin-left: 10px;
         }
         .time {
-          font-size: 12px;
+          font-size: 0.6em;
           color: #999;
           margin-left: 10px;
           float: right;

@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="trends" :class="{ mobile: settingsStore.isMobile }">
     <div class="head">
       <div class="title">个人动态</div>
       <div class="desc">落霞与孤鹜齐飞，秋水共长天一色!</div>
     </div>
     <el-card
+      v-if="!settingsStore.isMobile"
       v-infinite-scroll="infiniteScroll"
       infinite-scroll-distance="100px"
       style="width: 80%; margin: 0 auto; position: relative; min-height: 100vh"
@@ -66,6 +67,64 @@
       </el-timeline>
       <div class="nomore">没有更多了~</div>
     </el-card>
+    <div v-else class="mt-4" v-infinite-scroll="infiniteScroll" infinite-scroll-distance="100px">
+      <el-timeline style="max-width: 90%">
+        <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
+          <el-row justify="space-between" align="middle">
+            <el-col :span="24">
+              <el-card>
+                <el-row style="width: 100%" justify="space-between">
+                  <div class="user">
+                    <el-avatar class="mr-3" :size="50" :src="i.userInfo.avatar" />
+                    <span class="font-700 mr-4 nickname">{{ i.userInfo.nickname }}</span>
+                    <span class="time">{{ dayjs(i.createTime).format("YYYY-MM-DD HH:mm") }}</span>
+                    <i v-if="!settingsStore.isMobile">IP: 中国</i>
+                  </div>
+
+                  <el-button v-if="!settingsStore.isMobile" circle :icon="View" type="success" />
+                </el-row>
+                <p class="content">{{ i.content }}</p>
+                <el-row class="imageList">
+                  <el-image
+                    v-for="(item, index) in i.imgList"
+                    :key="item"
+                    style="width: 40%; height: auto"
+                    :src="item"
+                    :zoom-rate="1.2"
+                    :max-scale="7"
+                    :min-scale="0.2"
+                    :preview-src-list="i.imgList"
+                    :initial-index="index"
+                    fit="cover"
+                    hide-on-click-modal
+                  />
+                </el-row>
+                <el-row justify="end" class="about">
+                  <span style="position: relative"
+                    ><SvgIcon
+                      class="like animate__animated"
+                      @click="like(i)"
+                      :class="{ animate__heartBeat: activeLike === i._id }"
+                      style="margin-right: 10px; color: red"
+                      name="like-active"
+                      size="18"
+                    />{{ i.likeNum }}
+                  </span>
+                  <span
+                    ><el-icon style="margin-right: 10px" :size="18"><View /></el-icon>{{ i.lookNum }}</span
+                  >
+                  <span
+                    ><el-icon style="margin-right: 0.5em" :size="18"><ChatRound /></el-icon>{{ i.commentNum }}</span
+                  >
+                </el-row>
+                <Comment :status="'web'" :data="i" :province="provinceData" @update="(value) => commentNumChange(i, value)" />
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-timeline-item>
+      </el-timeline>
+      <div class="nomore">没有更多了~</div>
+    </div>
   </div>
 </template>
 
@@ -78,6 +137,9 @@ import dayjs from "dayjs"
 import Comment from "@/views/trends/components/Comment.vue"
 import { getProvinceAPI } from "@/api/admin/trends"
 import { ElMessage } from "element-plus"
+import { useSettingsStore } from "@/store/modules/settings"
+
+const settingsStore = useSettingsStore()
 
 // 动态列表
 const trendsList = ref<TrendsItem[]>([])
@@ -163,6 +225,15 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+.trends {
+  font-size: 20px;
+  &.mobile {
+    font-size: 14px;
+    .head {
+      height: 100px;
+    }
+  }
+}
 .head {
   background-image: url(../../assets/trends/trends-bg.jpg);
   background-repeat: no-repeat;
@@ -180,31 +251,34 @@ onMounted(async () => {
     text-align: center;
     text-shadow: 0 0.1875rem 0.3125rem #1c1f21;
     letter-spacing: 2px;
-    font-size: 35px;
+    font-size: 1.7em;
     margin-bottom: 15px;
     font-weight: 700;
   }
   .desc {
     @extend .title;
-    font-size: 18px;
+    font-size: 0.9em;
   }
 }
 .time {
-  margin-left: 10px;
+  margin-left: 0.5em;
+  font-size: 0.6em;
 }
 
 i {
-  margin-left: 10px;
+  margin-left: 0.5em;
+  font-size: 0.6em;
 }
 
 .nickname {
-  font-size: 20px;
-  min-width: 60px;
+  font-size: 1em;
+  min-width: 3em;
 }
 .content {
-  font-size: 16px;
+  font-size: 1em;
   letter-spacing: 1px;
-  padding: 10px 50px;
+  // padding: 10px 50px;
+  width: 100%;
 }
 .text-large {
   font-size: 26px;
@@ -235,8 +309,10 @@ i {
 }
 .about {
   margin-top: 20px;
+  display: flex;
+  justify-content: start;
   span {
-    margin: 0 20px;
+    margin: 0 1em;
     font-size: 14px;
     display: flex;
     align-items: center;

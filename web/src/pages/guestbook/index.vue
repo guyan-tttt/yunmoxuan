@@ -7,6 +7,9 @@ import { addGuestBookAPI, getGuestBookListAPI, getGuestBookWallAPI } from "@/api
 import dayjs from "dayjs"
 import type { GuestbookForm, GuestbookItem } from "@/types/web/guestbook"
 import BulletWall from "@/components/BulletWall/index.vue"
+import { useSettingsStore } from "@/store/modules/settings"
+
+const settingsStore = useSettingsStore()
 
 // 表单数据
 const guestbookForm = ref<GuestbookForm>({
@@ -106,7 +109,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="message">
+  <div class="message" :class="{ mobile: settingsStore.isMobile }">
     <!-- top -->
     <TopView name="message" title="留言板" msg="雪糕的甜味你有，九月清晨的完美你有，总之，我喜欢的样貌你都有" />
     <div class="bullet-wall">
@@ -116,7 +119,7 @@ onMounted(() => {
       <div class="content">
         <!-- 留言表单 -->
         <h2 style="margin-bottom: 20px">留言</h2>
-        <el-form ref="formRef" :model="guestbookForm" :rules="rules" label-width="100px">
+        <el-form ref="formRef" :model="guestbookForm" :rules="rules" label-width="50px">
           <el-form-item label="昵称" prop="nickname">
             <el-input v-model="guestbookForm.nickname" placeholder="请输入昵称" />
           </el-form-item>
@@ -148,7 +151,7 @@ onMounted(() => {
             <div class="top">
               <span class="name">{{ item.nickname }}</span>
               <span class="time">{{ dayjs(item.createTime).format("YYYY-MM-DD HH:mm") }}</span>
-              <span class="os">{{ item.os || "未知" }}</span>
+              <span class="os" v-if="!settingsStore.isMobile">{{ item.os || "未知" }}</span>
             </div>
             <div class="bottom">{{ item.content }}</div>
             <el-icon :size="30"><Comment /></el-icon>
@@ -171,7 +174,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-::v-deep(.el-textarea__inner) {
+:veep(.el-textarea__inner) {
   height: 100%;
 }
 .bullet-wall {
@@ -188,6 +191,10 @@ onMounted(() => {
 .message {
   width: 100%;
   height: auto;
+  font-size: 20px;
+  &.mobile {
+    font-size: 14px;
+  }
   .message-wrap {
     width: 100%;
     height: auto;
@@ -202,7 +209,7 @@ onMounted(() => {
     margin-top: 100px;
 
     .content {
-      width: 80%;
+      width: 100%;
       height: auto;
       margin: 0 auto 30px auto;
       padding: 30px;
@@ -270,6 +277,15 @@ onMounted(() => {
           background-color: #e0c3f3;
           color: #fff;
           font-weight: 700;
+          @media (max-width: 768px) {
+            top: -20px;
+            left: 10px;
+            height: 60px;
+            width: 60px;
+            line-height: 60px;
+            font-size: 25px;
+            border: 2px solid #fff;
+          }
         }
 
         .detail {
@@ -278,6 +294,9 @@ onMounted(() => {
           box-sizing: border-box;
           margin-left: 100px;
           transition: all 0.3s ease;
+          @media (max-width: 768px) {
+            margin-left: 60px;
+          }
           .top {
             margin-bottom: 10px;
             .name {
@@ -286,10 +305,16 @@ onMounted(() => {
               font-size: 20px;
               color: #fff;
               text-shadow: hoff voff blur #000;
+              @media (max-width: 768px) {
+                font-size: 16px;
+              }
             }
             .time {
               font-size: 16px;
               color: #fff;
+              @media (max-width: 768px) {
+                font-size: 14px;
+              }
             }
             .os {
               font-size: 16px;
@@ -302,6 +327,9 @@ onMounted(() => {
             color: #fff;
             text-shadow: 0px 2px 12px #000;
             margin-top: 20px;
+            @media (max-width: 768px) {
+              font-size: 16px;
+            }
           }
           .el-icon {
             float: right;

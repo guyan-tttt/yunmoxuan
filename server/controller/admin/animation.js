@@ -29,8 +29,8 @@ const animationController = {
         const {page, pageSize } = req.query
         // 根据分页数据返回列表数据
         const left = (parseInt(page) - 1) * parseInt(pageSize)
-        const right = left + parseInt(pageSize)
-        
+        const right = parseInt(pageSize)
+        console.log(left,right);
         const { data,total} = await animationService.list(left,right)
         res.send({
             code: 200,
@@ -81,7 +81,7 @@ const animationController = {
     imgList: async(req,res) => {
         const { id, page,pageSize } = req.query
         const left = (parseInt(page) - 1) * parseInt(pageSize)
-        const right = left + parseInt(pageSize)
+        const right = parseInt(pageSize)
         const { data,total} = await animationService.imgList(id,left,right)
         res.send({
             code: 200,

@@ -66,13 +66,13 @@ export default {
     .title {
       width: 60%;
       height: 100px;
-      font-size: 50px;
+      font-size: 2.5em;
       margin: 0 auto;
       text-align: center;
     }
 
     .msg {
-      font-size: 24px;
+      font-size: 1.2em;
       width: 60%;
       height: 40px;
       line-height: 40px;
