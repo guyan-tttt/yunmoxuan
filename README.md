@@ -1,35 +1,31 @@
 <div align="center">
-  <img alt="V3 Admin Vite Logo" width="120" height="120" src="./web/src/assets/layouts/logo.png">
-  <h1>极客空间</h1>
+  <img alt="V3 Admin Vite Logo" width="120" height="120" src="./web/src/assets/layouts/logo-home.jpg">
+  <h1>云墨轩</h1>
   <span>个人博客系统</span>
 </div>
 
 ## ⚡ 简介
 
-极客空间是一一款用于个人博客搭建的系统，包含后台管理与前台展示两个部分。
+极客空间是一一款个人博客管理系统，包含后台管理与前台展示两个部分。前台展示部分名为<strong>云墨轩</strong>，后台管理部分名为<strong>极客空间</strong>。
+
 技术架构：
 - **前端**
-    前端采用当前最流行的Vue3,TypeScript,Element Plus,Pinia 等主要技术，并使用Vite进行构建。是基于网络流行的*V3 Admin Vite*项目二次开发而来，加入了许多个人开发者使用的实用功能，包括代码高亮，富文本编辑等。
+    前端采用当前最流行的Vue3,TypeScript,Element Plus,Pinia 等主要技术，并使用Vite进行构建。是基于网络流行的*V3 Admin Vite*项目二次开发而来，加入了许多个人开发者使用的实用功能，包括代码高亮，富文本编辑等， 瀑布流布局等。
 - **后端**
-    后端采用当前前端开发和最易学习的技术Node.js最流行的框架Express开发，才数据库层面采用了对JavaScript非常友好的MongoDB数据库。在后端程序与数据库操作层面使用了Mongoose进行数据操作，在前端页面与后端程序交互层面使用了Axios进行网络请求。
+    后端采用当前前端开发和最易学习的技术Node.js最流行的框架Express开发，数据库层面采用了对JavaScript非常友好的MongoDB数据库。在后端程序与数据库操作层面使用了Mongoose进行数据操作，在前端页面与后端程序交互层面使用了Axios进行网络请求。
 
 
-国内仓库：[Gitee](https://gitee.com/un-pany/v3-admin-vite)
 
 ## 📚 文档
 
 - 中文文档：暂无
 - 手摸手教程：暂无
 ## 📺 在线预览
-
-| 位置         | 账号            | 链接                                            |
-| ------------ | --------------- | ----------------------------------------------- |
-| github-pages | admin 或 editor | [链接]() |
-
+[云墨轩](http://jeek-space-blog.top)
 
 ## 🔥 接口文档
 
-- [接口文档](https://www.apifox.cn/apidoc/shared-9d9a5c9f-9c5d-4c8d-9d3b-8a8d5b5f8d5b/api-5165758)
+- [接口文档](https://apifox.com/apidoc/shared-c6adb94b-1fdc-4dbd-9933-e7962342092e)
 
 
 ## ✨ 特点
@@ -61,6 +57,8 @@
 - **V3-waterfall**： 瀑布流布局
 - **File-Saver**：文件下载
 - **Vue3-emoji-picker**: 表情包输入
+- **UnoCss**：原子化 CSS
+- **WebSocket**：Websocket
 
 **2.后端**：
 
@@ -73,6 +71,8 @@
 - **JWT**：用户认证
 - **Dotenv**：环境变量
 - **Dayjs**：日期处理
+- **ws**：Websocket
+- **Useragent**：浏览器用户信息处理
 
 
  
@@ -86,15 +86,29 @@
 - **标签管理**：文章标签列表、文章标签详情、文章标签编辑、文章标签删除
 - **相册管理**：图片上传，更新，预览，下载等
 - **动态管理**: 个人动态发布，个人动态删除等
-- **音乐管理**：博客音乐上传，修改等
+- **留言管理**: 留言列表，留言删除等
+- **资源管理**： 资源记录，更新，删除等
+- **追番管理**： 追番列表，追番详情，追番编辑，追番删除,动漫图片上传，删除
 - **其他内置功能**：SVG、动态侧边栏、动态面包屑、标签页快捷导航、Screenfull 全屏、自适应收缩侧边栏、Hook（Composables）
 
 **2.前台**
-- **首页**: 首页轮播图、文章列表、标签云,个人信息展示，分类标签展示
-- **文章**： 文章详情、文章列表，点赞，浏览，收藏
-- **相册**： 图片列表，图片详情，图片下载
-- **音乐**： 音乐列表，音乐详情，音乐播放器
-- **动态**： 个人动态列表，个人动态详情
+- **首页**: 首页轮播图、文章列表、标签云,个人信息展示，分类标签展示，网站访问数据展示并记录
+- **文章**： 文章详情、文章列表，点赞，浏览，详情，评论，一键复制代码，上一页下一页切换
+- **相册**： 图片列表，图片详情，图片下载，图片预览
+- **动态**： 个人动态列表，个人动态详情，评论，点赞，预览
+- **留言板**: 留言信息弹幕墙效果展示，添加留言，留言列表渲染
+- **资源**: 资源列表渲染
+- **追番**： 追番列表，追番详情
+- **工具箱模块**: 
+  1. 页面鼠标点击特效
+  2. 页面滑动置顶功能
+  3. 文章搜索功能
+  4. 鼠标样式特效
+  5. 鼠标拖尾特效
+
+- **其他内置功能**： 个人详情信息页面，系统日志页面，面试记录页面等等
+- **移动端适配**: 前台页面适配移动端web应用，但由于移动端屏幕较小，部分功能未做适配。
+
 
 
 
@@ -214,8 +228,17 @@ npm run build
 **技术重点:**
 此页面的技术重点在于用户登录逻辑验证，包括用户名、密码的校验。以及用户登录状态的保存（token）与用户跳转。
 ### 2.后台首页
-![image](./web/src/assets/docs/article.png)
+![image](./web/src/assets/docs/dashoard.png)
 **功能介绍：**
+1. 首页数统计
+统计当前系统网站文章数据，标签数据，图片数据信息并展示。
+2. 快捷操作
+提供全集跳转到各个子模块的操作。
+3. 文章和动态详细信息的展示统计
+4. 日历组件
+5. 动态及文章的评论信息滚动展示
+6. 评论信息展示及系统日志记录展示（右上角消息图标）
+
 ### 3.文章管理
 ![image](./web/src/assets/docs/article.png)
 **功能介绍:**
@@ -244,128 +267,11 @@ npm run build
 
 **技术重点:**
 1. 文章列表的展示与分页
-```jsx
-    <el-table :data="articleList" border >
-        <el-table-column v-if="articleType !== 4" align="center" width="100" label="序号" type="index" />
-        <el-table-column v-else align="center" type="selection" width="100" />
-        <el-table-column prop="title" align="center" width="200" label="文章标题" />
-        <el-table-column align="center" width="200" label="文章标签">
-          <template v-slot="{ row }">
-            <span v-for="item in row.tags" :key="item._id">
-              <el-image style="width: 30px; height: 30px; margin-right: 5px" :src="item.icon" fit="fill" />
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cover" align="center" width="200" label="文章封面">
-          <template v-slot="{ row }">
-            <el-image :src="row.cover" style="width: 100px; border-radius: 5px" />
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip prop="desc" align="center" label="文章描述">
-          <template v-slot="{ row }">
-            <div class="desc">{{ row.desc }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column width="100" prop="desc" align="center" label="状态">
-          <template v-slot="{ row }">
-            <el-switch
-              v-if="articleType !== 4"
-              v-model="row.isPublish"
-              @change="changePublish(row._id, row.isPublish)"
-              active-text="发布"
-              inactive-text="草稿"
-              inline-prompt
-            />
-            <el-switch
-              v-else
-              v-model="row.isDelete"
-              @change="restoreArticle(row._id)"
-              active-text="已删除"
-              inactive-text="未删除"
-              inline-prompt
-            />
-          </template>
-        </el-table-column>
 
-        <el-table-column prop="desc" align="center" label="操作">
-          <template v-slot="{ row }">
-            <el-button
-              v-if="articleType !== 4"
-              type="success"
-              :name="row"
-              @click="previewArticle(row._id)"
-              :icon="InfoFilled"
-              circle
-            />
-            <el-button v-if="articleType !== 4" type="primary" @click="updateArticle(row._id)" :icon="Edit" circle />
-            <el-button
-              v-if="articleType !== 4"
-              type="danger"
-              @click="deleteArticle(row._id)"
-              :icon="DeleteFilled"
-              circle
-            />
-            <el-button
-              v-if="articleType === 4"
-              type="danger"
-              @click="deleteArticlePermanently(row._id)"
-              :icon="DeleteFilled"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
 
-```
 2. 添加文章富文本编辑器使用与代码高亮
 ![image](./web/src/assets/docs/article-add.png)
-```jsx
-// 导入必要的组件
-import { QuillEditor } from "@vueup/vue-quill"
-import "@vueup/vue-quill/dist/vue-quill.snow.css"
-import hljs from "highlight.js"
-import "highlight.js/styles/monokai-sublime.css"
 
-// 富文本编辑器配置项
-const Options = {
-  theme: "snow",
-  placeholder: "请在这里输入",
-  modules: {
-    toolbar: {
-      container: [
-        // [{ 'header': 1 }, { 'header': 2 }], // 标题 —— 独立平铺
-        [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题 —— 下拉选择
-        [{ size: ["small", false, "large", "huge"] }], // 字体大小
-        [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-        ["blockquote", "code-block"], // 引用  代码块
-        // 链接按钮需选中文字后点击
-        ["link", "image", "video"], // 链接、图片、视频
-        [{ align: [] }], // 对齐方式// text direction
-        [{ indent: "-1" }, { indent: "+1" }], // 缩进
-        ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-        [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-        [{ script: "sub" }, { script: "super" }], // 下标/上标
-        [{ font: [] }], //字体
-        ["clean"] // 清除文本格式
-      ]
-    },
-    syntax: {
-      highlight: (text: string) => {
-        return hljs.highlightAuto(text).value // 这里就是代码高亮需要配置的地方
-      }
-    }
-  }
-}
-
-// 富文本编辑器组件
-        <QuillEditor
-            v-model:content="articleForm.content"
-            ref="quillRef"
-            style="width: 100%; height: 300px"
-            contentType="html"
-            :options="Options"
-          />
-```
 3. 文章预览代码高亮
 ![image](./web/src/assets/docs/article-preview.png)
 ```jsx
@@ -415,11 +321,148 @@ app.use(hljsVuePlugin)
 4. 分类删除：
 点击删除按钮，弹出确认框，确认删除后，删除分类。（永久删除）
 
+### 6.图片管理页面
+![image](./web/src/assets/docs/pricture.png)
+**功能介绍:**
+1. 图片上传
+2. 图片列表分类展示
+3. 图片删除，预览，详情展示，下载
+4. 图片分组展示
+5. 精选图片轮播展示
+6. 编辑分组（添加，编辑，删除分组）
+7. 图片瀑布流布局展示
+
+### 7.动态管理页面
+![image](./web/src/assets/docs/trends.png)
+**功能介绍:**
+1. 个人信息展示
+2. 动态列表展示
+3. 动态列表触底加载
+4. 动态数据统计
+5. 动态发布
+6. 动态点赞 + 动态评论
+7. 动态修改，预览，删除
+
+### 8.留言管理页面
+![image](./web/src/assets/docs/guestbook.png)
+**功能介绍:**
+1. 留言列表展示
+2. 留言删除
+
+### 9.资源管理页面
+![image](./web/src/assets/docs/source.png)
+**功能介绍:**
+1. 资源列表分类展示
+2. 添加资源分组
+3. 添加左缘
+4. 修改删除资源分组
+5. 修改删除资源信息
+左键单击资源卡片右上角的标签图标，弹出修改资源弹框
+右击资源卡片右上角的标签图标，弹出删除资源弹框
+单击设置标签图标，弹出设置修改或删除资源分组弹框
+
+### 10.追番管理页面
+![image](./web/src/assets/docs/animation.png)
+**功能介绍:**
+1. 追番列表展示
+2. 追番添加
+3. 动漫详情
+  ![image](./web/src/assets/docs/animation-detail.png);
+4. 动漫详情信息展示
+5. 动漫图片分页加载展示
+6. 动漫修改删除
+7. 图片右击选择批量删除
+8. 动漫图片添加
+  
 
 
 
 
+## 📑 前端页面（前台）
+<div align="center">
+  <h2>🔍 前端-前台页面</h2>
+</div>
 
+**以下效果均为PC端效果展示，移动端效果待补充**
+### 1.首页
+  ![image](./web/src/assets/docs/index-home.png);
+  ![image](./web/src/assets/docs/index-home2.png);
+  ![image](./web/src/assets/docs/index-home3.png);
+
+**功能介绍:**
+1. 首页随机诗句打字机打字效果
+2. 首页推荐文章显示
+3. 个人信息，分类信息，标签信息展示
+4. 标签图标点击显示标签详细信息
+5. 公众号二维码显示
+6. 工具箱
+7. 底部版权区域访问量展示及上线时间计算
+8. 底部版权区域备案信息展示及个人账号信息展示
+
+### 2.博文
+![image](./web/src/assets/docs/article-home.png);
+![image](./web/src/assets/docs/article-home2.png);
+
+**功能介绍:**
+1. 精选图片全景轮播图展示
+2. 文章列表展示
+3. 文章点赞
+4. 文章分页加载
+
+### 3.动态
+![image](./web/src/assets/docs/tredns-home.png);
+**功能介绍:**
+1. 动态列表展示
+2. 动态列表触底加载
+3. 动态点赞 + 动态评论
+
+
+### 4.相册
+![image](./web/src/assets/docs/pricture-home.png);
+![image](./web/src/assets/docs/pricture-home2.png);
+**功能介绍:**
+1. 相册分类展示
+2. 相册图片列表展示
+3. 图片下载
+
+### 5.留言板
+![image](./web/src/assets/docs/guest-book-home.png);
+![image](./web/src/assets/docs/guest-book-home2.png);
+
+**功能介绍:**
+1. 留言弹幕墙展示
+2. 添加留言
+3. 留言分页展示
+
+### 6.资源
+![image](./web/src/assets/docs/source-home.png);
+**功能介绍:**
+1. 资源列表分类展示
+
+### 7.追番
+![image](./web/src/assets/docs/animation-home.png);
+![image](./web/src/assets/docs/animation-home2.png);
+**功能介绍:**
+1. 追番列表展示
+2. 追番详情
+3. 动漫图片分页加载展示
+### 8.文章详情
+![image](./web/src/assets/docs/article-home-detail.png);
+![image](./web/src/assets/docs/article-home-detail2.png);
+
+**功能介绍:**
+1. 文章详情展示
+2. 文章评论
+3. 代码复制
+4. 上一页下一页切换
+
+### 9.个人资料
+![image](./web/src/assets/docs/userinfo-home.png);
+
+## 📑 后端接口 
+<div align="center">
+  <h2><a href="https://apifox.com/apidoc/shared-c6adb94b-1fdc-4dbd-9933-e7962342092e">🔍 极客空间</a></h2>
+</div>
 
 
 
