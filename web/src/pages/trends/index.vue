@@ -235,12 +235,12 @@ onMounted(async () => {
   }
 }
 .head {
-  background-image: url(../../assets/trends/trends-bg.jpg);
+  background-image: url(../../assets/picture/pricture-bg2.jpg);
+    background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 300px;
   width: 100%;
-  background-position: 0 -225px;
   border-radius: 0 0 20px 20px;
   display: flex;
   flex-direction: column;

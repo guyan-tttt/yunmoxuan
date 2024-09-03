@@ -126,7 +126,7 @@ onMounted(() => {
           <el-form-item label="留言" prop="content">
             <my-textarea v-model="guestbookForm.content" />
           </el-form-item>
-          <el-form-item label="头像地址" prop="avatar">
+          <el-form-item label="头像" prop="avatar">
             <el-input v-model="guestbookForm.avatar" placeholder="请输入头像地址" />
           </el-form-item>
           <el-form-item label="邮箱" prop="email">

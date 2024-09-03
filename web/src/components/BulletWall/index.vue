@@ -174,7 +174,7 @@ onMounted(async () => {
     padding-right: 10px;
     white-space: nowrap;
     cursor: pointer;
-
+    font-family: "楷体";
     &:hover {
       animation-play-state: paused;
       box-shadow: 0px 0px 15px #fff;

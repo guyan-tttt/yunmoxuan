@@ -19,7 +19,7 @@ import "@/styles/index.scss"
 import hljs from "highlight.js/lib/core"
 import javascript from "highlight.js/lib/languages/javascript"
 import hljsVuePlugin from "@highlightjs/vue-plugin"
-import "animate.css"
+// import "animate.css"
 
 // 瀑布流组件
 import V3waterfall from "v3-waterfall"

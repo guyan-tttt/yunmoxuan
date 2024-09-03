@@ -375,24 +375,14 @@ onUnmounted(() => {
   border-radius: 4px;
   color: rgb(41, 128, 185);
   background-color: rgba(27, 31, 35, 0.05);
-  font-family:
-    Operator Mono,
-    Consolas,
-    Monaco,
-    Menlo,
-    monospace;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 :deep(pre code) {
   display: block;
   font-size: 95% !important;
   background-color: rgba(27, 31, 35, 0.05);
-  font-family:
-    Operator Mono,
-    Consolas,
-    Monaco,
-    Menlo,
-    monospace;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   /* color: #fff; */
 }
 
@@ -529,6 +519,9 @@ onUnmounted(() => {
   background-color: var(--el-color-info-light-8);
 }
 .content {
-  font-size: 0.8em;
+  font-size: 0.9em;
+}
+::v-deep(.ql-syntax) {
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
 </style>

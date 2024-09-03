@@ -92,12 +92,12 @@ onMounted(() => {
   }
 }
 .head {
-  background-image: url(../../assets/picture/pricture-bg.jpg);
+  background-image: url(../../assets/picture/pricture-bg4.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
   height: 300px;
   width: 100%;
-  background-position: 0 -475px;
+  background-position: center;
   border-radius: 0 0 20px 20px;
   display: flex;
   flex-direction: column;

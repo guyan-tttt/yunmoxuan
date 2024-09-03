@@ -40,25 +40,6 @@ const getSourceList = async () => {
   }
 }
 
-const options = [
-  {
-    label: "新建",
-    handle: () => {}
-  },
-  {
-    label: "编辑",
-    handle: () => {}
-  },
-  {
-    label: "删除",
-    handle: () => {}
-  },
-  {
-    label: "复制",
-    handle: () => {}
-  }
-]
-
 onMounted(() => {
   getSourceList()
 })
@@ -75,12 +56,12 @@ onMounted(() => {
   }
 }
 .head {
-  background-image: url(../../assets/picture/pricture-bg.jpg);
+  background-image: url(../../assets/picture/picture-bg3.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   height: 300px;
   width: 100%;
-  background-position: 0 -475px;
+  background-position: center;
   border-radius: 0 0 20px 20px;
   display: flex;
   flex-direction: column;

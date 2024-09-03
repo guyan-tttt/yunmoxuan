@@ -6,7 +6,7 @@
         <p>{{ item.desc }}</p>
       </div>
       <div class="img">
-        <img :src="item.cover" alt="" />
+        <img v-img-load="item.cover" :src="item.cover" alt="" />
       </div>
     </router-link>
   </div>

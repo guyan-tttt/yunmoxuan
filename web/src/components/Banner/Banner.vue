@@ -2,10 +2,11 @@
   <div class="banner">
     <div id="slided">
       <div
+        v-bg-load="item.src"
         v-for="(item, index) in imgList"
         :key="item.name"
         class="itm"
-        :style="{ backgroundImage: `url(${item.src})`, left: index > 1 ? `calc(70% + ${index - 2} * 250px)` : 0 }"
+        :style="{ left: index > 1 ? `calc(70% + ${index - 2} * 250px)` : 0 }"
       />
     </div>
     <el-row class="btn" justify="space-between" align="middle" style="height: calc(100vh - 60px)">
@@ -21,28 +22,7 @@ import { ref } from "vue"
 import { onMounted, onUnmounted } from "vue"
 import { getBannerAPI } from "@/api/web/index"
 
-const imgList = ref<any[]>([
-  {
-    url: "http://localhost:3000/images/image/ac25018e749e1661299dcd29601d4bb0.jpeg",
-    name: "1"
-  },
-  {
-    url: "http://localhost:3000/images/image/d177519bab9180f7117780f80133ea62.png",
-    name: "2"
-  },
-  {
-    url: "http://localhost:3000/images/image/eb9f49a9efc7d7778510d76ceda15c49.jpeg",
-    name: "3"
-  },
-  {
-    url: "	http://localhost:3000/images/image/32bfb86f553614a13f43387985671a45.jpeg",
-    name: "4"
-  },
-  {
-    url: "http://localhost:3000/images/image/d56afa4ad46c20467ae8773136f46388.jpeg",
-    name: "5"
-  }
-])
+const imgList = ref<any[]>([])
 
 // 节流阀
 const isChange = ref<boolean>(true)
@@ -140,6 +120,7 @@ onUnmounted(() => {
     background-repeat: no-repeat;
     background-size: cover;
     // z-index: 1;
+    background-image: url(../../assets/picture/img-loading.gif);
   }
   .itm:nth-child(1),
   .itm:nth-child(2) {

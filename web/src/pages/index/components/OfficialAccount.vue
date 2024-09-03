@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3 wx w-full font-medium bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700" v-cursor-pointer>
-    <img class="font" src="../../../assets/layouts/offical-account-2.png" />
-    <img class="back" src="../../../assets/layouts/offical-account-1.png" />
+    <img loading="lazy" class="font" src="../../../assets/layouts/offical-account-2.png" />
+    <img loading="lazy" class="back" src="../../../assets/layouts/offical-account-1.png" />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <header
     v-if="!settingsStore.isMobile"
-    class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600"
+    class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600 animate__slideInDown animate__animated"
     :class="{ active: settingsStore.showNavBg || bgColor }"
   >
     <div class="container mx-auto">
@@ -222,5 +222,24 @@ header {
 }
 .el-menu {
   background-color: transparent;
+}
+.el-menu-item {
+  cursor: var(--cursor-pointer);
+  &::before {
+    content: "";
+    height: 3px;
+    background-color: #409eff;
+    position: absolute;
+    bottom: 0;
+    transition: all 0.5s;
+    width: 0;
+    left: 0;
+    border-radius: 5px;
+  }
+  &:hover {
+    &::before {
+      width: 100%;
+    }
+  }
 }
 </style>

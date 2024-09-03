@@ -105,6 +105,7 @@ const goToDetail = (id: string) => {
   animation-timeline: view();
   animation-range: entry 0% cover 10%;
   width: 100%;
+  border: 2px solid #eee;
   &:hover {
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
     transform: translateY(-10px);

@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="list">
-      <div class="item" v-for="(item, index) in pictureList" :key="item._id">
+      <div class="item" v-for="(item, index) in pictureList" :key="item._id" v-card-scale="1">
         <el-popover placement="top-end" :width="100" trigger="contextmenu">
           <template #reference>
             <el-image

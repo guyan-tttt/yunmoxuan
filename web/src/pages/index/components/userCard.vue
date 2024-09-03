@@ -3,6 +3,7 @@ import { useWebInfoStore } from "@/store/modules/webInfo"
 import type { Tag } from "@/types/admin/tags"
 import OfficialAccount from "./OfficialAccount.vue"
 import { useSettingsStore } from "@/store/modules/settings"
+import TimeCard from "./TimeCard.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
@@ -17,7 +18,7 @@ const openPreview = (tag: Tag) => {
 </script>
 <template>
   <div class="mb-3 w-full bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <div class="flex flex-col items-center pb-6 pt-6 card">
+    <div class="flex flex-col items-center pb-6 pt-6 card border border-gray-200">
       <div class="avatar" @click="$router.push('/home-userInfo')">
         <el-avatar :src="webInfoStore.authorInfo?.avatar" :size="70" />
       </div>
@@ -87,9 +88,11 @@ const openPreview = (tag: Tag) => {
   </div>
   <!-- 微信公众号 -->
   <OfficialAccount />
+  <!-- 时间面板 -->
+  <TimeCard />
   <!-- 文章分类 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</h2>
+    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</p>
     <div class="category text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <a
         v-for="item in webInfoStore.categoryInfo"
@@ -118,7 +121,7 @@ const openPreview = (tag: Tag) => {
 
   <!-- 文章标签 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</h2>
+    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</p>
     <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click.stop="openPreview(item)">
       <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
       <span>{{ item.name }}</span>

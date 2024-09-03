@@ -1,5 +1,5 @@
 <template>
-  <a class="card" :href="props.data.link" :style="{ backgroundImage: `url(${props.data.bg})` }" target="_blank" @contextmenu="handleContextMenu">
+  <a class="card" v-bg-load="props.data.bg" :href="props.data.link" target="_blank" @contextmenu="handleContextMenu">
     <div class="top">
       <el-avatar :src="props.data.logo" :size="50" />
       <div class="name">{{ props.data.name }}</div>
@@ -67,7 +67,7 @@ const updateSource = (item: SourceItem) => {
   background-size: cover;
   background-position: center;
   color: #fff;
-
+  background-image: url(../../../assets/picture/img-loading.gif);
   cursor: pointer;
   .top {
     height: 80px;

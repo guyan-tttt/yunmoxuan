@@ -1,5 +1,5 @@
 <template>
-  <article class="card" :style="{ backgroundImage: `url(${props.data.cover})` }">
+  <article class="card" v-bg-load="props.data.cover">
     <div class="temporary_text">
       <div class="title">🌟{{ props.data.name }}</div>
       <span class="score">💫{{ props.data.score.toFixed(1) }}分</span>
@@ -45,6 +45,7 @@ const dateList = ["日", "一", "二", "三", "四", "五", "六"]
   background-position: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   transition: all 0.25s;
+  background-image: url(../../../assets/picture/img-loading.gif);
   cursor: pointer;
 
   &:hover {

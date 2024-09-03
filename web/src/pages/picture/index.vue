@@ -23,12 +23,14 @@ const settingStore = useSettingsStore()
   font-size: 20px;
 
   .head {
-    background-image: url(../../assets/picture/pricture-bg.jpg);
+    background-image: url(../../assets/picture/picture-bg.jpeg);
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     height: 15em;
     width: 100%;
-    background-position: 0 -475px;
+    // background-position: 0 -475px;
+    
     border-radius: 0 0 20px 20px;
     display: flex;
     flex-direction: column;

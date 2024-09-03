@@ -130,6 +130,7 @@ const goToDetail = (id: string) => {
 
 .card {
   box-shadow: 0px 2px 20px #999;
+  border: 2px solid #eee;
 }
 ::v-deep(.el-image img) {
   cursor:
