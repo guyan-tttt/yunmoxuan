@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
     <div class="list">
-      <div class="item" v-for="(item, index) in pictureList" :key="item._id" v-card-scale="1">
+      <div class="item" v-for="(item, index) in pictureList" :key="item._id" v-card-scale>
         <el-popover placement="top-end" :width="100" trigger="contextmenu">
           <template #reference>
             <el-image
@@ -71,6 +71,7 @@ import { useRoute } from "vue-router"
 import { getPictureListAPI } from "@/api/web/picture"
 import type { ImageItem } from "@/types/admin/image"
 import { ElMessage, ElMessageBox } from "element-plus"
+import Loading from "@/components/Loading/index.vue"
 //@ts-ignore
 import FileSaver from "file-saver"
 

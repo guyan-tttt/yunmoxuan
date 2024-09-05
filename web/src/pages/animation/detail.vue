@@ -63,7 +63,11 @@
           :src="item.src"
           :preview-src-list="imgList"
           fit="cover"
-        />
+        >
+          <template #placeholder>
+            <Loading />
+          </template>
+        </el-image>
       </div>
 
       <el-row justify="center" class="mt-5">
@@ -86,7 +90,7 @@ import { getAnimationDetailAPI, getAnimationImageListAPI } from "@/api/web/anima
 import { onMounted, ref, computed } from "vue"
 import { useRoute } from "vue-router"
 import { AnimeItem } from "@/types/admin/animation"
-
+import Loading from "@/components/Loading/index.vue"
 import type { ImageItem } from "@/types/admin/image"
 
 // 页面路由

@@ -37,7 +37,7 @@ export default {
   height: 100vh;
   position: fixed;
   overflow: hidden;
-  background-image: url(https://pic4.zhimg.com/v2-17ec8cd47fa9fcf0b2d1094c5741c7d7_r.jpg);
+  background-image: url(../../../assets/picture/guestbook-bg.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -11,7 +11,7 @@
       style="width: 80%; margin: 0 auto; position: relative; min-height: 100vh"
       class="container mx-auto max-w-screen-xl mt-5"
     >
-      <el-timeline style="max-width: 90%">
+      <el-timeline  style="max-width: 90%">
         <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">
@@ -29,7 +29,7 @@
                 <p class="content">{{ i.content }}</p>
                 <el-row class="imageList">
                   <el-image
-                    v-for="item in i.imgList"
+                    v-for="(item, index) in i.imgList"
                     :key="item"
                     style="width: 30%; height: auto"
                     :src="item"
@@ -37,9 +37,14 @@
                     :max-scale="7"
                     :min-scale="0.2"
                     :preview-src-list="i.imgList"
-                    :initial-index="4"
+                    :initial-index="index"
                     fit="cover"
-                  />
+                    hide-on-click-modal
+                  >
+                    <template #placeholder>
+                      <Loading />
+                    </template>
+                  </el-image>
                 </el-row>
                 <el-row justify="end" class="about">
                   <span style="position: relative"
@@ -68,7 +73,7 @@
       <div class="nomore">没有更多了~</div>
     </el-card>
     <div v-else class="mt-4" v-infinite-scroll="infiniteScroll" infinite-scroll-distance="100px">
-      <el-timeline style="max-width: 90%">
+      <el-timeline style="max-width: 90%" class="animate__fadeInUp animate__animated">
         <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">
@@ -138,7 +143,7 @@ import Comment from "@/views/trends/components/Comment.vue"
 import { getProvinceAPI } from "@/api/admin/trends"
 import { ElMessage } from "element-plus"
 import { useSettingsStore } from "@/store/modules/settings"
-
+import Loading from "@/components/Loading/index.vue"
 const settingsStore = useSettingsStore()
 
 // 动态列表
@@ -236,7 +241,7 @@ onMounted(async () => {
 }
 .head {
   background-image: url(../../assets/picture/pricture-bg2.jpg);
-    background-position: center;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 300px;

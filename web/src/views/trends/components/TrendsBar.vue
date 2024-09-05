@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import { onMounted, defineProps, ref, watch } from "vue"
-import * as echarts from "echarts"
 
 const props = defineProps<{
   data: any
@@ -89,6 +88,7 @@ onMounted(() => {
   // 数据计算
 
   // 浏览量统计
+  //@ts-ignore
   myChart1 = echarts.init(document.getElementById("look"))
   // 绘制图表
 })

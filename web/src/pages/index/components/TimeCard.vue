@@ -53,9 +53,9 @@ onMounted(() => {
   timeObj.value[1] = week
   //   生成本月数据
   const mounth = {
-    num: new Date().getDate(),
-    text: `本月已经过去了${new Date().getDate()}天`,
-    percentage: new Date().getDate() / 30,
+    num: new Date().getDate() - 1,
+    text: `本月已经过去了${new Date().getDate() - 1}天`,
+    percentage: (new Date().getDate() - 1) / 30,
     color: setColor()
   }
   timeObj.value[2] = mounth

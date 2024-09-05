@@ -16,10 +16,9 @@ import "element-plus/dist/index.css"
 import "element-plus/theme-chalk/dark/css-vars.css"
 import "@/styles/index.scss"
 // 代码高亮
-import hljs from "highlight.js/lib/core"
-import javascript from "highlight.js/lib/languages/javascript"
+// import hljs from "highlight.js/lib/core"
+// import javascript from "highlight.js/lib/languages/javascript"
 import hljsVuePlugin from "@highlightjs/vue-plugin"
-// import "animate.css"
 
 // 瀑布流组件
 import V3waterfall from "v3-waterfall"
@@ -30,7 +29,7 @@ import "vue3-emoji-picker/css"
 // Then register the languages you need
 import Textarea from "@/components/Textarea/index.vue"
 import vue3SeamlessScroll from "vue3-seamless-scroll"
-hljs.registerLanguage("javascript", javascript)
+// hljs.registerLanguage("javascript", javascript)
 // 导入websocket
 import "@/utils/websokcet"
 

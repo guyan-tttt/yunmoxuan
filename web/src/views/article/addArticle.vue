@@ -2,8 +2,8 @@
 import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import "@vueup/vue-quill/dist/vue-quill.bubble.css"
-import hljs from "highlight.js"
-import "highlight.js/styles/monokai-sublime.css"
+// import hljs from "highlight.js"
+// import "highlight.js/styles/monokai-sublime.css"
 import { ref, onMounted } from "vue"
 import { getCategoryAllAPI } from "@/api/admin/category"
 import { getAllTagsAPI } from "@/api/admin/tags"
@@ -55,6 +55,7 @@ const Options = {
     },
     syntax: {
       highlight: (text: string) => {
+        //@ts-ignore
         return hljs.highlightAuto(text).value // 这里就是代码高亮需要配置的地方
       }
     }

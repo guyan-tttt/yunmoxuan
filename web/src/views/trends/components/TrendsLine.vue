@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import { onMounted, defineProps, ref, watch } from "vue"
-import * as echarts from "echarts"
 
 const props = defineProps<{
   data: any
@@ -74,6 +73,7 @@ let myChart3: any = null
 
 onMounted(() => {
   //   点赞数统计量
+  //@ts-ignore
   myChart3 = echarts.init(document.getElementById("like"))
   // 绘制图表
 })

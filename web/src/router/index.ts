@@ -111,24 +111,6 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-
-  {
-    path: "/music",
-    component: Layouts,
-    children: [
-      {
-        path: "",
-        //@ts-expect-error
-        component: () => import("@/views/music/index.vue"),
-        name: "Music",
-        meta: {
-          title: "音乐管理",
-          svgIcon: "music",
-          affix: true
-        }
-      }
-    ]
-  },
   {
     path: "/userInfo",
     component: Layouts,
@@ -202,6 +184,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
+        //@ts-expect-error
         component: () => import("@/views/sources/index.vue"),
         name: "Source",
         meta: {
@@ -391,6 +374,26 @@ export const constWebRoutes = [
             path: "detail",
             name: "AnimationHomeDetail",
             component: () => import("@/pages/animation/detail.vue"),
+            meta: {
+              hidden: true
+            }
+          }
+        ]
+      },
+      {
+        path: "/home-music",
+        name: "home-music",
+        redirect: "/home-music/index",
+        meta: {
+          title: "音乐",
+          index: 8,
+          icon: "home-music"
+        },
+        children: [
+          {
+            path: "index",
+            component: () => import("@/pages/music/index.vue"),
+            name: "Music",
             meta: {
               hidden: true
             }

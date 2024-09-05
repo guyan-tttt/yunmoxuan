@@ -26,11 +26,22 @@ initTheme()
 /* 定义滚动条的滑块样式 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px !important; /* 滑块圆角 */
-  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%) !important; /* 滑块颜色 */
+  background-color: red;
+  background-image: linear-gradient(
+    45deg,
+    rgba(178, 86, 240, 0.5) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(53, 131, 233, 0.5) 50%,
+    rgba(255, 255, 255, 0.5) 75%,
+    transparent 75%,
+    rgba(255, 104, 86, 0.5) 100%
+  );
 }
 
 /* 定义滚动条的轨道样式 */
 ::-webkit-scrollbar-track {
-  background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) !important; /* 轨道颜色 */
+  border-radius: 10px !important; /* 轨道圆角 */
+  background-color: rgba(44, 153, 226, 0.3);
 }
 </style>

@@ -92,7 +92,7 @@ const openPreview = (tag: Tag) => {
   <TimeCard />
   <!-- 文章分类 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white">📅 分类</p>
+    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white title-p">📅 分类</p>
     <div class="category text-sm font-medium text-gray-900 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <a
         v-for="item in webInfoStore.categoryInfo"
@@ -121,7 +121,7 @@ const openPreview = (tag: Tag) => {
 
   <!-- 文章标签 -->
   <div class="mb-3 w-full font-medium p-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white">🔖 标签</p>
+    <p class="mb-2 font-bold text-gray-900 uppercase dark:text-white title-p">🔖 标签</p>
     <div type="success" class="item" v-for="item in webInfoStore.tagInfo" :key="item._id" @click.stop="openPreview(item)">
       <el-image style="width: 20px; height: 20px" :src="item.icon" fit="fill" />
       <span>{{ item.name }}</span>
@@ -196,5 +196,9 @@ const openPreview = (tag: Tag) => {
   cursor:
     var(--cursor-pointer) 50 50,
     pointer !important;
+}
+.title-p {
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 10px;
 }
 </style>

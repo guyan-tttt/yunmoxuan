@@ -5,7 +5,7 @@
       <h2>{{ VITE_APP_TITLE }}</h2>
       <ul class="list">
         <router-link @click="drawer = false" v-for="item in routesList" :key="item.path" :to="item.path" class="item"
-          ><SvgIcon :name="item.meta?.icon" />{{ item.meta?.title }}</router-link
+          ><SvgIcon :name="item.meta?.icon as string" />{{ item.meta?.title }}</router-link
         >
       </ul>
     </el-drawer>

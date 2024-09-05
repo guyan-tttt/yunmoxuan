@@ -2,6 +2,7 @@ import { type Ref, ref, watch } from "vue"
 import { defineStore } from "pinia"
 import { type LayoutSettings, layoutSettings } from "@/config/layouts"
 import { setConfigLayout } from "@/utils/cache/local-storage"
+import { log } from "console"
 
 type SettingsStore = {
   // 使用映射类型来遍历 layoutSettings 对象的键
@@ -75,9 +76,13 @@ export const useSettingsStore = defineStore("settings", () => {
   // 判断是否是移动端
   // 计算是否是移动端
   const setIsMobile = () => {
-    if (window.innerWidth <= 1000) isMobile.value = true
+    if (document.documentElement.clientWidth <= 1000) isMobile.value = true
     else isMobile.value = false
     console.log("isMobile", isMobile.value, window.innerWidth)
+    window.onresize = () => {
+      if (document.documentElement.clientWidth <= 1000) isMobile.value = true
+      else isMobile.value = false
+    }
   }
 
   return {

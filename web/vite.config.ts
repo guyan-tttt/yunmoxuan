@@ -7,7 +7,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import svgLoader from "vite-svg-loader"
 import UnoCSS from "unocss/vite"
-
+import { visualizer } from "rollup-plugin-visualizer"
 /** 配置项文档：https://cn.vitejs.dev/config */
 export default ({ mode }: ConfigEnv): UserConfigExport => {
   return {
@@ -60,8 +60,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
            */
           manualChunks: {
             vue: ["vue", "vue-router", "pinia"],
-            element: ["element-plus", "@element-plus/icons-vue"],
-            vxe: ["vxe-table", "vxe-table-plugin-element", "xe-utils"]
+            element: ["element-plus", "@element-plus/icons-vue"]
           }
         }
       }
@@ -90,7 +89,13 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
         symbolId: "icon-[dir]-[name]"
       }),
       /** UnoCSS */
-      UnoCSS()
+      UnoCSS(),
+      /** 打包分析 */
+      visualizer({
+        emitFile: false,
+        filename: "stats.html", //分析图生成的文件名
+        open: true //如果存在本地服务端口，将在打包后自动展示
+      })
     ],
     /** Vitest 单元测试配置：https://cn.vitest.dev/config */
     test: {
