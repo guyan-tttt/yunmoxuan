@@ -1,14 +1,13 @@
 import request from "@/utils/service"
 
 // 获取推荐歌单分类
-export const getRecommendSongCategoryAPI = (limit: number) => {
+export const getRecommendSongCategoryAPI = (limit: number, cat?: string) => {
   //   return request.get(`/top/playlist?limit=${limit}`)
-  return request.get<any, any>(`/top/playlist?limit=${limit}`)
+  return request.get<any, any>(`/top/playlist?limit=${limit}&cat=${cat ? cat : ""}`)
 }
-
 // 获取推荐歌单
-export const getRecommendSongAPI = (limit: number) => {
-  return request.get<any, any>(`/top/playlist/highquality?limit=${limit}`)
+export const getRecommendSongAPI = (limit: number, before?: number) => {
+  return request.get<any, any>(`/top/playlist/highquality?limit=${limit}&before=${before ? before : 0}`)
 }
 
 // 获取歌手分类

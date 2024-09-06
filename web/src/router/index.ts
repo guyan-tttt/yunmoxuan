@@ -397,6 +397,22 @@ export const constWebRoutes = [
             meta: {
               hidden: true
             }
+          },
+          {
+            path: "recommend-list",
+            component: () => import("@/pages/music/recommendList.vue"),
+            name: "MusicRecommendList",
+            meta: {
+              hidden: true
+            }
+          },
+          {
+            path: "category-list",
+            component: () => import("@/pages/music/categoryList.vue"),
+            name: "MusicCategoryList",
+            meta: {
+              hidden: true
+            }
           }
         ]
       }

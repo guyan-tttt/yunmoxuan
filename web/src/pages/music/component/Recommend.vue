@@ -3,8 +3,8 @@
     <el-card class="mb-3">
       <header>
         <h3>✨ {{ props.type }}</h3>
-        <div class="header-right">
-          <span>更多歌单</span>
+        <div @click="$router.push(props.url)" class="mr-3 hover:text-blue header-right" style="cursor: pointer">
+          <span>更多</span>
           <el-icon><ArrowRight /></el-icon>
         </div>
       </header>
@@ -35,6 +35,7 @@ import Loading from "@/components/Loading/index.vue"
 const props = defineProps<{
   data: any
   type: string
+  url: string
 }>()
 </script>
 

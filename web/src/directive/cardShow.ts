@@ -15,5 +15,18 @@ export const cardShow = {
         }
       })
     }
+  },
+  scaleLoad2: {
+    mounted(el: any, binding: any) {
+      el.style.transform = "scale(0)"
+
+      el.style.transition = "all 0.5s"
+      const { stop } = useIntersectionObserver(el, ([{ isIntersecting }]) => {
+        if (isIntersecting) {
+          el.style.transform = "scale(1)"
+          stop()
+        }
+      })
+    }
   }
 }

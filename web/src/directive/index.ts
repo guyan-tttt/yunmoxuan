@@ -9,4 +9,5 @@ export default function initDirective(app: any) {
   app.directive("bg-load", imgLoad.bg)
   app.directive("img-load", imgLoad.img)
   app.directive("card-scale", cardShow.scaleLoad)
+  app.directive("card-scale2", cardShow.scaleLoad2)
 }
