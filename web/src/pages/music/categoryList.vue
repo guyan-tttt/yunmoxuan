@@ -6,12 +6,15 @@
         <span class="mr-3 hover:text-blue" style="cursor: pointer" @click="$router.back()"> 返回></span>
       </el-row>
       <el-row style="width: 100%" justify="center">
-        <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs" @tab-change="changeCategory">
-          <el-tab-pane v-for="item in categoryLabel" :key="item" :label="item" />
+        <el-tabs stretch :tab-position="tabPosition" style="height: 200px" class="demo-tabs" @tab-change="changeCategory">
+          <el-tab-pane v-for="item in route.query.type === 'category' ? categoryLabel : singerLabel" :key="item" :label="item" />
         </el-tabs>
         <div class="content">
-          <ul class="list">
+          <ul class="list" v-if="route.query.type === 'category'">
             <CategoryCard v-for="item in categoryData" :key="item.id" :data="item" />
+          </ul>
+          <ul class="list" v-else>
+            <SingerCard v-for="item in categoryData" :key="item.id" :data="item" />
           </ul>
         </div>
       </el-row>
@@ -28,8 +31,12 @@
 import { ref, onMounted } from "vue"
 import type { TabsInstance } from "element-plus"
 import CategoryCard from "./component/CategoryCard.vue"
-import { getRecommendSongCategoryAPI } from "@/api/web/music"
+import SingerCard from "./component/SingerCard.vue"
+import { getRecommendSongCategoryAPI, getSingerCategoryAPI } from "@/api/web/music"
 const tabPosition = ref<TabsInstance["tabPosition"]>("left")
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 
 const pageData = ref({
   limit: 10,
@@ -39,22 +46,41 @@ const pageData = ref({
 
 // 歌单分类数据
 const categoryLabel = ["全部", "华语", "古风", "欧美", "流行"]
+const singerLabel = ["华语男歌手", "华语女歌手", "华语组合", "欧美男歌手", "欧美女歌手", "欧美组合"]
+const singerCode = ["1001", "1002", "1003", "2001", "2002", "2003"]
 const categoryData = ref<any[]>([])
 
 // 获取歌单分类数据
 const getCategory = async () => {
-  const res = await getRecommendSongCategoryAPI(pageData.value.limit, pageData.value.cat)
-  if (res.code === 200) {
-    categoryData.value = res.playlists
-    pageData.value.total = res.total
+  let res = []
+  if (route.query.type === "singer") {
+    res = await getSingerCategoryAPI(pageData.value.limit, pageData.value.cat)
+    if (res.code === 200) {
+      categoryData.value = res.artists
+      if (res.more) {
+        pageData.value.total = res.artists.length + 10
+      }
+    }
+  } else {
+    res = await getRecommendSongCategoryAPI(pageData.value.limit, pageData.value.cat)
+    if (res.code === 200) {
+      categoryData.value = res.playlists
+      pageData.value.total = res.total
+    }
   }
 }
 
 // 切换分类
 const changeCategory = (index: any) => {
-  pageData.value.cat = categoryLabel[index as number]
-  pageData.value.limit = 10
-  getCategory()
+  if (route.query.type === "singer") {
+    pageData.value.cat = singerCode[index as number]
+    pageData.value.limit = 10
+    getCategory()
+  } else {
+    pageData.value.cat = categoryLabel[index as number]
+    pageData.value.limit = 10
+    getCategory()
+  }
 }
 
 // 加载下一页

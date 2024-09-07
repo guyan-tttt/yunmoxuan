@@ -5,9 +5,9 @@
 
     <div class="content container mx-auto max-w-screen-xl mt-5">
       <!-- 歌单推荐 -->
-      <Recommend :data="recommendCategory" type="歌单分类" url="/home-music/category-list" />
+      <Recommend :data="recommendCategory" type="歌单分类" url="/home-music/category-list?type=category" />
       <Recommend :data="recommendSongList" type="推荐歌单" url="/home-music/recommend-list" />
-      <Recommend :data="singerCategory" type="歌手分类" url="/home-music/singer-list" />
+      <Recommend :data="singerCategory" type="歌手分类" url="/home-music/category-list?type=singer" />
     </div>
   </div>
 </template>

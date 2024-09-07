@@ -1,7 +1,7 @@
 <template>
   <li class="item">
     <div class="left">
-      <el-image :src="props.data.coverImgUrl" fit="cover" lazy>
+      <el-image :src="props.data.picUrl" fit="cover" lazy>
         <template #placeholder>
           <Loading />
         </template>
@@ -10,13 +10,13 @@
     <div class="right">
       <div class="top">
         <div class="name">{{ props.data.name }}</div>
-        <div class="num">🔥{{ (props.data.playCount / 10000).toFixed(1) }}w</div>
+        <div class="num">🎼 {{ props.data.musicSize }}</div>
       </div>
       <p class="desc">{{ props.data.description }}</p>
       <div class="bottom">
         <div class="play">播放</div>
         <div class="about">
-          <el-tag v-for="item in props.data.tags" :key="item" class="ml-1">{{ item }}</el-tag>
+          <el-tag v-for="item in props.data.alias" :key="item" class="ml-1">{{ item }}</el-tag>
         </div>
       </div>
     </div>

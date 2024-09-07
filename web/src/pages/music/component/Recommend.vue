@@ -9,7 +9,7 @@
         </div>
       </header>
       <ul class="list">
-        <li class="item" v-for="item in props.data" :key="item.id">
+        <li class="item" v-for="item in props.data" :key="item.id" @click="$router.push(`/home-music/detail?id=${item.id}`)">
           <div class="view">
             <span v-if="item.playCount">🔥</span>
             <span v-else>🎼</span>

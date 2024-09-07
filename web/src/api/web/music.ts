@@ -11,6 +11,11 @@ export const getRecommendSongAPI = (limit: number, before?: number) => {
 }
 
 // 获取歌手分类
-export const getSingerCategoryAPI = (limit: number) => {
-  return request.get<any, any>(`/artist/list?limit=${limit}`)
+export const getSingerCategoryAPI = (limit: number, cat?: string) => {
+  return request.get<any, any>(`/artist/list?limit=${limit}&cat=${cat ? cat : ""}`)
+}
+
+// 获取歌单详情
+export const getSongCategoryDetailAPI = (id: number) => {
+  return request.get<any, any>(`/playlist/detail?id=${id}`)
 }
