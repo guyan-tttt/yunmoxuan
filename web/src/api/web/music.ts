@@ -19,3 +19,9 @@ export const getSingerCategoryAPI = (limit: number, cat?: string) => {
 export const getSongCategoryDetailAPI = (id: number) => {
   return request.get<any, any>(`/playlist/detail?id=${id}`)
 }
+
+// 获取音乐详情
+export const getMusicDetailAPI = (ids: number[]) => {
+  const id = ids.join(",")
+  return request.get<any, any>(`/song/url?id=${id}`)
+}

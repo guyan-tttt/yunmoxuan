@@ -17,6 +17,7 @@
     <TagPreview :tagDetail="webInfoStore.tagPreviewInfo as any" v-model="webInfoStore.showPreview" />
     <CommentInput />
     <ToolBox class="toolbox animate__fadeInLeft animate__animated" v-if="!settingsStore.isMobile" />
+    <SongPlay />
   </div>
 </template>
 
@@ -31,7 +32,7 @@ import TagPreview from "@/components/TagPreview/index.vue"
 import CommentInput from "@/components/CommentInput/index.vue"
 import ToolBox from "@/components/Toolbox/index.vue"
 import { useSettingsStore } from "@/store/modules/settings"
-
+import SongPlay from "@/pages/music/component/SongPlay.vue"
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
 

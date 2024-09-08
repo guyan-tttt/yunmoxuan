@@ -49,7 +49,7 @@
     </el-card> -->
     <el-card class="mt-3">
       <div class="list">
-        <SongCard v-for="(item, index) in songList" :key="item.id" :data="item">
+        <SongCard v-for="(item, index) in songList" :key="item.id" :data="item" @click="playMusic(item)">
           <div class="index">{{ index + 1 }}</div>
         </SongCard>
       </div>
@@ -63,6 +63,11 @@ import { useRoute } from "vue-router"
 import SongCard from "./component/SongCard.vue"
 import Loading from "@/components/Loading/index.vue"
 import { getSongCategoryDetailAPI } from "@/api/web/music"
+
+import { useMusicStore } from "@/store/modules/music"
+
+// 音乐仓库
+const musicStore = useMusicStore()
 
 // 页面路由
 const route = useRoute()
@@ -83,6 +88,10 @@ const getCategoryetail = async () => {
   }
 }
 
+// 点击歌曲播放音乐
+const playMusic = (item: any) => {
+  musicStore.playMusic(item)
+}
 onMounted(() => {
   if (route.query.id) {
     getCategoryetail()

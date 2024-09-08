@@ -396,31 +396,41 @@ export const constWebRoutes = [
             name: "Music",
             meta: {
               hidden: true
-            }
-          },
-          {
-            path: "recommend-list",
-            component: () => import("@/pages/music/recommendList.vue"),
-            name: "MusicRecommendList",
-            meta: {
-              hidden: true
-            }
-          },
-          {
-            path: "category-list",
-            component: () => import("@/pages/music/categoryList.vue"),
-            name: "MusicCategoryList",
-            meta: {
-              hidden: true
-            }
-          },
-          {
-            path: "detail",
-            component: () => import("@/pages/music/detail.vue"),
-            name: "MusicDetail",
-            meta: {
-              hidden: true
-            }
+            },
+            children: [
+              {
+                path: "",
+                component: () => import("@/pages/music/list.vue"),
+                name: "MusicList",
+                meta: {
+                  hidden: true
+                }
+              },
+              {
+                path: "recommend-list",
+                component: () => import("@/pages/music/recommendList.vue"),
+                name: "MusicRecommendList",
+                meta: {
+                  hidden: true
+                }
+              },
+              {
+                path: "category-list",
+                component: () => import("@/pages/music/categoryList.vue"),
+                name: "MusicCategoryList",
+                meta: {
+                  hidden: true
+                }
+              },
+              {
+                path: "detail",
+                component: () => import("@/pages/music/detail.vue"),
+                name: "MusicDetail",
+                meta: {
+                  hidden: true
+                }
+              }
+            ]
           }
         ]
       }
