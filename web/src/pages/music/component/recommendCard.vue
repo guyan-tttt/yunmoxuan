@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card" v-card-scale2>
+    <div class="card" v-card-scale2 @click="$router.push(`/home-music/index/detail?id=${props.data.id}`)">
       <button class="mail">🔥</button>
       <div class="profile-pic">
         <el-image :src="props.data.coverImgUrl">

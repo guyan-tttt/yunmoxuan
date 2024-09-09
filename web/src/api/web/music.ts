@@ -25,3 +25,8 @@ export const getMusicDetailAPI = (ids: number[]) => {
   const id = ids.join(",")
   return request.get<any, any>(`/song/url?id=${id}`)
 }
+
+// 获取歌词
+export const getMusicLyricAPI = (id: number) => {
+  return request.get<any, any>(`/lyric?id=${id}`)
+}

@@ -1,5 +1,5 @@
 <template>
-  <li class="item">
+  <li class="item" @click="$router.push(`/home-music/index/detail?id=${props.data.id}`)">
     <div class="left">
       <el-image :src="props.data.coverImgUrl" fit="cover" lazy>
         <template #placeholder>

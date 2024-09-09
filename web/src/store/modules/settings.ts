@@ -84,6 +84,14 @@ export const useSettingsStore = defineStore("settings", () => {
     }
   }
 
+  // 前台底部版权区域是否显示
+  const isShowCopyright = ref(true)
+
+  // 显示或隐藏前台底部版权区域
+  const showOrHideCopyright = (value: boolean) => {
+    isShowCopyright.value = !isShowCopyright.value
+  }
+
   return {
     ...state,
     isRefresh,
@@ -95,6 +103,8 @@ export const useSettingsStore = defineStore("settings", () => {
     isMouseSkin,
     openMouseSkin,
     isMobile,
-    setIsMobile
+    setIsMobile,
+    isShowCopyright,
+    showOrHideCopyright
   }
 })

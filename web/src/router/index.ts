@@ -425,7 +425,15 @@ export const constWebRoutes = [
               {
                 path: "detail",
                 component: () => import("@/pages/music/detail.vue"),
+                name: "MusicListDetail",
+                meta: {
+                  hidden: true
+                }
+              },
+              {
+                path: "song-detail",
                 name: "MusicDetail",
+                component: () => import("@/pages/music-detail/index.vue"),
                 meta: {
                   hidden: true
                 }

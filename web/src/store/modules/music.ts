@@ -47,5 +47,8 @@ export const useMusicStore = defineStore("music", () => {
     isMin.value = value
   }
 
-  return { musicList, currentMusic, playMusic, setMusicUrl, isMin, toggleMin }
+  // 播放器当前实例
+  const player = ref<any>(null)
+
+  return { musicList, currentMusic, playMusic, setMusicUrl, isMin, toggleMin, player }
 })
