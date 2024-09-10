@@ -29,6 +29,7 @@ import { getMusicDetailAPI } from "@/api/web/music"
 import { ref, watch } from "vue"
 import { useMusicStore } from "@/store/modules/music"
 import { useRouter } from "vue-router"
+import { getMusicLyricAPI } from "@/api/web/music"
 
 const router = useRouter()
 // 音乐仓库
@@ -57,7 +58,10 @@ watch(
 // 获取音乐信息
 const getMusicInfo = async () => {
   const res = await getMusicDetailAPI([musicStore.currentMusic.id])
+  const res2 = await getMusicLyricAPI(musicStore.currentMusic.id)
   musicStore.setMusicUrl(res.data[0].url)
+  // console.log(res2);/
+  musicStore.setMusicLrc(res2.lrc.lyric)
 }
 
 const songTimeUpdate = () => {
@@ -70,18 +74,31 @@ const onSongEnded = () => {
 }
 
 // 点击播放器
-const handlePlayClick = () => {
-  // 判断当前是否是折叠状态，如果是折叠状态就处理逻辑
-  if (musicStore.isMin) {
-    // 判断当前是否有音乐可以播放
-    if (musicStore.musicList && musicStore.musicList.length > 0) {
-      return
-    } else {
-      router.push("/home-music")
-    }
-  } else {
+const handlePlayClick = (e: any) => {
+  console.log(e.target)
+
+  // 处理点点击图标
+  if (e.target.localName === "svg" || e.target.localName === "path") {
+    return
+  }
+  // 处理播放逻辑
+  if (e.target?.className.includes("aplayer-pic")) {
+    return
+  }
+  // 处理点击进入详情页面
+  if (e.target?.className.includes("aplayer-music")) {
     // 跳转到歌词详情页面
     router.push(`/home-music/index/song-detail?id=${musicStore.currentMusic.id}`)
+  }
+  // 处理点击歌曲列表
+  if (e.target?.className.includes("aplayer-list-title")) {
+    // 获取到当前歌曲的名称
+    const title = e.target?.innerText
+    // console.log(title)
+    // 查询当前音乐
+    const music = musicStore.musicList.find((item: any) => item.title === title)
+    // console.log(music)
+    musicStore.setCurrentMusic(music)
   }
 }
 </script>

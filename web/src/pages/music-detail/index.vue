@@ -6,7 +6,7 @@
         <el-row style="width: 300px; color: #fff" justify="start" class="mb-3" @click="$router.back()"
           ><el-icon><ArrowLeft /></el-icon><span>返回</span></el-row
         >
-        <el-image src="http://p2.music.126.net/XTVHOQ7E7ZlLDvDW3q_xGg==/109951169797627572.jpg" />
+        <el-image :src="musicStore?.currentMusic.pic" />
         <div class="btn">下载该歌曲</div>
       </div>
       <div class="right">
@@ -20,21 +20,12 @@
 import { useSettingsStore } from "@/store/modules/settings"
 import { onMounted, onUnmounted } from "vue"
 import Lyric from "./component/Lyric.vue"
-import { useRoute } from "vue-router"
-import { getMusicLyricAPI } from "@/api/web/music"
-const route = useRoute()
-
+import { useMusicStore } from "@/store/modules/music"
 const settingsStore = useSettingsStore()
-
-// 获取歌词
-const getLyric = async () => {
-  const res = await getMusicLyricAPI(route.query.id)
-  console.log(res)
-}
+const musicStore = useMusicStore()
 
 onMounted(() => {
   settingsStore.showOrHideCopyright(false)
-  getLyric()
 })
 
 onUnmounted(() => {

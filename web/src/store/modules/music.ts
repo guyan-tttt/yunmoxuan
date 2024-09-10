@@ -28,6 +28,11 @@ export const useMusicStore = defineStore("music", () => {
       type: "" // 指定音频的类型
     }
   }
+  // 设置当前音乐
+  const setCurrentMusic = (item: any) => {
+    currentMusic.value = { ...item }
+  }
+
   //   设置当前播放音乐的url
   const setMusicUrl = (url: string) => {
     console.log(url)
@@ -37,6 +42,10 @@ export const useMusicStore = defineStore("music", () => {
     if (!musicList.value.some((item: any) => item.id === currentMusic.value.id)) {
       musicList.value.push(currentMusic.value)
     }
+  }
+  // 设置当前音乐的歌词
+  const setMusicLrc = (lrc: string) => {
+    currentMusic.value.lrc = lrc
   }
 
   //   是否显示迷你
@@ -50,5 +59,5 @@ export const useMusicStore = defineStore("music", () => {
   // 播放器当前实例
   const player = ref<any>(null)
 
-  return { musicList, currentMusic, playMusic, setMusicUrl, isMin, toggleMin, player }
+  return { musicList, currentMusic, playMusic, setMusicUrl, isMin, toggleMin, player, setMusicLrc, setCurrentMusic }
 })

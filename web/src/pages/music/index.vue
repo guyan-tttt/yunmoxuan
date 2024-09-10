@@ -2,6 +2,7 @@
   <div class="music" :class="{ mobile: settingsStore.isMobile }">
     <!-- 页头搜索框 -->
     <Header />
+
     <router-view />
   </div>
 </template>
