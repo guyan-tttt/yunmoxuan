@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import { ElMessage } from "element-plus"
 
 export const useMusicStore = defineStore("music", () => {
   // 音乐列表
@@ -59,5 +60,99 @@ export const useMusicStore = defineStore("music", () => {
   // 播放器当前实例
   const player = ref<any>(null)
 
-  return { musicList, currentMusic, playMusic, setMusicUrl, isMin, toggleMin, player, setMusicLrc, setCurrentMusic }
+  // 当前播放模式
+  const modes = ref([
+    {
+      name: "顺序播放",
+      value: "order",
+      icon: "music-order"
+    },
+    {
+      name: "随机播放",
+      value: "random",
+      icon: "music-random"
+    },
+    {
+      name: "单曲循环",
+      value: "loop",
+      icon: "music-loop"
+    }
+  ])
+  const playMode = ref(modes.value[0]) // order, random, loop
+
+  // 切换播放模式
+  const changeMode = (index: number) => {
+    playMode.value = modes.value[index]
+  }
+
+  // 删除歌曲
+  const deleteMusic = (item: any) => {
+    // 判断是否是当前正在播放的歌曲
+    if (item.id === currentMusic.value.id) {
+      ElMessage.warning("当前歌曲正在播放，无法删除")
+      return
+    }
+    const index = musicList.value.findIndex((music: any) => music.id === item.id)
+    if (index !== -1) {
+      musicList.value.splice(index, 1)
+    }
+  }
+
+  // 播放下一首
+  const nextMusic = () => {
+    // 计算当前歌曲在列表中的索引
+    let index = musicList.value.findIndex((item: any) => item.id === currentMusic.value.id)
+    if (index === -1) {
+      return
+    }
+    // 判断当前播放模式
+    if (playMode.value.value === "random") {
+      index = Math.floor(Math.random() * musicList.value.length)
+    } else if (playMode.value.value === "order") {
+      // 判断当前是否是最后一首歌曲
+      if (index === musicList.value.length - 1) {
+        index = 0
+      } else {
+        index++
+      }
+    }
+    setCurrentMusic(musicList.value[index])
+  }
+  // 播放上一首
+  const prevMusic = () => {
+    // 计算当前歌曲在列表中的索引
+    let index = musicList.value.findIndex((item: any) => item.id === currentMusic.value.id)
+    if (index === -1) {
+      return
+    }
+    // 判断当前播放模式
+    if (playMode.value.value === "random") {
+      index = Math.floor(Math.random() * musicList.value.length)
+    } else if (playMode.value.value === "order") {
+      // 判断当前是否是最后一首歌曲
+      if (index === 0) {
+        index = musicList.value.length - 1
+      } else {
+        index--
+      }
+    }
+    setCurrentMusic(musicList.value[index])
+  }
+  return {
+    musicList,
+    currentMusic,
+    playMusic,
+    setMusicUrl,
+    isMin,
+    toggleMin,
+    player,
+    setMusicLrc,
+    setCurrentMusic,
+    playMode,
+    deleteMusic,
+    changeMode,
+    modes,
+    nextMusic,
+    prevMusic
+  }
 })

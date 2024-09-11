@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, onUnmounted, watch } from "vue"
+import { ref, onMounted, onUnmounted, watch } from "vue"
 import { useMusicStore } from "@/store/modules/music"
 
 const musicStore = useMusicStore()
@@ -27,6 +27,10 @@ const handleLrc = () => {
         })
     }
   })
+  const pop = data.pop()
+  if (pop.time) {
+    data.push(pop)
+  }
 }
 
 const listRef = ref(null)
@@ -51,6 +55,7 @@ const timer = ref(null)
 const initLrc = async () => {
   // 互殴歌词
   musicWords.value = musicStore.currentMusic.lrc.replace("undefined", "")
+  console.log(musicWords.value)
   // 清除歌词
   listRef.value.innerHTML = ""
   liList.value = []
@@ -90,7 +95,7 @@ function activeIndex() {
 watch(
   () => musicStore.currentMusic,
   () => {
-    console.log("musicStore.currentMusic");
+    console.log("musicStore.currentMusic")
     initLrc()
   }
 )
@@ -138,6 +143,8 @@ onUnmounted(() => {
     &.active {
       color: #409eff;
       transform: scale(1.2);
+      text-shadow: 0 0 10px #999;
+      font-weight: 700;
     }
   }
 }

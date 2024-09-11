@@ -11,9 +11,10 @@
       theme="#409EFF"
       :currentTime="60"
       @timeupdate="songTimeUpdate"
-      @onEnded="onSongEnded"
+      @ended="onSongEnded"
       order="random"
       @click="handlePlayClick"
+      loop="none"
     >
       <template v-slot:play-button>
         <button @click="handlePlayClick">自定义播放</button>
@@ -26,7 +27,7 @@
 //@ts-ignore
 import Aplayer from "vue-aplayer-next"
 import { getMusicDetailAPI } from "@/api/web/music"
-import { ref, watch } from "vue"
+import { ref, watch, nextTick } from "vue"
 import { useMusicStore } from "@/store/modules/music"
 import { useRouter } from "vue-router"
 import { getMusicLyricAPI } from "@/api/web/music"
@@ -70,7 +71,30 @@ const songTimeUpdate = () => {
 
 // 音乐播放完成
 const onSongEnded = () => {
-  console.log("dadaddadad")
+  //  判断当前播放模式
+  if (musicStore.playMode.value === "order") {
+    // 顺序播放
+    const index = musicStore.musicList.findIndex((item: any) => item.id === musicStore.currentMusic.id)
+    if (index === musicStore.musicList.length - 1) {
+      // 播放完毕
+      musicStore.setCurrentMusic(musicStore.musicList[0])
+    } else {
+      musicStore.setCurrentMusic(musicStore.musicList[index + 1])
+    }
+  } else if (musicStore.playMode.value === "random") {
+    // 随机播放
+    const index = Math.floor(Math.random() * musicStore.musicList.length)
+    musicStore.setCurrentMusic(musicStore.musicList[index])
+  } else {
+    // 单曲循环
+    // 获取当前歌曲信息
+    const music = musicStore.musicList.find((item: any) => item.id === musicStore.currentMusic.id)
+    musicStore.setCurrentMusic(music)
+  }
+  nextTick(() => {
+    // 开启播放
+    aplayerRef.value.audio.autoplay = true
+  })
 }
 
 // 点击播放器

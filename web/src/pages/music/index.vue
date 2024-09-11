@@ -3,7 +3,9 @@
     <!-- 页头搜索框 -->
     <Header />
 
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 

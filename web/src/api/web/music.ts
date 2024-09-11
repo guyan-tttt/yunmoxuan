@@ -1,7 +1,7 @@
 import request from "@/utils/service"
 
 // 获取推荐歌单分类
-export const getRecommendSongCategoryAPI = (limit: number, cat?: string) => {
+export const getRecommendSongCategoryAPI = (limit: number, cat = "古风") => {
   //   return request.get(`/top/playlist?limit=${limit}`)
   return request.get<any, any>(`/top/playlist?limit=${limit}&cat=${cat ? cat : ""}`)
 }

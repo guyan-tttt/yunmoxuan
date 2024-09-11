@@ -1,18 +1,30 @@
 <template>
   <div class="detail">
-    <div class="bg" />
+    <div
+      class="bg"
+      :style="{
+        backgroundImage: musicStore?.currentMusic.pic
+          ? `url(${musicStore?.currentMusic.pic})`
+          : 'url(http://p2.music.126.net/XTVHOQ7E7ZlLDvDW3q_xGg==/109951169797627572.jpg)'
+      }"
+    />
     <div class="content">
       <div class="left">
         <el-row style="width: 300px; color: #fff" justify="start" class="mb-3" @click="$router.back()"
           ><el-icon><ArrowLeft /></el-icon><span>返回</span></el-row
         >
         <el-image :src="musicStore?.currentMusic.pic" />
+        <div class="name">
+          <span>{{ musicStore.currentMusic.title }}</span> —— {{ musicStore.currentMusic.artist }}
+        </div>
         <div class="btn">下载该歌曲</div>
       </div>
       <div class="right">
         <Lyric />
       </div>
     </div>
+    <!-- 控制条 -->
+    <musicControl />
   </div>
 </template>
 
@@ -20,6 +32,7 @@
 import { useSettingsStore } from "@/store/modules/settings"
 import { onMounted, onUnmounted } from "vue"
 import Lyric from "./component/Lyric.vue"
+import musicControl from "./component/musicControl.vue"
 import { useMusicStore } from "@/store/modules/music"
 const settingsStore = useSettingsStore()
 const musicStore = useMusicStore()
@@ -40,7 +53,6 @@ onUnmounted(() => {
     width: 100%;
     height: calc(100vh - 115px);
     background-color: red;
-    background-image: url(http://p2.music.126.net/XTVHOQ7E7ZlLDvDW3q_xGg==/109951169797627572.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     filter: blur(1.875rem) brightness(0.8);
@@ -62,6 +74,7 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       //   background-color: green;
       .el-image {
         width: 300px;
@@ -70,6 +83,20 @@ onUnmounted(() => {
         border-radius: 20px;
         img {
           border-radius: 20px;
+        }
+      }
+      .name {
+        height: 30px;
+        line-height: 30px;
+        margin-top: 20px;
+        color: #fff;
+        span:nth-child(1) {
+          font-size: 24px;
+          font-weight: 600;
+        }
+        span:nth-child(2) {
+          font-size: 12px;
+          color: #eeecec;
         }
       }
       .btn {
@@ -91,6 +118,7 @@ onUnmounted(() => {
     }
     .right {
       flex: 1;
+      margin-top: 23px;
       //   background-color: #fff;
     }
   }
