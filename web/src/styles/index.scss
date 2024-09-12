@@ -18,6 +18,9 @@
 @import './cursor.scss';
 
 // 业务页面几乎都应该在根元素上挂载 class="app-container"，以保持页面美观
+
+
+
 .app-container {
   padding: 20px;
 }
@@ -35,6 +38,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
     sans-serif;
   @extend %scrollbar;
+  --primary-color: #409EFF;
 }
 
 #app {

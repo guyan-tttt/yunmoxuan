@@ -14,7 +14,7 @@
       <span v-for="item in props.data?.ar" :key="item.id">{{ item.name }} ·</span>
     </div>
     <div class="about">
-      <div class="play">
+      <div class="play" @click.stop="addMusicList">
         <el-icon><Headset /></el-icon>
       </div>
       <div class="download"><SvgIcon class="btn" name="download" /></div>
@@ -25,9 +25,19 @@
 <script setup lang="ts">
 import { defineProps } from "vue"
 import Loading from "@/components/Loading/index.vue"
+import { useMusicStore } from "@/store/modules/music"
+
 const props = defineProps<{
   data: any
 }>()
+
+// 音乐仓库
+const musicStore = useMusicStore()
+
+// 添加音乐到播放列表
+const addMusicList = () => {
+  musicStore.addMusicList(props.data)
+}
 </script>
 
 <style scoped lang="scss">

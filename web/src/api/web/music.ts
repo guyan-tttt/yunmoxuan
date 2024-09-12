@@ -30,3 +30,13 @@ export const getMusicDetailAPI = (ids: number[]) => {
 export const getMusicLyricAPI = (id: number) => {
   return request.get<any, any>(`/lyric?id=${id}`)
 }
+
+// 获取热搜列表
+export const getHotSearchAPI = () => {
+  return request.get<any, any>(`/search/hot/detail`)
+}
+
+// 获取搜索建议
+export const getSearchSuggestAPI = (key: string) => {
+  return request.get<any, any>(`/search/suggest?keywords=${key}`)
+}

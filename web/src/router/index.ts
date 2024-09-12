@@ -439,6 +439,14 @@ export const constWebRoutes = [
                 }
               }
             ]
+          },
+          {
+            path: "search",
+            component: () => import("@/pages/music/search.vue"),
+            name: "MusicSearch",
+            meta: {
+              hidden: true
+            }
           }
         ]
       }

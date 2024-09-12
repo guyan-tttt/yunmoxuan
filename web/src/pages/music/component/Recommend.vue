@@ -9,7 +9,7 @@
         </div>
       </header>
       <ul class="list">
-        <li class="item" v-for="item in props.data" :key="item.id" @click="$router.push(`/home-music/index/detail?id=${item.id}`)">
+        <li class="item" v-for="item in props.data" :key="item.id" @click="goToDetail(item)">
           <div class="view">
             <span v-if="item.playCount">🔥</span>
             <span v-else>🎼</span>
@@ -31,12 +31,20 @@
 <script setup lang="ts">
 import { defineProps } from "vue"
 import Loading from "@/components/Loading/index.vue"
+import { useRouter } from "vue-router"
+const router = useRouter()
 // 接收数据
 const props = defineProps<{
   data: any
   type: string
   url: string
 }>()
+
+const goToDetail = (item: any) => {
+  if (props.type !== "歌手分类") {
+    router.push(`/home-music/index/detail?id=${item.id}`)
+  }
+}
 </script>
 
 <style scoped lang="scss">

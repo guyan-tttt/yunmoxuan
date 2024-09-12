@@ -28,7 +28,8 @@ const handleLrc = () => {
     }
   })
   const pop = data.pop()
-  if (pop.time) {
+  if (pop.text === "undefined") {
+    pop.text = ""
     data.push(pop)
   }
 }

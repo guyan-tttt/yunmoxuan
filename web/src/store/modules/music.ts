@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { ElMessage } from "element-plus"
 
 export const useMusicStore = defineStore("music", () => {
@@ -22,7 +22,7 @@ export const useMusicStore = defineStore("music", () => {
     currentMusic.value = {
       id: item.id,
       title: item.name,
-      artist: item.ar[0].name,
+      artist: "——" + item.ar.map((i: any) => i.name).join(" · "),
       url: "", // 音频播放地址
       pic: item.al.picUrl,
       lrc: "", // lrc 歌词
@@ -118,6 +118,7 @@ export const useMusicStore = defineStore("music", () => {
     }
     setCurrentMusic(musicList.value[index])
   }
+
   // 播放上一首
   const prevMusic = () => {
     // 计算当前歌曲在列表中的索引
@@ -138,6 +139,30 @@ export const useMusicStore = defineStore("music", () => {
     }
     setCurrentMusic(musicList.value[index])
   }
+
+  // 添加音乐列表
+  const addMusicList = (item: any) => {
+    const music = {
+      id: item.id,
+      title: item.name,
+      artist: "——" + item.ar.map((i: any) => i.name).join(" · "),
+      url: "", // 音频播放地址
+      pic: item.al.picUrl,
+      lrc: "", // lrc 歌词
+      type: "" // 指定音频的类型
+    }
+    musicList.value.push(music)
+  }
+
+  // 监听列表要是有值，默认播放第一首
+  watch(
+    () => musicList.value.length,
+    () => {
+      if (musicList.value.length > 0 && !currentMusic.value.id) {
+        setCurrentMusic(musicList.value[0])
+      }
+    }
+  )
   return {
     musicList,
     currentMusic,
@@ -153,6 +178,7 @@ export const useMusicStore = defineStore("music", () => {
     changeMode,
     modes,
     nextMusic,
-    prevMusic
+    prevMusic,
+    addMusicList
   }
 })

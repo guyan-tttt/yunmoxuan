@@ -15,7 +15,7 @@
         >
         <el-image :src="musicStore?.currentMusic.pic" />
         <div class="name">
-          <span>{{ musicStore.currentMusic.title }}</span> —— {{ musicStore.currentMusic.artist }}
+          <span>{{ musicStore.currentMusic.title }}</span> {{ musicStore.currentMusic.artist }}
         </div>
         <div class="btn">下载该歌曲</div>
       </div>

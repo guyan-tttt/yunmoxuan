@@ -232,6 +232,10 @@ const prevMusic = () => {
         flex: 1;
         font-size: 16px;
         margin-left: 10px;
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .index {
         width: 20px;
@@ -245,8 +249,12 @@ const prevMusic = () => {
         color: #fff;
       }
       .artist {
-        font-size: 14px;
+        font-size: 12px;
         color: #999;
+        max-width: 80px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

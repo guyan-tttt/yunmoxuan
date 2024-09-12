@@ -2,7 +2,7 @@
   <div class="header">
     <h2 class="color-white dark:text-black">云墨音乐</h2>
     <div class="search">
-      <el-autocomplete :prefix-icon="Search" placeholder="请输入搜索内容" />
+      <el-autocomplete :prefix-icon="Search" placeholder="请输入搜索内容" @focus="$router.push('/home-music/search')" />
     </div>
   </div>
 </template>
