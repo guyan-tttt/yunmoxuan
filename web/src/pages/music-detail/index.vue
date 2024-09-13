@@ -13,7 +13,7 @@
         <el-row style="width: 300px; color: #fff" justify="start" class="mb-3" @click="$router.back()"
           ><el-icon><ArrowLeft /></el-icon><span>返回</span></el-row
         >
-        <el-image :src="musicStore?.currentMusic.pic" />
+        <el-image :src="musicStore?.currentMusic.pic" fit="cover" />
         <div class="name">
           <span>{{ musicStore.currentMusic.title }}</span> {{ musicStore.currentMusic.artist }}
         </div>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { useSettingsStore } from "@/store/modules/settings"
 import { onMounted, onUnmounted } from "vue"
+//@ts-ignore
 import Lyric from "./component/Lyric.vue"
 import musicControl from "./component/musicControl.vue"
 import { useMusicStore } from "@/store/modules/music"

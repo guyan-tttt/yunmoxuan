@@ -7,7 +7,7 @@
           :prefix-icon="Search"
           placeholder="请输入搜索内容"
           v-model="searchWord"
-          :fetch-suggestions="getSearchSuggest"
+          :fetch-suggestions="getSearchSuggest as any"
           @select="selectSuggest"
         >
           <template #suffix>
@@ -24,23 +24,37 @@
             </div>
           </template>
         </el-autocomplete>
-        <el-button :icon="Search" type="primary" border>搜索</el-button>
+        <el-button :icon="Search" type="primary" border @click="searchDetail">搜索</el-button>
       </div>
     </div>
     <div class="search content container mx-auto max-w-screen-xl mt-5">
       <el-card>
         <!-- 搜索历史 -->
         <div class="search-history">
-          <div class="search-history-title">搜索历史</div>
+          <div class="search-history-title">
+            搜索历史
+            <el-button circle :icon="Delete" size="small" type="danger" @click="clearHistory" />
+          </div>
           <div class="search-history-list">
-            <div class="search-history-item" v-for="(item, index) in 5" :key="index">dsdoosdsddsdssssssssss</div>
+            <div class="search-history-item" v-for="(item, index) in historyStore.historyList" :key="index" @click="searchMusic(item)">
+              {{ item }}
+              <el-icon @click.stop="removeHistory(item)">
+                <CircleClose />
+              </el-icon>
+            </div>
           </div>
         </div>
         <!-- 热搜列表 -->
         <div class="hot-search">
           <div class="hot-search-title">热搜列表</div>
           <div class="hot-search-list">
-            <div class="hot-search-item" v-for="(item, index) in hotSearchList" :key="index" :class="{ active: item.score > 40000 }">
+            <div
+              class="hot-search-item"
+              v-for="(item, index) in hotSearchList"
+              :key="index"
+              :class="{ active: item.score > 40000 }"
+              @click="searchMusic(item.searchWord)"
+            >
               <span class="name">{{ item.searchWord }}</span>
               <span class="score">{{ item.score > 40000 ? "🔥" : "🌟" }}{{ item.score }}</span>
             </div>
@@ -54,7 +68,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import { getHotSearchAPI, getSearchSuggestAPI } from "@/api/web/music"
-import { Search } from "@element-plus/icons-vue"
+import { Search, Delete } from "@element-plus/icons-vue"
+import { useRouter } from "vue-router"
+import { useHistoryStore } from "@/store/modules/history"
+import { ElMessage } from "element-plus"
+// 历史记录仓库
+const historyStore = useHistoryStore()
+
+const router = useRouter()
 
 // 热搜列表
 const hotSearchList = ref<any[]>([])
@@ -99,6 +120,33 @@ const clearSearchWord = () => {
 // 选择搜索建议
 const selectSuggest = (item: any) => {
   console.log(item)
+  searchWord.value = item.name
+  searchDetail()
+}
+
+const searchDetail = () => {
+  if (searchWord.value) {
+    historyStore.addHistory(searchWord.value)
+    router.push(`/home-music/index/search-detail?keyword=${searchWord.value}`)
+  } else {
+    ElMessage.warning("请输入搜索内容")
+  }
+}
+
+// 清空记录
+const clearHistory = () => {
+  historyStore.clearHistory()
+}
+
+// 清除记录
+const removeHistory = (val: string) => {
+  historyStore.removeHistory(val)
+}
+
+// 点击热搜
+const searchMusic = (val: string) => {
+  searchWord.value = val
+  searchDetail()
 }
 
 onMounted(() => {
@@ -137,6 +185,11 @@ onMounted(() => {
         border-radius: 20px;
         cursor: pointer;
         border: #ececec 1px solid;
+        display: flex;
+        align-items: center;
+        .el-icon {
+          margin-left: 10px;
+        }
         &:hover {
           background: var(--primary-color);
           color: #fff;

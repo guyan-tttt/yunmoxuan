@@ -40,3 +40,13 @@ export const getHotSearchAPI = () => {
 export const getSearchSuggestAPI = (key: string) => {
   return request.get<any, any>(`/search/suggest?keywords=${key}`)
 }
+
+// 搜索
+export const searchAPI = (key: string, limit: number, offset: number) => {
+  return request.get<any, any>(`/search?keywords=${key}&limit=${limit}&offset=${offset}`)
+}
+
+// 查看是否有版权
+export const checkMusicAPI = (id: number) => {
+  return request.get<any, any>(`/check/music?id=${id}`)
+}

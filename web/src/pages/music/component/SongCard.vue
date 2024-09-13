@@ -1,8 +1,8 @@
 <template>
   <div class="item">
     <slot />
-    <div class="pic">
-      <el-image class="img" :src="$props.data?.al.picUrl" fit="cover" lazy>
+    <div class="pic" v-if="$props.data?.al?.picUrl">
+      <el-image class="img" :src="$props.data?.al?.picUrl" fit="cover" lazy>
         <template #placeholder>
           <Loading />
         </template>
@@ -11,8 +11,9 @@
     <div class="name">
       <p>{{ props.data.name }}</p>
       ---
-      <span v-for="item in props.data?.ar" :key="item.id">{{ item.name }} ·</span>
+      <span v-for="item in props.data?.ar || props.data?.artists" :key="item.id">{{ item.name }} ·</span>
     </div>
+    <slot name="check" />
     <div class="about">
       <div class="play" @click.stop="addMusicList">
         <el-icon><Headset /></el-icon>
@@ -29,6 +30,7 @@ import { useMusicStore } from "@/store/modules/music"
 
 const props = defineProps<{
   data: any
+  type?: string
 }>()
 
 // 音乐仓库
@@ -36,7 +38,11 @@ const musicStore = useMusicStore()
 
 // 添加音乐到播放列表
 const addMusicList = () => {
-  musicStore.addMusicList(props.data)
+  if (!props.type) {
+    musicStore.addMusicList(props.data)
+  } else {
+    musicStore.addMusicListSearch(props.data)
+  }
 }
 </script>
 
@@ -81,17 +87,26 @@ const addMusicList = () => {
     align-items: center;
     flex: 1;
     margin-left: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     p {
       font-size: 18px;
     }
     span {
+      display: inline-block;
       font-size: 16px;
       color: #909399;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
   .about {
     margin-right: 20px;
+    margin-left: 20px;
     display: flex;
     align-items: center;
     gap: 20px;

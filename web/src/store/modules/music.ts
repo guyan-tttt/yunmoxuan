@@ -24,7 +24,7 @@ export const useMusicStore = defineStore("music", () => {
       title: item.name,
       artist: "——" + item.ar.map((i: any) => i.name).join(" · "),
       url: "", // 音频播放地址
-      pic: item.al.picUrl,
+      pic: item.al?.picUrl || "",
       lrc: "", // lrc 歌词
       type: "" // 指定音频的类型
     }
@@ -145,13 +145,52 @@ export const useMusicStore = defineStore("music", () => {
     const music = {
       id: item.id,
       title: item.name,
-      artist: "——" + item.ar.map((i: any) => i.name).join(" · "),
+      artist: "——" + item.ar?.map((i: any) => i.name).join(" · "),
       url: "", // 音频播放地址
-      pic: item.al.picUrl,
+      pic: item.al?.picUrl,
       lrc: "", // lrc 歌词
       type: "" // 指定音频的类型
     }
-    musicList.value.push(music)
+    // 判断是否已经存在
+    if (musicList.value.findIndex((i: any) => i.id === item.id) !== -1) {
+      ElMessage.warning("该歌曲已存在")
+      return
+    } else {
+      musicList.value.push(music)
+    }
+  }
+
+  // 添加音乐列表（搜索版）
+  const addMusicListSearch = (item: any) => {
+    const music = {
+      id: item.id,
+      title: item.name,
+      artist: "——" + item.artists.map((i: any) => i.name).join(" · "),
+      url: "", // 音频播放地址
+      pic: item.al?.picUrl || "https://tse4-mm.cn.bing.net/th/id/OIP-C.RtkzGRP7cdrZFt7aJcea_wHaE8?w=268&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+      lrc: "", // lrc 歌词
+      type: "" // 指定音频的类型
+    }
+
+    // 判断是否已经存在
+    if (musicList.value.findIndex((i: any) => i.id === item.id) !== -1) {
+      ElMessage.warning("该歌曲已存在")
+      return
+    } else {
+      musicList.value.push(music)
+    }
+  }
+  // 播放音乐（搜索版）
+  const playMusicSearch = (item: any) => {
+    currentMusic.value = {
+      id: item.id,
+      title: item.name,
+      artist: "——" + item.artists.map((i: any) => i.name).join(" · "),
+      url: "", // 音频播放地址
+      pic: "https://tse4-mm.cn.bing.net/th/id/OIP-C.RtkzGRP7cdrZFt7aJcea_wHaE8?w=268&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+      lrc: "", // lrc 歌词
+      type: "" // 指定音频的类型
+    }
   }
 
   // 监听列表要是有值，默认播放第一首
@@ -179,6 +218,8 @@ export const useMusicStore = defineStore("music", () => {
     modes,
     nextMusic,
     prevMusic,
-    addMusicList
+    addMusicList,
+    addMusicListSearch,
+    playMusicSearch
   }
 })
