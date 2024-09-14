@@ -1,7 +1,11 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 card">
     <a class="cursor-pointer">
-      <el-image class="rounded-t-lg" :src="props.article?.cover" fit="contain" :hide-on-click-modal="true" />
+      <el-image class="rounded-t-lg" :src="props.article?.cover" fit="contain" :hide-on-click-modal="true" lazy>
+        <template #placeholder>
+          <Loading />
+        </template>
+      </el-image>
     </a>
     <div class="p-5">
       <!-- 标签 -->
@@ -61,6 +65,7 @@ import type { ArticleItem } from "@/types/admin/article"
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
 import type { Tag } from "@/types/admin/tags"
+import Loading from "@/components/Loading/index.vue"
 
 // 全局路由对象
 const router = useRouter()

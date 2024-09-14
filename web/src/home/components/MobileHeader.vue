@@ -20,7 +20,8 @@ const drawer = ref(false)
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 
 const routesList = computed(() => {
-  return constWebRoutes[0].children?.filter((item: any) => !item.meta!.hidden)
+  const list = constWebRoutes[0].children?.filter((item: any) => !item.meta!.hidden)
+  return list.filter((item: any) => item.meta.title !== "音乐")
 })
 </script>
 

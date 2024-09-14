@@ -100,7 +100,10 @@ const onSongEnded = () => {
 // 点击播放器
 const handlePlayClick = (e: any) => {
   console.log(e.target)
-
+  if (musicStore.isMin) {
+    router.push("/home-music/index")
+    return
+  }
   // 处理点点击图标
   if (e.target.localName === "svg" || e.target.localName === "path") {
     return

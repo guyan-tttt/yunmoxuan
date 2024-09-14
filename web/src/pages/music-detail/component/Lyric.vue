@@ -12,10 +12,10 @@ const musicStore = useMusicStore()
 
 const musicWords = ref(musicStore.currentMusic.lrc.replace("undefined", ""))
 
-let data = []
+const data = ref([])
 const handleLrc = () => {
   // 处理歌词
-  data = musicWords.value.split("\n").map((item) => {
+  data.value = musicWords.value.split("\n").map((item) => {
     return {
       text: item.split("]")[1],
       time: item
@@ -27,10 +27,10 @@ const handleLrc = () => {
         })
     }
   })
-  const pop = data.pop()
+  const pop = data.value.pop()
   if (pop.text === "undefined") {
     pop.text = ""
-    data.push(pop)
+    data.value.push(pop)
   }
 }
 
@@ -41,7 +41,7 @@ const maxOffect = ref(0)
 
 // 添加歌词
 const addLyric = () => {
-  data.forEach((item) => {
+  data.value.forEach((item) => {
     const li = document.createElement("li")
     li.innerText = item.text
     li.className = "item"
@@ -63,6 +63,7 @@ const initLrc = async () => {
   index = -1
   // 处理歌词
   handleLrc()
+  console.log()
   // 添加歌词
   await addLyric()
   // 获取高度
@@ -77,7 +78,7 @@ function activeIndex() {
   // 获取当前播放时间
   const currentTime = musicStore?.player.currentTime
   //   获取当前播放的歌词序号
-  index = data.findIndex((item) => item.time >= currentTime) - 1
+  index = data.value.findIndex((item) => item.time >= currentTime) - 1
   if (index >= 0) {
     // listRef.value.style.transform = `translateY(-${(index - 1) * 34}px)`
     liList.value.forEach((item) => {

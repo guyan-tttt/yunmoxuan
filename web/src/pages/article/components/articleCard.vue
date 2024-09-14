@@ -1,11 +1,15 @@
 <template>
   <div class="card mb-4 border border-gray-200 rounded-lg">
     <div class="bg">
-      <img :src="$props.article?.cover" alt="" />
+      <el-image :src="$props.article?.cover" alt="" v-img-load="$props.article?.cover" lazy />
     </div>
     <div class="text" @click="goToDetail(props.article._id as string)" :class="{ even: props.index % 2 === 0 && !settingStore.isMobile }">
       <div class="left" v-if="!settingStore.isMobile">
-        <img class="cover" :src="$props.article?.cover" alt="" />
+        <el-image class="cover" :src="$props.article?.cover" fit="cover">
+          <template #placeholder>
+            <Loading />
+          </template>
+        </el-image>
       </div>
       <div class="right">
         <div class="top">
@@ -50,7 +54,7 @@ import dayjs from "dayjs"
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useSettingsStore } from "@/store/modules/settings"
-
+import Loading from "@/components/Loading/index.vue"
 const settingStore = useSettingsStore()
 
 // 接受父组件按数据
@@ -130,8 +134,8 @@ const goToDetail = (id: string) => {
   top: 0;
   left: 0;
   z-index: -1;
-
-  img {
+  transition: all 0.5s;
+  .el-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -148,7 +152,7 @@ const goToDetail = (id: string) => {
   &.even {
     flex-direction: row-reverse;
     .left {
-      img {
+      .el-image {
         -webkit-clip-path: polygon(10% 1%, 100% 0, 100% 100%, 0 100%);
         clip-path: polygon(10% 1%, 100% 0, 100% 100%, 0 100%);
         border-radius: 0 0.5rem 0.5rem 0;
@@ -158,7 +162,7 @@ const goToDetail = (id: string) => {
   .left {
     width: 600px;
     height: 100%;
-    img {
+    .el-image {
       &:hover {
         filter: saturate(1.5);
       }

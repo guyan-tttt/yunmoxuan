@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" @click="clickMusic">
     <slot />
     <div class="pic" v-if="$props.data?.al?.picUrl">
       <el-image class="img" :src="$props.data?.al?.picUrl" fit="cover" lazy>
@@ -20,13 +20,22 @@
       </div>
       <div class="download"><SvgIcon class="btn" name="download" /></div>
     </div>
+    <Teleport to="body">
+      <SvgIcon
+        :class="{ active: musicActive }"
+        name="home-music"
+        class="music-note"
+        :style="{ top: musicNotePosition.top + 'px', left: musicNotePosition.left + 'px', display: musicNotePosition.show ? '' : 'none' }"
+      />
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue"
+import { defineProps, ref } from "vue"
 import Loading from "@/components/Loading/index.vue"
 import { useMusicStore } from "@/store/modules/music"
+import { ElMessage } from "element-plus"
 
 const props = defineProps<{
   data: any
@@ -43,10 +52,54 @@ const addMusicList = () => {
   } else {
     musicStore.addMusicListSearch(props.data)
   }
+  ElMessage.success("已加入播放列表")
+}
+
+// 音乐激活
+const musicActive = ref(false)
+
+// 音乐图标位置
+const musicNotePosition = ref<any>({ top: 0, left: 0, show: false })
+
+// 点击激活
+const clickMusic = (e: any) => {
+  musicNotePosition.value = {
+    top: e.clientY - 100,
+    left: e.clientX - 25
+  }
+  musicNotePosition.value.show = true
+
+  setTimeout(() => {
+    musicActive.value = true
+    console.log(musicActive.value)
+  }, 100)
+
+  setTimeout(() => {
+    musicActive.value = false
+    musicNotePosition.value = {
+      top: 0,
+      left: 0,
+      show: false
+    }
+  }, 600)
 }
 </script>
 
 <style scoped lang="scss">
+.music-note {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  z-index: 999;
+  transition: all 0.5s;
+  &.active {
+    top: 877px !important;
+    left: 269px !important;
+    z-index: 10000;
+  }
+}
 .item {
   width: 70%;
   display: flex;
@@ -56,9 +109,11 @@ const addMusicList = () => {
   font-size: 16px;
   transition: all 0.5s;
   padding: 10px 0;
+  cursor: pointer;
   &:hover {
     background-color: #f5f8fb;
     transform: translateY(-2px);
+    border-top: 1px solid #ccc;
     .name p,
     .about .time {
       color: #409eff;

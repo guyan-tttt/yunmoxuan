@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto max-w-screen-xl mt-5">
+  <div class="container mx-auto max-w-screen-xl mt-5" v-loading="loading">
     <el-card class="detail">
       <el-col class="header">
         <el-page-header icon="" title="">
@@ -7,7 +7,7 @@
             <el-icon color="#666" :size="20" @click="$router.go(-1)"> <Back /></el-icon>
           </template>
           <template #title>
-            <span class="text">返回</span>
+            <span class="text" v-cursor-pointer @click="$router.go(-1)">返回</span>
           </template>
           <template #content>
             <div class="flex items-center">
@@ -80,23 +80,30 @@ const songList = ref<any[]>([])
 
 // 获取歌单详情
 const getCategoryetail = async () => {
+  loading.value = true
   const res = await getSongCategoryDetailAPI(parseInt(route.query.id as string))
   console.log(res)
   if (res.code === 200) {
     categoryDetail.value = res.playlist
     songList.value = res.playlist?.tracks.slice(0, 20)
   }
+  loading.value = false
 }
 
 // 点击歌曲播放音乐
 const playMusic = (item: any) => {
   musicStore.playMusic(item)
+  // console.log(e);
 }
+
 onMounted(() => {
   if (route.query.id) {
     getCategoryetail()
   }
 })
+
+// 加载
+const loading = ref(false)
 </script>
 
 <style lang="scss" scoped>

@@ -17,7 +17,7 @@
     <TagPreview :tagDetail="webInfoStore.tagPreviewInfo as any" v-model="webInfoStore.showPreview" />
     <CommentInput />
     <ToolBox class="toolbox animate__fadeInLeft animate__animated" v-if="!settingsStore.isMobile" />
-    <SongPlay />
+    <SongPlay class="animate__fadeInLeft animate__animated" v-if="!settingsStore.isMobile" />
   </div>
 </template>
 

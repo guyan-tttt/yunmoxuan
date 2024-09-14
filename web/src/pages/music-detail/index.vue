@@ -10,7 +10,7 @@
     />
     <div class="content">
       <div class="left">
-        <el-row style="width: 300px; color: #fff" justify="start" class="mb-3" @click="$router.back()"
+        <el-row style="width: 300px; color: #fff; cursor: pointer" justify="start" class="mb-3" @click="$router.back()"
           ><el-icon><ArrowLeft /></el-icon><span>返回</span></el-row
         >
         <el-image :src="musicStore?.currentMusic.pic" fit="cover" />
