@@ -1,0 +1,54 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "云墨轩"
+			}
+		},
+		{
+			"path": "pages/article/index",
+			"style": {
+				"navigationBarTitleText": "博文"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#fff"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#409EFF",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+				{
+					"pagePath": "pages/index/index",
+					"iconPath": "static/tabbar/home.png",
+					"selectedIconPath": "static/tabbar/home-active.png",
+					"text": "首页"
+				},
+				{
+					"pagePath": "pages/article/index",
+					"iconPath": "static/tabbar/article.png",
+					"selectedIconPath": "static/tabbar/article-active.png",
+					"text": "博文"
+				},
+				{
+					"pagePath": "pages/my/index",
+					"iconPath": "static/tabbar/my.png",
+					"selectedIconPath": "static/tabbar/my-active.png",
+					"text": "我的"
+				}
+			]
+	}
+}

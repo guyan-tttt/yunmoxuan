@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4685534 */
+  src: url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.woff2?t=1726372912235') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.woff?t=1726372912235') format('woff'),
+       url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.ttf?t=1726372912235') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-wenzhang2:before {
+  content: "\e681";
+}
+
+.icon-pengyouquan:before {
+  content: "\e601";
+}
+
+.icon-liuyan:before {
+  content: "\e606";
+}
+
+.icon-ziliaoshouce:before {
+  content: "\e898";
+}
+
+.icon-xiangce:before {
+  content: "\e7be";
+}
+
+.icon-pc-dongman:before {
+  content: "\e712";
+}
+
+.icon-html:before {
+  content: "\e656";
+}
+
+.icon-hongxin4:before {
+  content: "\e600";
+}
+
+.icon-yanjing:before {
+  content: "\e8bf";
+}
+
+.icon-sousuo:before {
+  content: "\e602";
+}
+
+.icon-gengduo:before {
+  content: "\e604";
+}
