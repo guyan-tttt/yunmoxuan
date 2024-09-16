@@ -108,6 +108,15 @@ const props = defineProps({
         background-color: #fff;
         flex-direction: column;
         align-items: center;
+        position: relative;
+        &::before {
+            content: "";
+            width: 100%;
+            height: 4px;
+            background-color: #fff;
+            position: absolute;
+            top: -5rpx;
+        }
         .title {
             width: 100%;
             display: flex;

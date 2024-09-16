@@ -7,7 +7,10 @@
             </view>
             <view class="right">更多 <text class="iconfont icon-gengduo"/></view>
         </view>
-        <view class="list">
+        <view v-if="loading" style="margin-top: 50rpx;">
+            <Loading />
+        </view>
+        <view class="list" v-else>
             <RecommendCard v-for="i in recommendArticle" :key="i.id" :data="i" />
         </view>
     </view>
@@ -17,19 +20,25 @@
 import RecommendCard from "./RecommendCard.vue"
 import { getRecommendArticleAPI } from "@/api/article"
 import { onMounted , ref } from "vue"
+import Loading from "@/components/loading/index.vue"
+
 
 // 推荐文章
 const recommendArticle = ref([])
 
 // 获取推荐推荐文章
 const getRecommendArticle = async() => {
+    loading.value = true
     const res = await getRecommendArticleAPI()
     // console.log(res)
     if(res.code === 200) {
         recommendArticle.value = res.data
+        loading.value = false
     }
 }
 
+// 文章加载
+const loading = ref(false)
 onMounted(() => {
     getRecommendArticle()
 })

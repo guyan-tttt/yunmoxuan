@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4685534 */
-  src: url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.woff2?t=1726372912235') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.woff?t=1726372912235') format('woff'),
-       url('//at.alicdn.com/t/c/font_4685534_jksvealq2n.ttf?t=1726372912235') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4685534_aovni3attkv.woff2?t=1726450149462') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4685534_aovni3attkv.woff?t=1726450149462') format('woff'),
+       url('//at.alicdn.com/t/c/font_4685534_aovni3attkv.ttf?t=1726450149462') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-7:before {
+  content: "\e607";
+}
+
+.icon-wodekefu:before {
+  content: "\e68b";
+}
+
+.icon-fanhui:before {
+  content: "\e65c";
+}
+
+.icon-shezhi:before {
+  content: "\e614";
+}
+
+.icon-yanjing1:before {
+  content: "\e8c7";
+}
+
+.icon-biaoqian:before {
+  content: "\e608";
 }
 
 .icon-wenzhang2:before {

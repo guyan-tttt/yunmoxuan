@@ -18,6 +18,7 @@
 <script setup>
 import Recommend from "./components/Recommend.vue"
 import NavList from "./components/nav-list.vue"
+
 </script>
 
 <style lang="scss" scoped>
