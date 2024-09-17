@@ -4,3 +4,8 @@ import request from "@/utils/request"
 export const getCategoryListAPI = () => {
     return request.get("/index/categorys")
 }
+
+// 获取标签列表
+export const getTagListAPI = () => {
+    return request.get("/index/tags")
+}

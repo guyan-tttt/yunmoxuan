@@ -7,13 +7,31 @@
             </view>
         </view>
         <scroll-view class="category" scroll-x>
-            <uni-segmented-control :current="current" :values="items"  styleType="button" activeColor="rgba(24,144,255,1)"/>
+            <uni-segmented-control :current="current" :values="items" @clickItem="onChange"  styleType="button" activeColor="rgba(24,144,255,1)"/>
         </scroll-view>
         <view v-if="loading" style="margin-top: 50rpx;">
             <Loading/>
         </view>
         <view class="content" v-else>
-            <ArticleCard v-for="item in articleList" :key="item._id" :data="item" />
+            <view class="list" v-if="current === 0">
+                <ArticleCard v-for="item in articleList" :key="item._id" :data="item" />
+            </view>
+            <view class="list" v-if="current === 1">
+                <uni-card style="width: 100%" v-for="item in categoryList" :key="item._id" :title="item.name" extra="分类信息">
+                    <text class="uni-body">{{ items.desc }}</text>
+                </uni-card>
+            </view>
+            <view class="list tag" v-if="current === 2">
+                <uni-card class="item"
+                          v-for="item in tagList"
+                          :key="item._id"
+                          :title="item.name"
+                          :isFull="true"
+                          extra="标签"
+                          :thumbnail="item.icon">
+                    <rich-text class="uni-body" :nodes="item.desc"/>
+                </uni-card>
+            </view>
         </view>
         <div class="more" v-if="pageData.total > articleList.length">加载中...</div>
         <div class="more" v-else>没有更多了</div>
@@ -25,7 +43,10 @@ import { ref, onMounted} from "vue"
 import ArticleCard from "./ArticleCard"
 import { getArticleListAPI } from "@/api/article"
 import {onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app"
+//@ts-ignore
 import Loading from "@/components/loading/index.vue"
+import { getCategoryListAPI,getTagListAPI } from "@/api/category"
+
 
 // 当前激活的索引
 const current = ref(0)
@@ -63,10 +84,39 @@ const loadingMore = () => {
 // 文章加载
 const loading = ref(false)
 
+// 切换分类
+const onChange = (e) => {
+    current.value = e.currentIndex
+}
+
+// 分类列表
+const categoryList = ref([])
+
+// 获取分类
+const getCategory = async() => {
+    const res = await getCategoryListAPI()
+    if(res.code === 200) {
+        categoryList.value = res.data
+    }
+}
+
+// 标签列表
+const tagList = ref([])
+
+// 获取标签
+const getTag = async() => {
+    const res = await getTagListAPI()
+    if(res.code === 200) {
+        tagList.value = res.data
+    }
+}
+
 onMounted(async() => {
     loading.value = true
     await getArticleList()
     loading.value = false
+    getCategory()
+    getTag()
 })
 
 onReachBottom(() => {
@@ -132,6 +182,19 @@ onPullDownRefresh(async() => {
         gap: 20rpx;
         margin-top: 20rpx;
         margin-bottom: 20rpx;
+        .list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 20rpx;
+            margin-top: 20rpx;
+            margin-bottom: 20rpx;
+            .category-tag {
+                display: inline-block;
+                width: 100rpx;
+            }
+        }
     }
     .more {
         width: 100%;
