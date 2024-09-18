@@ -7,7 +7,12 @@
             </view>
         </view>
         <scroll-view class="category" scroll-x>
-            <uni-segmented-control :current="current" :values="items" @clickItem="onChange"  styleType="button" activeColor="rgba(24,144,255,1)"/>
+            <uni-segmented-control :current="current"
+                                   :values="items"
+                                   @clickItem="onChange"
+                                   styleType="button"
+                                   activeColor="rgba(24,144,255,1)"
+                                   inActiveColor="#fff" />
         </scroll-view>
         <view v-if="loading" style="margin-top: 50rpx;">
             <Loading/>
@@ -18,7 +23,7 @@
             </view>
             <view class="list" v-if="current === 1">
                 <uni-card style="width: 100%" v-for="item in categoryList" :key="item._id" :title="item.name" extra="分类信息">
-                    <text class="uni-body">{{ items.desc }}</text>
+                    <text class="uni-body">{{ item.desc }}</text>
                 </uni-card>
             </view>
             <view class="list tag" v-if="current === 2">

@@ -10,4 +10,8 @@ export const getArticleListAPI = (page, pageSize) => {
     return request.get(`/article/articleList?page=${page}&pageSize=${pageSize}`)
 }
 
+// 获取文章详情
+export const getArticleDetailAPI = (id) => {
+    return request.get(`/article/detail/${id}`)
+}
 

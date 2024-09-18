@@ -1,5 +1,5 @@
 <template>
-    <view class="card">
+    <view class="card" @click="goToDetail">
         <view class="bg">
             <image
                 class="image"
@@ -44,7 +44,12 @@ const props = defineProps({
         }
     }
 })
-
+// 跳转到详情页
+const goToDetail = () => {
+    uni.navigateTo({
+        url: `/pages/article-detail/index?id=${props.data._id}`
+    })
+}
 </script>
 
 <style lang="scss" scoped>

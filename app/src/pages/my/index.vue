@@ -8,8 +8,8 @@
                 />
             </view>
             <view class="info">
-                <view class="name">🥺{{ userStore.userInfo.nickname }}<text class="iconfont icon-nan"/></view>
-                <view class="phone">📱{{ userStore.userInfo.phone }}</view>
+                <view class="name">🥺{{ userStore.userInfo?.nickname }}<text class="iconfont icon-nan"/></view>
+                <view class="phone">📱{{ userStore.userInfo?.phone }}</view>
             </view>
             <view class="setting">
                 <text class="iconfont icon-shezhi"/>

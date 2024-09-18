@@ -1,5 +1,5 @@
 <template>
-    <view class="card">
+    <view class="card" @click="goToDetail">
         <view class="top">
             <image
                 :src="props.data.cover"
@@ -24,6 +24,7 @@
             </view>
         </view>
     </view>
+
 </template>
 
 <script setup>
@@ -32,8 +33,15 @@ import dayjs from "dayjs"
 const props = defineProps({
     data: {
         type: Object,
-    },
+    }
 })
+
+// 跳转到详情页
+const goToDetail = () => {
+    uni.navigateTo({
+        url: `/pages/article-detail/index?id=${props.data._id}`
+    })
+}
 </script>
 
 <style lang="scss" scoped>
