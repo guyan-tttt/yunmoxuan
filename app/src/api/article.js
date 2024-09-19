@@ -15,3 +15,12 @@ export const getArticleDetailAPI = (id) => {
     return request.get(`/article/detail/${id}`)
 }
 
+// 获取文章评论
+export const getArticleCommentAPI = ({id, page, pageSize}) => {
+    return request.get(`/article/comment/list/${id}?page=${page}&pageSize=${pageSize}`)
+}
+
+// 添加评论
+export const addCommentAPI = (data) => {
+    return request.post("/article/comment", data)
+}

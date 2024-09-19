@@ -2,6 +2,7 @@
     <div class="article-detail" v-if="articleDetail?._id">
         <view class="img">
             <image
+                v-if="articleDetail?.cover"
                 :src="articleDetail?.cover"
                 mode="widthFix"
             />
@@ -31,8 +32,12 @@
             <view class="detail">
                 <rich-text className="article-content" :nodes="articleContent" />
             </view>
-            <view class="next-prev"/>
+            <view class="next-prev">
+                <view v-if="prevAndNext.prev.length" @click="prev"><text class="icon-fanhui iconfont"/>上一篇</view>
+                <view v-if="prevAndNext.next.length" @click="next">下一篇 <text class="iconfont icon-gengduo"/></view>
+            </view>
         </view>
+        <Comment :id="articleDetail._id"/>
     </div>
 
 </template>
@@ -42,6 +47,9 @@ import dayjs from "dayjs"
 import { onLoad } from "@dcloudio/uni-app"
 import {getArticleDetailAPI } from "@/api/article"
 import{ ref , computed} from "vue"
+import Comment from "./components/Comment.vue"
+
+
 
 // 当前文章详情
 const articleDetail = ref()
@@ -50,7 +58,7 @@ const articleDetail = ref()
 const articleContent = computed(() => {
     // 判断当前文章是否为空
     if(articleDetail.value) {
-        return articleDetail.value.content
+        return articleDetail.value.content.replace(/<img/g, "<img class='article-img'")
     }
     return ""
 })
@@ -59,16 +67,36 @@ const articleContent = computed(() => {
 // 获取文章详情
 const getArticleDetail = async (id) => {
     const res = await getArticleDetailAPI(id)
-    console.log(res)
     if(res.code === 200) {
         articleDetail.value = res.data.detail
+        prevAndNext.value.prev = res.data.prev
+        prevAndNext.value.next = res.data.next
     }
 }
 
+// 上一页，下一页
+const prevAndNext = ref({
+    prev: {},
+    next: {},
+})
+
 onLoad((options) => {
     getArticleDetail(options.id)
-
 })
+
+// 上一页
+const prev = () => {
+    uni.navigateTo({
+        url: `/pages/article-detail/index?id=${prevAndNext.value.prev[0]._id}`
+    })
+}
+
+// 下一页
+const next = () => {
+    uni.navigateTo({
+        url: `/pages/article-detail/index?id=${prevAndNext.value.next[0]._id}`
+    })
+}
 </script>
 
 <style scoped lang="scss">
@@ -100,6 +128,7 @@ onLoad((options) => {
     align-items: center;
     padding: 0 56rpx;
     margin-top: 20rpx;
+    margin-bottom: 40rpx;
     .title {
       width: 100%;
       display: flex;
@@ -189,7 +218,16 @@ onLoad((options) => {
       margin-top: 20rpx;
       width: 100%;
     }
+    .next-prev {
+     width: 100%;
+     display: flex;
+     justify-content: space-between;
+     border-top: 1rpx solid #ececec;
+     margin-top: 20rpx;
+     padding-top: 20rpx;
+    }
   }
+
 }
 
 
@@ -223,7 +261,10 @@ onLoad((options) => {
         top: 10rpx;
     }
   }
-
+  .article-img {
+    width: 100%;
+    border-radius: 20rpx;
+  }
 }
 
 </style>
