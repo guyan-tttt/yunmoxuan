@@ -2,10 +2,12 @@
     <view class="card" @click="goToDetail">
         <view class="bg">
             <image
+                v-if="props.data.cover"
                 class="image"
                 :src="props.data.cover"
                 mode="widthFix"
             />
+
         </view>
         <view class="top">
             <view class="name">{{ props.data.title }}</view>
@@ -44,6 +46,7 @@ const props = defineProps({
         }
     }
 })
+
 // 跳转到详情页
 const goToDetail = () => {
     uni.navigateTo({
@@ -59,19 +62,25 @@ const goToDetail = () => {
     height: 250rpx;
     overflow: hidden;
     border-radius: 20rpx;
+    background-color: transparent;
     .bg {
         position: absolute;
-        z-index: -1;
+        z-index: 0;
         top: 0;
         left: 0;
         filter: blur(5px);
+        // background-color: #333;
+        background-color: #000;
     }
     .top {
         width: 100%;
         padding-top: 40rpx;
         display: flex;
         justify-content: space-between;
+        color: #000;
         align-items: center;
+        position: relative;
+        z-index: 10;
         .name {
             color: rgba(248,248,248,1);
             font-size: 20px;
@@ -103,6 +112,8 @@ const goToDetail = () => {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        position: relative;
+        z-index: 10;
     }
     .info {
         width: 100%;
@@ -111,6 +122,8 @@ const goToDetail = () => {
         align-items: center;
         margin-left: 30rpx;
         margin-top: 20rpx;
+        position: relative;
+        z-index: 10;
         .right {
             flex: 1;
             text-align: right;

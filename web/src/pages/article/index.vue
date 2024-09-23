@@ -26,6 +26,8 @@ const articleList = ref<ArticleItem[]>([])
 const getArticleList = async () => {
   const res = await getArticleListAPI(pageData.value.page, pageData.value.pageSize)
   if (res.code === 200) {
+    console.log(res.data)
+
     articleList.value = articleList.value.concat(res.data)
     pageData.value.total = res.total as number
 

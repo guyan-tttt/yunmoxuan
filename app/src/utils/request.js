@@ -10,7 +10,7 @@ class Request {
         header: {
             "content-type": "application/json"
         },
-        baseURL: "http://118.31.237.92:3000/api/web",
+        baseURL: "https://jeek-space-blog.top:3000/api/web",
         timeout: 10000,
         isLoading: true
     }

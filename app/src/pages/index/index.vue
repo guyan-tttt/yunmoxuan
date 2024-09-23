@@ -1,10 +1,10 @@
 <template>
     <view class="index">
-        <div class="search">
+        <navigator url="/pages/search/index" class="search">
             <text class="iconfont icon-sousuo"/>
             <input type="text" placeholder="请输入搜索内容" />
-        </div>
-        <div class="banner">
+        </navigator>
+        <div class="banner" >
             <image
                 src="../../static/index/index-bg.jpg"
                 mode="aspectFill"
@@ -18,6 +18,7 @@
 <script setup>
 import Recommend from "./components/Recommend.vue"
 import NavList from "./components/nav-list.vue"
+
 
 </script>
 

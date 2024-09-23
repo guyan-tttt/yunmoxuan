@@ -140,7 +140,7 @@ onMounted(() => {
     width: 650rpx;;
     margin: 0 auto;
     margin-bottom: 40rpx;
-    .comment-content {
+    ::v-deep(.comment-content) {
         display: flex;
         flex-direction: column;
         align-items: center;

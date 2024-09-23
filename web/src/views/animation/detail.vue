@@ -81,7 +81,9 @@
           @contextmenu.prevent="deleteImg(item)"
           :class="{ active: deleteImgList.some((i: any) => i.id === item._id) }"
           fit="cover"
-        />
+        >
+          <template #placeholder> <Loading /> </template
+        ></el-image>
       </div>
 
       <el-row justify="center" class="mt-5">
@@ -109,6 +111,7 @@ import { AnimeItem } from "@/types/admin/animation"
 import AddImage from "./component/addImage.vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import type { ImageItem } from "@/types/admin/image"
+import Loading from "@/components/Loading/index.vue"
 
 // 页面路由
 const route = useRoute()

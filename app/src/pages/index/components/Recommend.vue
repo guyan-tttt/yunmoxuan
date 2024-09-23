@@ -5,7 +5,7 @@
                 <view class="line"/>
                 <text>推荐文章</text>
             </view>
-            <view class="right">更多 <text class="iconfont icon-gengduo"/></view>
+            <navigator class="right" url="/pages/blog-post/index">更多 <text class="iconfont icon-gengduo"/></navigator>
         </view>
         <view v-if="loading" style="margin-top: 50rpx;">
             <Loading />

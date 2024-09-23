@@ -24,3 +24,8 @@ export const getArticleCommentAPI = ({id, page, pageSize}) => {
 export const addCommentAPI = (data) => {
     return request.post("/article/comment", data)
 }
+
+// 文章搜索
+export const searchArticleAPI = (keyWord) => {
+    return request.get(`/article/search?keyword=${keyWord}`)
+}

@@ -32,6 +32,48 @@
 			"style": {
 				"navigationBarTitleText": "云墨轩"
 			}
+		},
+		{
+			"path": "pages/blog-post/index",
+			"style": {
+				"navigationBarTitleText": "博文"
+			}
+		},
+		{
+			"path": "pages/picture/index",
+			"style": {
+				"navigationBarTitleText": "相册"
+			}
+		},
+		{
+			"path": "pages/trends/index",
+			"style": {
+				"navigationBarTitleText": "动态"
+			}
+		},
+		{
+			"path": "pages/guest/index",
+			"style": {
+				"navigationBarTitleText": "留言"
+			}
+		},
+		{
+			"path": "pages/source/index",
+			"style": {
+				"navigationBarTitleText": "资料"
+			}
+		},
+		{
+			"path": "pages/animation/index",
+			"style": {
+				"navigationBarTitleText": "追番"
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "云墨轩"
+			}
 		}
 	],
 	"globalStyle": {
@@ -65,5 +107,38 @@
 				"text": "我的"
 			}
 		]
+	},
+	"subPackages": [
+		{
+			"root": "subPackages",
+			"pages": [
+				{
+					"path": "userinfo/index",
+					"style": {
+						"navigationBarTitleText": "个人信息"
+					}
+				},
+				{
+					"path": "tags/index",
+					"style": {
+						"navigationBarTitleText": "tags"
+					}
+				},
+				{
+					"path": "setting/index",
+					"style": {
+						"navigationBarTitleText": "setting"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": [
+				"subPackages"
+			]
+		}
 	}
 }

@@ -4,7 +4,9 @@
             <image
                 v-if="articleDetail?.cover"
                 :src="articleDetail?.cover"
+                :data-src="articleDetail?.cover"
                 mode="widthFix"
+                @click="previewImage"
             />
         </view>
         <view class="content">
@@ -49,8 +51,6 @@ import {getArticleDetailAPI } from "@/api/article"
 import{ ref , computed} from "vue"
 import Comment from "./components/Comment.vue"
 
-
-
 // 当前文章详情
 const articleDetail = ref()
 
@@ -79,6 +79,13 @@ const prevAndNext = ref({
     prev: {},
     next: {},
 })
+
+// 背景图预览
+const previewImage = (e) => {
+    uni.previewImage({
+        urls: [e.target.dataset.src],
+    })
+}
 
 onLoad((options) => {
     getArticleDetail(options.id)

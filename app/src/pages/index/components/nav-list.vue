@@ -1,9 +1,9 @@
 <template>
     <view class="nav-list">
-        <view class="nav-item" v-for="(item, index) in navdata" :key="index">
+        <navigator class="nav-item" :url="item.link" v-for="(item, index) in navdata" :key="index">
             <view class="icon"><text class="iconfont" :class="item.icon"/></view>
             <text class="text">{{ item.text }}</text>
-        </view>
+        </navigator>
     </view>
 </template>
 
@@ -12,32 +12,32 @@ const navdata = [
     {
         icon: "icon-wenzhang2",
         text: "博文",
-        link: ""
+        link: "/pages/blog-post/index"
     },
     {
         icon: "icon-xiangce",
         text: "相册",
-        link: ""
+        link: "/pages/picture/index"
     },
     {
         icon: "icon-pengyouquan",
         text: "动态",
-        link: ""
+        link: "/pages/trends/index"
     },
     {
         icon: "icon-liuyan",
         text: "留言",
-        link: ""
+        link: "/pages/guest/index"
     },
     {
         icon: "icon-ziliaoshouce",
         text: "资料",
-        link: ""
+        link: "/pages/source/index"
     },
     {
         icon: "icon-pc-dongman",
         text: "追番",
-        link: ""
+        link: "/pages/animation/index"
     },
 
 ]

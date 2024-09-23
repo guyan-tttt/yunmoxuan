@@ -22,9 +22,7 @@
                 <ArticleCard v-for="item in articleList" :key="item._id" :data="item" />
             </view>
             <view class="list" v-if="current === 1">
-                <uni-card style="width: 100%" v-for="item in categoryList" :key="item._id" :title="item.name" extra="分类信息">
-                    <text class="uni-body">{{ item.desc }}</text>
-                </uni-card>
+                <uni-card style="width: 600rpx" v-for="item in categoryList" :key="item._id" :title="item.name" extra="分类信息"/>
             </view>
             <view class="list tag" v-if="current === 2">
                 <uni-card class="item"

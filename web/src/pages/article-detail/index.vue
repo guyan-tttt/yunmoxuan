@@ -518,8 +518,12 @@ onUnmounted(() => {
 .el-tag:hover {
   background-color: var(--el-color-info-light-8);
 }
-.content {
+::v-deep(.content) {
   font-size: 0.9em;
+  img {
+    width: 100%;
+    border-radius: 20px;
+  }
 }
 ::v-deep(.ql-syntax) {
   font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;

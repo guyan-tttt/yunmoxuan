@@ -8,10 +8,11 @@
                 :interval="3000"
                 indicator-active-color="#fff"
         >
-            <swiper-item v-for="item in banner" :key="item._id">
+            <swiper-item v-for="(item,index) in banner" :key="item._id">
                 <image
                     :src="item.src"
                     mode="aspectFill"
+                    @click="previewImage(index)"
                 />
             </swiper-item>
 
@@ -22,8 +23,7 @@
 
 <script setup>
 import { getBannerAPI } from "@/api/index"
-import { ref, onMounted } from "vue"
-import Loading from "@/components/loading/index.vue"
+import { ref, onMounted, computed } from "vue"
 
 // 轮播图
 const banner = ref([])
@@ -34,6 +34,22 @@ const getBanner = async() => {
     if(res.code === 200) {
         banner.value = res.data
     }
+}
+
+const previewImageList = computed(() => {
+    return banner.value.map((item) => item.src)
+})
+
+// 图片预览
+const previewImage = (index) => {
+
+    uni.previewImage({
+        urls: previewImageList.value,
+        current: index,
+        showmenu: true,
+        indicator: "default",
+        ongPressAction: true
+    })
 }
 
 onMounted(() => {

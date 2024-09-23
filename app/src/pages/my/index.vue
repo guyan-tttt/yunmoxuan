@@ -17,31 +17,31 @@
         </view>
         <view class="content">
             <view class="list">
-                <view class="item" >
+                <navigator class="item" url="/pages/picture/index">
                     <text class="icon iconfont icon-xiangce"/>
                     <text class="name">个人相册</text>
                     <text class="right iconfont icon-gengduo"/>
-                </view>
-                <view class="item" >
+                </navigator>
+                <navigator class="item" url="/subPackages/tags/index">
                     <text class="icon iconfont icon-biaoqian"/>
                     <text class="name">标签列表</text>
                     <text class="right iconfont icon-gengduo"/>
-                </view>
-                <view class="item" >
+                </navigator>
+                <navigator class="item" url="/subPackages/userinfo/index">
                     <text class="icon iconfont icon-7"/>
                     <text class="name">关于我的</text>
                     <text class="right iconfont icon-gengduo"/>
-                </view>
-                <view class="item" >
+                </navigator>
+                <navigator class="item" url="/subPackages/setting/index">
                     <text class="icon iconfont icon-shezhi"/>
                     <text class="name">相关设置</text>
                     <text class="right iconfont icon-gengduo"/>
-                </view>
-                <view class="item" >
+                </navigator>
+                <navigator class="item" url="/subPackages/setting/index">
                     <text class="icon iconfont icon-wodekefu"/>
                     <text class="name">意见反馈</text>
                     <text class="right iconfont icon-gengduo"/>
-                </view>
+                </navigator>
             </view>
         </view>
     </view>

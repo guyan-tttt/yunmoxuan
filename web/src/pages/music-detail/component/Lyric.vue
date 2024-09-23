@@ -134,7 +134,7 @@ onUnmounted(() => {
   padding: 0;
 }
 
-::v-deep(.list[data-v-65520677]) {
+::v-deep(.list) {
   color: #fff;
   .item {
     line-height: 20px;
