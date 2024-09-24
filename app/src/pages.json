@@ -129,6 +129,12 @@
 					"style": {
 						"navigationBarTitleText": "setting"
 					}
+				},
+				{
+					"path": "picture-list/index",
+					"style": {
+						"navigationBarTitleText": "相册"
+					}
 				}
 			]
 		}

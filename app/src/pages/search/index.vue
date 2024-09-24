@@ -12,10 +12,12 @@
                 <view class="left">
                     <view class="line"/>
                     <text>搜索历史</text>
+                    <uni-icons @click="showDeleteBtn" type="trash-filled" size="30" :color="showDelete ? '#F56C6C' : '#999999'"/>
+                    <view v-if="showDelete" class="clear" @click="clearHistory">清空记录</view>
                 </view>
             </view>
             <view class="list">
-                <view class="item" v-for="item in history" :key="item">{{ item }}</view>
+                <view class="item" v-for="item in history" :key="item" @click="historyItemClick(item)">{{ item }} <uni-icons @click="deleteHistoryItem(item)" v-if="showDelete" type="clear" size="30" color="red"/></view>
             </view>
         </view>
     </div>
@@ -48,6 +50,42 @@ const search = () => {
     searchForm.value = ""
 }
 
+// 当前是否显示删除按钮
+const showDelete = ref(false)
+
+// 点击开启删除选择
+const showDeleteBtn = () => {
+    showDelete.value = !showDelete.value
+}
+
+// 删除记录
+const deleteHistoryItem = (value) => {
+    history.value = history.value.filter(item => item !== value)
+}
+
+// 清空记录
+const clearHistory = () => {
+    uni.showModal({
+        title: "温馨提示！",
+        content: "是否清空搜索历史？",
+        confirmText: "确定",
+        cancelText: "取消",
+        success:(success) => {
+            if(success.confirm) {
+                history.value = []
+            }
+        }
+    })
+}
+// 点击记录跳转至搜索列表也面
+const historyItemClick = (value) => {
+    // 判断当前是否显示删除按钮
+    if(showDelete.value) {
+        return
+    }
+    searchForm.value = value
+    search()
+}
 onUnmounted(() => {
     setStorage("search_history", history.value)
 })
@@ -130,6 +168,7 @@ onUnmounted(() => {
                 text-align: left;
                 font-family: PingFangSC-bold;
                 font-weight: bold;
+
             }
             .line {
                 width: 12rpx;
@@ -139,6 +178,9 @@ onUnmounted(() => {
                 background-color: rgba(24,144,255,1);
                 color: rgba(16,16,16,1);
             }
+            .clear {
+                    color: #F56C6C;
+                }
         }
         .right {
             line-height: 22px;
@@ -165,6 +207,21 @@ onUnmounted(() => {
         font-family: Roboto;
         border: 2rpx solid rgba(187,187,187,1);
         padding: 10rpx 30rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5rpx;
+        .uni-icons {
+          animation: scale 0.5s infinite;
+          @keyframes scale {
+            0% {
+              transform: scale(0);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+        }
       }
     }
   }
