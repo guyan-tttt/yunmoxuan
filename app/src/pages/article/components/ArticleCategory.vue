@@ -47,7 +47,7 @@ import ArticleCard from "./ArticleCard"
 import { getArticleListAPI } from "@/api/article"
 import {onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app"
 //@ts-ignore
-import Loading from "@/components/loading/index.vue"
+import Loading from "@/components/LoadingCard/index.vue"
 import { getCategoryListAPI,getTagListAPI } from "@/api/category"
 
 

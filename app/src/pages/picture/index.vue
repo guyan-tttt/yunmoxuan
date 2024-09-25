@@ -1,6 +1,7 @@
 <template>
     <div class="picture">
-        <view class="list">
+        <LoadingCard v-if="loading"/>
+        <view class="list" v-else>
             <navigator :url="`/subPackages/picture-list/index?id=${item._id}`"
                        class="item"
                        v-for="item in pictureCategory"
@@ -19,17 +20,23 @@
 <script setup>
 import { getPictureCategoryAPI } from "@/api/picture"
 import { onMounted, ref } from "vue"
+import LoadingCard from "@/components/LoadingCard/index.vue"
 
 // 图片分类列表
 const pictureCategory = ref([])
 
 // 获取分类列表
 const getPictureCategory = async () => {
+    loading.value = true
     const res = await getPictureCategoryAPI()
     if(res.code === 200) {
         pictureCategory.value = res.data
+        loading.value = false
     }
 }
+
+// 页面加载
+const loading = ref(true)
 
 onMounted(() => {
     getPictureCategory()

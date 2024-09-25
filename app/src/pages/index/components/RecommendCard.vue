@@ -158,7 +158,6 @@ const goToDetail = () => {
             width: 100%;
             color: rgba(51,51,51,1);
             font-size: 12px;
-            text-align: left;
             font-family: "楷体";
             white-space: nowrap;
             overflow: hidden;

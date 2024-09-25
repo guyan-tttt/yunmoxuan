@@ -26,7 +26,7 @@ import ArticleCard from "../article/components/ArticleCard.vue"
 import { searchArticleAPI } from "@/api/article"
 import {onReachBottom, onPullDownRefresh, onLoad } from "@dcloudio/uni-app"
 //@ts-ignore
-import Loading from "@/components/loading/index.vue"
+import Loading from "@/components/LoadingCard/index.vue"
 
 
 // 当前激活的索引

@@ -9,10 +9,12 @@
                 indicator-active-color="#fff"
         >
             <swiper-item v-for="(item,index) in banner" :key="item._id">
+                <LoadingCard v-if="item.loading"/>
                 <image
                     :src="item.src"
                     mode="aspectFill"
                     @click="previewImage(index)"
+                    @load="item.loading = false"
                 />
             </swiper-item>
 
@@ -24,6 +26,7 @@
 <script setup>
 import { getBannerAPI } from "@/api/index"
 import { ref, onMounted, computed } from "vue"
+import LoadingCard from "@/components/LoadingCard/index.vue"
 
 // 轮播图
 const banner = ref([])
@@ -32,6 +35,9 @@ const banner = ref([])
 const getBanner = async() => {
     const res = await getBannerAPI()
     if(res.code === 200) {
+        res.data.forEach(item => {
+            item.loading = true
+        })
         banner.value = res.data
     }
 }

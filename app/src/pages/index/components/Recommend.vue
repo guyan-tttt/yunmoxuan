@@ -20,7 +20,7 @@
 import RecommendCard from "./RecommendCard.vue"
 import { getRecommendArticleAPI } from "@/api/article"
 import { onMounted , ref } from "vue"
-import Loading from "@/components/loading/index.vue"
+import Loading from "@/components/LoadingCard/index.vue"
 
 
 // 推荐文章

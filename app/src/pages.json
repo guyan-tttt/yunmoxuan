@@ -133,7 +133,8 @@
 				{
 					"path": "picture-list/index",
 					"style": {
-						"navigationBarTitleText": "相册"
+						"navigationBarTitleText": "相册",
+						"onReachBottomDistance": 50
 					}
 				}
 			]
