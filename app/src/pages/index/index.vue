@@ -18,7 +18,14 @@
 <script setup>
 import Recommend from "./components/Recommend.vue"
 import NavList from "./components/nav-list.vue"
+import { useUserStore } from "@/store"
+import { onMounted } from "vue"
 
+const userStore = useUserStore()
+
+onMounted(() => {
+    userStore.getUserInfo()
+})
 
 </script>
 

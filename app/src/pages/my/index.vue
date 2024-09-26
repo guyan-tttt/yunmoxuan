@@ -49,13 +49,8 @@
 
 <script setup>
 import { useUserStore } from "@/store"
-import { onMounted } from "vue"
 
 const userStore = useUserStore()
-
-onMounted(() => {
-    userStore.getUserInfo()
-})
 </script>
 
 <style scoped lang="scss">
