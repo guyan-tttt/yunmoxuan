@@ -9,6 +9,7 @@ export default [
         ...globals.browser, ...globals.node,
         uni: "readonly",
         wx: "readonly",
+        my: "readonly"
     } }},
     pluginJs.configs.recommended,
     ...pluginVue.configs["flat/essential"],

@@ -1,35 +1,37 @@
 <template>
     <view class="item-card">
-        <view class="date">⌛ 2024/07/07</view>
-        <view class="desc">xaxnoaxax</view>
+        <view class="date">⌛ {{ dayjs(props.data.createTime ).format("YYYY-MM-DD")}}</view>
+        <view class="desc">{{ props.data?.content }}</view>
         <view class="imgs">
-            <view class="img" v-for="item in imgNum" :key="item">
+            <view class="img" v-for="(item,index) in props.data.imgList" :key="item">
                 <image
                     :style="imgOption"
-                    src="https://jeek-space-blog.top:3000/images/trends/fa7642429ae7e97d78ba3387211fb456.jpeg"
+                    :src="item"
                     :mode="imgOption.mode"
+                    @click="preview(index)"
+                    @longpress="longPress(item)"
                 />
             </view>
         </view>
         <view class="about">
-            <view class="like"><text class="iconfont icon-hongxin4"/>121</view>
-            <view class="comment"><text class="iconfont icon-liuyan"/>32</view>
+            <view class="like"><text class="iconfont icon-hongxin4"/>{{ props.data.likeNum }}</view>
+            <view class="comment"><text class="iconfont icon-liuyan"/>{{ props.data.commentNum }}</view>
         </view>
-        <uni-collapse>
+        <uni-collapse @change="collapseChange" ref="collapse">
             <uni-collapse-item title="评论区"  class="comment-content">
                 <view class="content">
-                    <view class="title">评论总数 <text>54</text> 条</view>
+                    <view class="title">评论总数 <text>{{ commentPage.total }}</text> 条</view>
 
                     <view class="list">
-                        <view class="item" v-for="item in 5" :key="item">
+                        <view class="item" v-for="item in commentList" :key="item._id">
                             <view class="top">
-                                <view class="name">😀顾言</view>
-                                <view class="date">2024-09-09</view>
+                                <view class="name">😀{{ item.nickname }}</view>
+                                <view class="date">{{ dayjs(item.createTime).format("YYYY-MM-DD") }}</view>
                             </view>
-                            <view class="desc">过分二哥二哥</view>
+                            <view class="desc">{{ item.content }}</view>
                         </view>
                     </view>
-
+                    <uni-load-more @clickLoadMore="more" :contentText="{contentdown: '点击加载更多',contentrefresh: '正在加载...',contentnomore: '没有更多数据了'}" :status="moreText"/>
                 </view>
             </uni-collapse-item>
         </uni-collapse>
@@ -38,10 +40,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, defineProps, nextTick } from "vue"
+import dayjs from "dayjs"
+import {getTrendsCommentListAPI } from "@/api/trends"
+import { showActions } from "@/utils/downloadImage"
 
+const collapse = ref(null)
+
+const props = defineProps({
+    data: Object,
+})
 // 当前动态图片数量
-const imgNum = ref(1)
+const imgNum = ref(props.data.imgList.length)
 
 // 当前动态图片排列
 const imgOption = computed(() => {
@@ -66,7 +76,84 @@ const imgOption = computed(() => {
 
 })
 
-const collapse = ref(null)
+// 打开评论框
+
+const collapseChange = async (e) => {
+    // 判断是否是打开
+    if(e.length > 0) {
+        // 获取评论列表()
+        if(commentList.value.length > 0) {
+            return
+        }
+        commentPage.value.page = 1
+        await getTrendsCommentList()
+    }
+}
+
+// 评论分页数据
+const commentPage = ref({
+    page: 1,
+    pageSize: 5,
+    total: 0,
+})
+// 获取评论
+const getTrendsCommentList = async () => {
+    const res = await getTrendsCommentListAPI({
+        trendsID: props.data._id,
+        page: commentPage.value.page,
+        pageSize: commentPage.value.pageSize,
+    })
+    if(res.code === 200) {
+        commentList.value = res.data
+        commentPage.value.total = res.total
+        nextTick(() => {
+            collapse.value.resize()
+        })
+    }
+}
+const moreText = ref("more")
+
+// 当前评论列表
+const commentList = ref([])
+
+const more = async() => {
+    moreText.value = "loading"
+    if(commentList.value.length < commentPage.value.total) {
+        commentPage.value.page++
+        await getTrendsCommentList()
+        moreText.value = "more"
+    } else {
+        moreText.value = "noMore"
+    }
+}
+
+
+// 图片预览
+const preview = (index) => {
+
+    // #ifdef APP
+    uni.previewImage({
+        urls: props.data.imgList,
+        current:index
+    })
+    // #endif
+
+    // #ifdef MP-ALIPAY
+    my.previewImage({
+        urls: props.data.imgList,
+        current:index,
+        enableSavePhoto: true,
+        enableShowPhotoDownload: true
+    })
+    // #endif
+}
+
+// 长按显示操作
+const longPress = (url) => {
+    showActions(url)
+}
+
+
 </script>
 
 <style lang="scss" scoped>

@@ -13,7 +13,7 @@
         </view>
         <view class="content">
             <view class="list">
-                <TrendsCard v-for="item in 8" :key="item"/>
+                <TrendsCard v-for="item in trendsList" :key="item._id" :data="item"/>
             </view>
         </view>
     </div>
@@ -21,6 +21,46 @@
 
 <script setup>
 import TrendsCard from "./components/TrendsCard.vue"
+import { ref, onMounted } from "vue"
+import { getTrendsListAPI } from "@/api/trends.js"
+import { onReachBottom } from "@dcloudio/uni-app"
+
+// 分页参数
+const pageData = ref({
+    page: 1,
+    pageSize: 5,
+    total: 0,
+})
+
+// 动态列表
+const trendsList = ref([])
+
+// 获取动态列表
+const getTrendsList = async () => {
+    uni.showLoading()
+    const res = await getTrendsListAPI(pageData.value.page, pageData.value.pageSize)
+    if(res.code === 200) {
+        trendsList.value = trendsList.value.concat(res.data)
+        pageData.value.total = res.total
+    }
+    uni.hideLoading()
+}
+
+onMounted(() => {
+    getTrendsList()
+})
+
+onReachBottom(() => {
+    if(trendsList.value.length < pageData.value.total) {
+        pageData.value.page++
+        getTrendsList()
+    } else {
+        uni.showToast({
+            title: "没有更多数据了",
+            icon: "none"
+        })
+    }
+})
 </script>
 
 <style scoped lang="scss">

@@ -48,7 +48,8 @@
 		{
 			"path": "pages/trends/index",
 			"style": {
-				"navigationBarTitleText": "动态"
+				"navigationBarTitleText": "动态",
+				"onReachBottomDistance": 50
 			}
 		},
 		{
