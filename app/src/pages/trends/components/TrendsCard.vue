@@ -168,9 +168,9 @@ const longPress = (url) => {
         font-size: 30rpx;
         color: #999;
     }
-    .desc {
+    >.desc {
         width: 100%;
-        font-size: 40rpx;
+        font-size: 32rpx;
         margin-top: 20rpx;
     }
     .imgs {
