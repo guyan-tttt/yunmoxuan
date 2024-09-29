@@ -7,17 +7,25 @@
             />
         </div>
         <div class="content">
-
-            <div class="item" v-for="item in 3" :key="item">
-                <div class="info">
-                    <image class="icon"/>
-                    <div class="title">前端开发</div>
-                    <div class="desc">————得得得</div>
-                </div>
-                <div class="list">
-                    <SourceCard type="web" v-for="i in 3" :key="i" :data="i" />
-                </div>
-            </div>
+            <swiper
+                scroll-x
+            >
+                <swiper-item v-for="item in sourceList"
+                             :key="item._id">
+                    <scroll-view class="
+                             item"
+                                 scroll-y>
+                        <div class="info">
+                            <image class="icon" :src="item.logo" mode="aspectFill"/>
+                            <div class="title">{{ item.name }}</div>
+                            <div class="desc">————{{ item.desc }}</div>
+                        </div>
+                        <div class="list">
+                            <SourceCard  type="web" v-for="i in item.source" :key="i._id" :data="i" />
+                        </div>
+                    </scroll-view>
+                </swiper-item>
+            </swiper>
         </div>
 
     </div>
@@ -25,6 +33,26 @@
 
 <script setup>
 import SourceCard from "./components/SourceCard.vue"
+import { ref , onMounted} from "vue"
+import { getSourceListAPI } from "@/api/source"
+
+
+// 资源列表
+const sourceList = ref([])
+
+// 获取资源列表
+const getSourceList = async() => {
+    const res = await getSourceListAPI()
+    console.log(res.data[0].source)
+    if(res.code === 200) {
+        sourceList.value = res.data
+    }
+}
+
+onMounted(() => {
+    getSourceList()
+
+})
 </script>
 
 <style scoped lang="scss">
@@ -34,6 +62,7 @@ import SourceCard from "./components/SourceCard.vue"
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 80rpx;
     .bg {
         width: 100%;
         image {
@@ -48,12 +77,18 @@ import SourceCard from "./components/SourceCard.vue"
         display: flex;
         flex-direction: column;
         border-radius: 20rpx;
-        box-shadow: 0 10rpx 10prx #000;
+        box-shadow: 0 10rpx 20prx #000;
         margin-top: 20rpx;
+        .header  {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .item {
             width: 100%;
             margin: 20rpx 0;
             padding: 0 20rpx;
+            margin-bottom: 40rpx;
             .list {
                 display: flex;
                 flex-wrap: wrap;
@@ -90,10 +125,20 @@ import SourceCard from "./components/SourceCard.vue"
             .desc {
                 font-size: 26rpx;
                 color: #999;
+                max-width: 300rpx;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             }
         }
 
     }
+}
+
+
+scroll-view {
+    height: calc(100vh - 350rpx);
+    margin-bottom: 40rpx;
 }
 </style>

@@ -1,25 +1,66 @@
 <template>
-    <view class="card"  :class="{active: isActive}" @click="isActive = !isActive">
+    <view class="card"
+          :class="{active: isActive}"
+          @click="handleClick"
+          :style="{
+              backgroundImage: `url(${props.data.bg})`
+          }">
         <div class="top">
-            <image class="img"/>
-            <div class="name">Vue</div>
-            <div class="tag">🏷️</div>
+            <image class="img" :src="props.data.logo" mode="aspectFill"/>
+            <div class="name">{{ props.data.name }}</div>
+            <div class="tag" @click.stop="showLink">🏷️</div>
         </div>
         <div class="content">
-            <div class="desc">gewgewrgewrgw</div>
+            <div class="desc">{{ props.data.desc }}</div>
         </div>
         <div class="bottom">
-            <div class="group">📖gergegreg</div>
-            <div class="time">🕣2024/09/08</div>
+            <div class="group">📖{{ props.data.groupName }}</div>
+            <div class="time">🕣{{ dayjs(props.data.createTime).format("YYYY-MM-DD") }}</div>
         </div>
     </view>
 </template>
 
 <script setup >
-import { ref } from "vue"
-
+import { ref , defineProps} from "vue"
+import dayjs from "dayjs"
 const isActive = ref(false)
 
+const emit = defineEmits(["update"])
+
+const props = defineProps({
+    data: {
+        type: Object,
+        default() {
+            return {}
+        },
+    }
+})
+
+const handleClick = () => {
+    isActive.value = !isActive.value
+    emit("update")
+}
+
+const showLink = () => {
+    uni.showModal({
+        title: "资源链接",
+        content: "复制链接在浏览器中打开",
+        cancelText: "取消",
+        confirmText: "确认",
+        success:(success) => {
+            if(success.confirm) {
+                uni.setClipboardData({
+                    data: props.data.link,
+                    success:() => {
+                        uni.showToast({
+                            title: "链接已复制",
+                        })
+                    },
+                })
+            }
+        },
+    })
+}
 </script>
 
   <style scoped lang="scss">
@@ -43,12 +84,15 @@ const isActive = ref(false)
       align-items: center;
       justify-content: space-between;
       transition: all 0.5s;
-      .el-avatar {
+      .img {
         margin-left: 40rpx;
         margin-right: 60rpx;
-        border: 2rpx solid #999;
-        box-shadow: 0 0 20rpx #999;
+        border: 2rpx solid #fff;
+        box-shadow: 0 0 20rpx #fff;
         transition: all 0.5s;
+        width: 120rpx;
+        height: 120rpx;
+        border-radius: 50%;
       }
       .name {
         flex: 1;
@@ -56,8 +100,8 @@ const isActive = ref(false)
         font-weight: 700;
         font-family: "Source Han Serif SC";
         transition: all 0.5s;
-        color: #4488f0;
-
+        color: 999;
+        text-shadow: 0 0 20rpx #000;
       }
       .tag {
         font-size: 60rpx;
@@ -102,11 +146,11 @@ const isActive = ref(false)
     &.active {
       height: 400rpx;
       .top {
-        .el-avatar {
+        .img {
           transform: translateX(-400rpx);
         }
         .name {
-          transform: translateX(-260rpx);
+          transform: translateX(-180rpx);
         }
       }
 
