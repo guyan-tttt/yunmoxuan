@@ -17,31 +17,26 @@
                 </view>
             </view>
             <view class="list">
-                <view class="item" v-for="item in history" :key="item" @click="historyItemClick(item)">{{ item }} <uni-icons @click="deleteHistoryItem(item)" v-if="showDelete" type="clear" size="30" color="red"/></view>
+                <view class="item" v-for="item in searchStore.history" :key="item" @click="historyItemClick(item)">{{ item }} <uni-icons @click="deleteHistoryItem(item)" v-if="showDelete" type="clear" size="30" color="red"/></view>
             </view>
         </view>
     </div>
 </template>
 
 <script setup>
+import { useSearchStore } from "@/store"
 import { ref , onUnmounted} from "vue"
-import { setStorage, getStorage } from "@/utils/storage.js"
 
+
+const searchStore = useSearchStore()
 
 const searchForm = ref("")
 
 // 搜索记录
-const history = ref(getStorage("search_history") || [])
 
 // 搜索
 const search = () => {
-    // 判断当前搜索是否已存在
-    if(!history.value.includes(searchForm.value)) {
-        history.value.unshift(searchForm.value)
-    } else {
-        history.value.splice(history.value.indexOf(searchForm.value), 1)
-        history.value.unshift(searchForm.value)
-    }
+    searchStore.search(searchForm.value)
 
     // 跳转到搜索列表页面
     uni.navigateTo({
@@ -60,7 +55,7 @@ const showDeleteBtn = () => {
 
 // 删除记录
 const deleteHistoryItem = (value) => {
-    history.value = history.value.filter(item => item !== value)
+   searchStore.deleteHistoryItem(value)
 }
 
 // 清空记录
@@ -72,7 +67,7 @@ const clearHistory = () => {
         cancelText: "取消",
         success:(success) => {
             if(success.confirm) {
-                history.value = []
+                searchStore.clearHistory()
             }
         }
     })
@@ -87,7 +82,7 @@ const historyItemClick = (value) => {
     search()
 }
 onUnmounted(() => {
-    setStorage("search_history", history.value)
+    searchStore.setHistory()
 })
 
 </script>

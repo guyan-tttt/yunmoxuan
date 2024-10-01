@@ -37,9 +37,9 @@
                     <text class="name">相关设置</text>
                     <text class="right iconfont icon-gengduo"/>
                 </navigator>
-                <navigator class="item" url="/subPackages/setting/index">
+                <navigator class="item" url="/subPackages/contact/index">
                     <text class="icon iconfont icon-wodekefu"/>
-                    <text class="name">意见反馈</text>
+                    <view class="name" open-type="contact">意见反馈</view>
                     <text class="right iconfont icon-gengduo"/>
                 </navigator>
             </view>
