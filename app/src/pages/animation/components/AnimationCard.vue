@@ -1,21 +1,28 @@
 <template>
-    <article class="card" :class="{active: show}" @click="show = !show">
+    <article class="card" :class="{active: show}" @click="show = !show" :style="{backgroundImage: `url(${props.data.cover})`}">
         <div class="temporary_text">
-            <div class="title">完美世</div>
-            <span class="score">💫7.8分</span>
+            <div class="title">{{ props.data.name }}</div>
+            <span class="score">💫{{props.data.score}}分</span>
         </div>
         <div class="card_content">
             <span class="card_title">
-                <div class="title">完美世界</div>
-                <div class="fire">🔥1234</div>
-                <div class="category">🔖3D</div>
+                <div class="title">{{ props.data.name }}</div>
+                <div class="fire">🔥{{ props.data.hot }}</div>
+                <div class="category">🔖{{ props.data.type }}</div>
             </span>
 
             <span class="card_subtitle"
-            >自起VIP用户每周10点更新1集</span
+            >
+                <text class="card_subtitle" v-if="props.data?.status === 0">自{{props.data?.remark }}起停更</text>
+                <text class="card_subtitle"
+                      v-if="props.data?.status === 1"
+                >自{{ props.data?.remark }}起VIP用户每周{{ dateList[new Date(props.data?.remark).getDay()] }}10点更新1集</text
+                >
+                <text class="card_subtitle" v-if="props.data?.status === 2">至{{ props.data?.remark }}完结</text>
+            </span
             >
 
-            <p class="card_description">📄都是v广师大v的VDVv是vv是VSV刹v</p>
+            <p class="card_description">📄{{ props.data.desc }}</p>
         </div>
     </article>
 </template>
@@ -24,7 +31,17 @@
 import { ref } from "vue"
 const dateList = ["日", "一", "二", "三", "四", "五", "六"]
 
+const props = defineProps({
+    data: {
+        type: Object,
+        default() {
+            return {}
+        }
+    }
+})
 const show = ref(false)
+
+
 </script>
 
   <style lang="scss" scoped>
@@ -41,7 +58,7 @@ const show = ref(false)
     background-position: center;
     box-shadow: 0 0 40rpx rgba(0, 0, 0, 0.2);
     transition: all 0.25s;
-    background-image: url(../../../assets/picture/img-loading.gif);
+
     cursor: pointer;
     margin: 10rpx 0;
     &.active {
@@ -68,6 +85,8 @@ const show = ref(false)
       flex: 1;
       text-align: center;
       // font-size: 25px;
+      text-shadow: 0 0 10rpx #000;
+
     }
     .score {
       font-size: 24rpx;
@@ -100,6 +119,7 @@ const show = ref(false)
   }
 
   .card_content {
+    width: 600rpx;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -142,6 +162,8 @@ const show = ref(false)
     // height: 30px;
     //   height: 100px;
     min-height: 100rpx;
+    max-width: 600rpx !important;
+    box-sizing: border-box;
   }
 
   .card.active .card_content {

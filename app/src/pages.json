@@ -67,7 +67,8 @@
 		{
 			"path": "pages/animation/index",
 			"style": {
-				"navigationBarTitleText": "追番"
+				"navigationBarTitleText": "追番",
+				"onReachBottomDistance": 100
 			}
 		},
 		{
@@ -136,6 +137,13 @@
 					"style": {
 						"navigationBarTitleText": "相册",
 						"onReachBottomDistance": 50
+					}
+				},
+				{
+					"path": "animation-detail/index",
+					"style": {
+						"navigationBarTitleText": "追番",
+						"onReachBottomDistance":100
 					}
 				}
 			]
