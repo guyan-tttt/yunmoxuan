@@ -11,9 +11,9 @@
                 <view class="name">🥺{{ userStore.userInfo?.nickname }}<text class="iconfont icon-nan"/></view>
                 <view class="phone">📱{{ userStore.userInfo?.phone }}</view>
             </view>
-            <view class="setting">
+            <navigator class="setting" url="/subPackages/setting/index">
                 <text class="iconfont icon-shezhi"/>
-            </view>
+            </navigator>
         </view>
         <view class="content">
             <view class="list">
