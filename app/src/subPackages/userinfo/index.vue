@@ -31,14 +31,14 @@
             </view>
         </view>
 
-        <view class="web">
+        <view class="web" @click="copyLinkWeb">
             <div class="section">
                 <uni-section titleFontSize="20px"  title="个人网站"  type="line"/>
             </div>
             <div class="content">
                 <view class="img">
                     <image
-                        src="http://jeek-space-blog.top/favicon.ico"
+                        src="../../static/favicon.ico"
                         mode="widthFix"
                     />
                 </view>
@@ -49,7 +49,7 @@
             </div>
         </view>
 
-        <view class="wx">
+        <view class="wx" @click="previewWX">
             <div class="section">
                 <uni-section titleFontSize="20px"  title="微信公众号"  type="line"/>
             </div>
@@ -98,17 +98,40 @@
 import { useUserStore } from "@/store"
 import { getTagListAPI } from "@/api/category"
 import { ref ,onMounted } from "vue"
+
+const webLink = ref("http://jeek-space.top")
+const wxCode = ref("https://jeek-space-blog.top:3000/images/wx/wx-code.jpg")
 const userStore = useUserStore()
 // 标签
 const tagsList = ref([])
 const getTagList = async() => {
     const res = await getTagListAPI()
-    console.log(res)
     if(res.code === 200) {
         tagsList.value = res.data
     }
 }
 
+// 复制网页
+const copyLinkWeb = () => {
+    uni.setClipboardData({
+        data: webLink.value,
+        success() {
+            uni.showToast({
+                title: "链接复制成功，请前往浏览器打开！",
+                icon:"none"
+            })
+        }
+    })
+}
+const previewWX = () => {
+    // #ifdef MP-ALIPAY
+    my.previewImage({
+        urls: [wxCode.value],
+        enableSavePhoto: true,
+        enableShowPhotoDownload: true,
+    })
+    // #endif
+}
 onMounted(() => {
     getTagList()
 

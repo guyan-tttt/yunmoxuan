@@ -3,7 +3,7 @@
         <view class="top">
             <image
                 :src="props.data.cover"
-                mode="scaleToFill"
+                mode="widthFix"
             />
             <view class="date">{{ dayjs(props.data.createTime).format("YYYY/MM/DD") }}</view>
             <view class="view">

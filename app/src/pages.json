@@ -55,7 +55,8 @@
 		{
 			"path": "pages/guest/index",
 			"style": {
-				"navigationBarTitleText": "留言"
+				"navigationBarTitleText": "留言",
+				"onReachBottomDistance": 50
 			}
 		},
 		{
