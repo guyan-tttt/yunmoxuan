@@ -27,23 +27,23 @@
                 </view>
             </view>
         </view>
-        <uni-popup ref="formPopup" type="bottom" background-color="#fff">
+        <uni-popup @maskClick="closeForm" ref="formPopup" type="bottom" background-color="#fff">
             <view id="form" style="margin: 0 auto; width: 600rpx;margin-top: 40rpx;">
-                <uni-forms   :modelValue="formData">
-                    <uni-forms-item label="昵称" required>
-                        <uni-easyinput  placeholder="请输入昵称" />
+                <uni-forms ref="formRef" :rules="rules"   :modelValue="formData">
+                    <uni-forms-item label="昵称" required name="nickname">
+                        <uni-easyinput v-model="formData.nickname"  placeholder="请输入昵称" />
                     </uni-forms-item>
-                    <uni-forms-item label="内容" required>
-                        <uni-easyinput  placeholder="请输入内容" />
+                    <uni-forms-item label="内容" required name="content">
+                        <uni-easyinput v-model="formData.content"  placeholder="请输入内容" />
                     </uni-forms-item>
                     <uni-forms-item label="头像">
-                        <uni-easyinput  placeholder="请输人头像链接" />
+                        <uni-easyinput v-model="formData.avatar"  placeholder="请输人头像链接" />
                     </uni-forms-item>
                     <uni-forms-item label="邮箱">
-                        <uni-easyinput  placeholder="请输入邮箱" />
+                        <uni-easyinput v-model="formData.email"  placeholder="请输入邮箱" />
                     </uni-forms-item>
                     <uni-forms-item >
-                        <button style="border-radius: 40rpx; background-color: #e0c3f3; border: 2rpx solid #fff;color: #fff;">提交</button>
+                        <button @click="submitForm" style="border-radius: 40rpx; background-color: #e0c3f3; border: 2rpx solid #fff;color: #fff;">提交</button>
                     </uni-forms-item>
                 </uni-forms>
             </view>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { getGuestListAPI } from "@/api/guest.js"
+import { getGuestListAPI,addGuestAPI } from "@/api/guest.js"
 import { ref, onMounted } from "vue"
 import dayjs from "dayjs"
 import { onReachBottom } from "@dcloudio/uni-app"
@@ -70,7 +70,6 @@ const guestList = ref([])
 // 获取留言数据
 const getGuestList = async () => {
     const res = await getGuestListAPI(pageData.value.page,pageData.value.pageSize)
-    console.log(res)
     if(res.code === 200) {
         guestList.value = guestList.value.concat(res.data)
         pageData.value.total = res.total
@@ -91,6 +90,75 @@ const openForm = () => {
     formPopup.value.open()
 }
 
+// 表单校验
+const rules = {
+    // 对name字段进行必填验证
+    nickname: {
+        rules: [{
+            required: true,
+            errorMessage: "请输入姓名",
+        },
+        {
+            minLength: 1,
+            maxLength: 5,
+            errorMessage: "姓名长度在 {minLength} 到 {maxLength} 个字符",
+        }
+        ]
+    },
+    content: {
+        rules: [{
+            required: true,
+            errorMessage: "请输入内容",
+        }
+        ]
+    }
+}
+
+// 表单实例
+const formRef = ref(null)
+
+// 提交
+const submitForm = () => {
+    formRef.value.validate().then(() => {
+        uni.showModal({
+            title: "提示",
+            content: "确定要提交吗？",
+            async success(res) {
+                if (res.confirm) {
+                    const res = await addGuestAPI(formData.value)
+                    if(res.code === 200) {
+                        uni.showToast({
+                            title: "提交成功",
+                        })
+                        closeForm()
+                    } else {
+                        uni.showToast({
+                            title: "提交失败",
+                        })
+                    }
+
+                } else if (res.cancel) {
+                    console.log("点击了取消")
+                }
+            },
+        })
+    }).catch(() => {
+        console.log("校验失败")
+    })
+
+}
+
+// 关闭弹窗
+const closeForm = () => {
+    formRef.value.clearValidate()
+    formData.value = {
+        nickname: "",
+        content: "",
+        avatar: "",
+        email: ""
+    }
+    formPopup.value.close()
+}
 onMounted(() => {
     getGuestList()
 
