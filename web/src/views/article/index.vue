@@ -85,11 +85,41 @@ const searchInfo = ref<ArticleSearchForm>({
 })
 
 // 更新文章
-const updateArticle = (id: string) => {
-  router.push({
-    path: "/article-add",
-    query: {
-      id
+const updateArticle = (item: ArticleItem) => {
+  console.log(item)
+  ElMessageBox.confirm("请选择更新操作类型？", "温馨提示", {
+    confirmButtonText: "markdown编辑",
+    cancelButtonText: "富文本编辑",
+    type: "info",
+    center: true,
+    distinguishCancelAndClose: true,
+    beforeClose: (action, instance, done) => {
+      if (action === "confirm") {
+        // 用户点击了确认按钮
+        // 在这里执行一些操作，例如表单提交
+        // 执行完毕后调用 done() 关闭消息框
+        router.push({
+          path: "/article-md",
+          query: {
+            id: item._id
+          }
+        })
+        done()
+      } else if (action === "cancel") {
+        // 用户点击了取消按钮
+        // 执行取消操作的逻辑
+        router.push({
+          path: "/article-add",
+          query: {
+            id: item._id
+          }
+        })
+        done()
+      } else if (action === "close") {
+        // 用户点击了关闭叉号或遮罩层
+        // 执行关闭操作的逻辑
+        done()
+      }
     }
   })
 }
@@ -356,7 +386,7 @@ onMounted(() => {
         <el-table-column prop="desc" align="center" label="操作">
           <template v-slot="{ row }">
             <el-button v-if="articleType !== 4" type="success" :name="row" @click="previewArticle(row._id)" :icon="InfoFilled" circle />
-            <el-button v-if="articleType !== 4" type="primary" @click="updateArticle(row._id)" :icon="Edit" circle />
+            <el-button v-if="articleType !== 4" type="primary" @click="updateArticle(row)" :icon="Edit" circle />
             <el-button v-if="articleType !== 4" type="danger" @click="deleteArticle(row._id)" :icon="DeleteFilled" circle />
             <el-button v-if="articleType === 4" type="danger" @click="deleteArticlePermanently(row._id)" :icon="DeleteFilled">删除</el-button>
           </template>

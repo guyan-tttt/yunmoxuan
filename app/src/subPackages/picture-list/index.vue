@@ -62,7 +62,9 @@ onLoad((options) => {
 })
 
 onMounted(() => {
-    getPictureList()
+    if(params.value.id) {
+        getPictureList()
+    }
 })
 
 onReachBottom(() => {

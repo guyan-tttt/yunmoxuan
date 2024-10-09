@@ -21,7 +21,6 @@ const getArticleDetail = async () => {
   articleDetail.value = res.data
   articleDetail.value.updateTime = dayjs(res.data?.updateTime).format("YYYY-MM-DD HH:mm")
   console.log(res)
-
   // 渲染文章内容
 }
 
@@ -35,6 +34,7 @@ onMounted(() => {
   getArticleDetail()
 })
 </script>
+
 <template>
   <div class="detail">
     <el-card style="max-width: 900px" v-if="articleDetail?._id">
@@ -75,7 +75,7 @@ onMounted(() => {
           </div>
         </div>
       </template>
-      <p v-html="articleDetail.content" class="content" />
+      <p class="content" v-html="articleDetail.content" v-highlight />
     </el-card>
   </div>
 </template>

@@ -4,6 +4,7 @@ import type { Tag } from "@/types/admin/tags"
 import OfficialAccount from "./OfficialAccount.vue"
 import { useSettingsStore } from "@/store/modules/settings"
 import TimeCard from "./TimeCard.vue"
+import AlipayApp from "./AlipayApp.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
@@ -86,8 +87,11 @@ const openPreview = (tag: Tag) => {
       </div>
     </div>
   </div>
+  <!-- 支付宝小程序 -->
+  <AlipayApp />
   <!-- 微信公众号 -->
   <OfficialAccount />
+
   <!-- 时间面板 -->
   <TimeCard />
   <!-- 文章分类 -->

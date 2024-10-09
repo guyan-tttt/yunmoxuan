@@ -143,6 +143,8 @@ const onSubmit = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (valid) {
       // 将表单参数转为formData
+      console.log(articleForm.value.content)
+
       const formData = new FormData()
       for (const key in articleForm.value) {
         //@ts-ignore
@@ -200,6 +202,14 @@ const getArticleDetail = async () => {
   }
 }
 
+// 切换markdown 编辑器
+const goToMd = () => {
+  if (route.query.id) {
+    router.push(`/article-md?id=${route.query.id}`)
+  } else {
+    router.push("/article-md")
+  }
+}
 onMounted(() => {
   getCategoryList()
   getTagsList()
@@ -213,8 +223,11 @@ onMounted(() => {
   <div>
     <el-card>
       <el-row justify="center">
-        <el-check-tag checked>{{ title }}</el-check-tag></el-row
-      >
+        <el-check-tag checked>{{ title }}</el-check-tag>
+      </el-row>
+      <el-row justify="center" class="mt-5">
+        <el-button type="primary" @click="goToMd">切换markdown 编辑器</el-button>
+      </el-row>
       <el-form ref="formRef" :rules="rules" :model="articleForm" label-width="auto" style="max-width: 800px; margin: 20px auto">
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="articleForm.title" placeholder="请输入文章标题" />

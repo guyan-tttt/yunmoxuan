@@ -1,7 +1,7 @@
 import { cursor } from "./cursor"
 import { imgLoad } from "./imgLoad"
 import { cardShow } from "./cardShow"
-
+import { highlight } from "./highlight"
 // 挂载自定义指令
 export default function initDirective(app: any) {
   app.directive("cursor-default", cursor.default)
@@ -10,4 +10,5 @@ export default function initDirective(app: any) {
   app.directive("img-load", imgLoad.img)
   app.directive("card-scale", cardShow.scaleLoad)
   app.directive("card-scale2", cardShow.scaleLoad2)
+  app.directive("highlight", highlight)
 }

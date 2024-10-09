@@ -6,7 +6,11 @@
         <p>{{ item.desc }}</p>
       </div>
       <div class="img">
-        <img v-img-load="item.cover" :src="item.cover" alt="" />
+        <el-image :src="item.cover" fit="cover" lazy>
+          <template #placeholder>
+            <Loading />
+          </template>
+        </el-image>
       </div>
     </router-link>
   </div>
@@ -16,7 +20,7 @@
 import { onMounted, ref } from "vue"
 import { getPictureCategoryAPI } from "@/api/web/picture"
 import type { ImageCategoryItem } from "@/types/admin/imageCategory"
-
+import Loading from "@/components/Loading/index.vue"
 // 图片分类
 const pictureCategory = ref<ImageCategoryItem[]>([])
 // 获取图片分类
@@ -61,7 +65,10 @@ onMounted(() => {
       }
     }
     .img {
-      img {
+      min-height: 134px;
+      background-color: #ececec;
+      border-radius: 10px;
+      .el-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -77,6 +84,7 @@ onMounted(() => {
       text-align: left;
       width: 100%;
       overflow: hidden;
+      z-index: 100;
       &::after {
         content: "";
         width: 0;

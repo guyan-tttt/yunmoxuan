@@ -132,8 +132,6 @@ onUnmounted(() => {
               &nbsp; 评论量 {{ article?.detail.commentNum }}
             </div>
 
-            <div class="article-content" v-viewer v-highlight />
-
             <!-- 标签 -->
             <div class="mt-5 mb-5">
               <div type="success" class="item" v-for="item in article?.detail.aboutInfo.tags as Tag[]" :key="item._id">
@@ -141,7 +139,7 @@ onUnmounted(() => {
                 <span>{{ item.name }}</span>
               </div>
             </div>
-            <p class="content pre" v-html="article?.detail.content" />
+            <p class="content pre" v-html="article?.detail.content" v-highlight />
           </article>
           <!-- 上下篇 -->
           <div class="article-footer flex">

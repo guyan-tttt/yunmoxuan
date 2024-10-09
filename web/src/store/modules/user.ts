@@ -3,7 +3,7 @@ import store from "@/store"
 import { defineStore } from "pinia"
 import { useTagsViewStore } from "./tags-view"
 import { useSettingsStore } from "./settings"
-import { getToken, removeToken, setToken } from "@/utils/cache/cookies"
+import { removeToken, setToken } from "@/utils/cache/cookies"
 import { getUserInfoAPI } from "@/api/admin/user"
 
 export const useUserStore = defineStore(
@@ -54,13 +54,7 @@ export const useUserStore = defineStore(
      * @return {void}
      */
     const setUserToken = (value: string) => {
-      console.log(value)
-
       token.value = value
-      console.log(token.value)
-
-      // 存到本地
-      // setToken(value)
     }
     /**
      * 设置用户信息

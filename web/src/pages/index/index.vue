@@ -9,6 +9,7 @@ import type { ArticleItem } from "@/types/admin/article"
 import { useRouter } from "vue-router"
 import IndexBg from "./components/IndexBg.vue"
 import TypeWrite from "./components/TypeWrite.vue"
+
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 
 // 全局路由对象

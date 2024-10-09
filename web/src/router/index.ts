@@ -145,6 +145,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       hidden: true
     }
   },
+
   {
     path: "/article-detail",
     component: Layouts,
@@ -243,6 +244,23 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       }
     ]
+  },
+  {
+    path: "/article-md",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/article/addMdArticle.vue"),
+        name: "AddArticleMd",
+        meta: {
+          hidden: true
+        }
+      }
+    ],
+    meta: {
+      hidden: true
+    }
   }
 ]
 
