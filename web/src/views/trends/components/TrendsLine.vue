@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, defineProps, ref, watch } from "vue"
-
+import * as echarts from "echarts"
 const props = defineProps<{
   data: any
 }>()

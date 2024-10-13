@@ -128,13 +128,7 @@ const formRef = ref<any>()
         <el-input v-model="userInfo.phone" clearable />
       </el-form-item>
       <el-form-item label="用户头像" prop="avatar">
-        <el-upload
-          :on-change="handleAvatar"
-          class="avatar-uploader"
-          action="#"
-          :auto-upload="false"
-          :show-file-list="false"
-        >
+        <el-upload :on-change="handleAvatar" class="avatar-uploader" action="#" :auto-upload="false" :show-file-list="false">
           <img class="img" v-if="userInfo.avatar" :src="selectAvatar ? selectAvatar : userInfo.avatar" />
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />

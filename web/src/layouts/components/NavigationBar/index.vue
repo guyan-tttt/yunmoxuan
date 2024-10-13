@@ -69,6 +69,7 @@ const goUserInfo = () => {
           <el-dropdown-menu>
             <el-dropdown-item @click="goBackHome">返回前台</el-dropdown-item>
             <el-dropdown-item @click="goUserInfo">个人信息</el-dropdown-item>
+            <el-dropdown-item @click="$router.push('/resume')">个人简历</el-dropdown-item>
             <a target="_blank" :href="userStore.userInfo?.github">
               <el-dropdown-item>GitHub</el-dropdown-item>
             </a>

@@ -58,6 +58,7 @@ const articleService = {
             user: user.nickname
         }
         item.tags = tag
+        item.content = ""
         item.cover = process.env.SERVER_BASE_URL + item.cover
         if(i === data.length -1) {
             return {
@@ -136,6 +137,7 @@ const articleService = {
             user: user.nickname
         }
         item.tags = tag
+        item.content = ""
         item.cover = "http://localhost:3000" + item.cover
         if(i === data.length -1) {
             return data
@@ -210,6 +212,7 @@ const articleService = {
                     avatar: user.avatar,
                 }
             }
+            item.content = ""
             item.tags = tag
         }
         return data
@@ -233,6 +236,7 @@ const articleService = {
                     avatar: user.avatar,
                 }
             }
+            item.content = ""
             item.tags = tag
         }
         return {

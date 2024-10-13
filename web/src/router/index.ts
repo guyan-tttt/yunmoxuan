@@ -261,6 +261,23 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: {
       hidden: true
     }
+  },
+  {
+    path: "/resume",
+    component: Layouts,
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/resume/index.vue"),
+        name: "Resume",
+        meta: {
+          hidden: true
+        }
+      }
+    ],
+    meta: {
+      hidden: true
+    }
   }
 ]
 
