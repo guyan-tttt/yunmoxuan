@@ -4,3 +4,8 @@ import request from "@/utils/request"
 export const addResumeAPI = (data: FormData) => {
   return request.post<any, any>("/admin/resume/add", data)
 }
+
+// 获取简历
+export const getResumeAPI = () => {
+  return request.get<any, any>("/admin/resume/detail")
+}

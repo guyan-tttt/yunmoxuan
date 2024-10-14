@@ -13,7 +13,6 @@ const Schema = mongoose.Schema({
     project: Array,
     expertise:Array,
     race: Array,
-    createTime: Date,
     updateTime: Date
 })
 

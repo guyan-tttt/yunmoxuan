@@ -6,52 +6,55 @@
         <el-button v-if="!edit" type="primary" @click="editResume">编辑简历</el-button>
         <el-button v-else type="success" @click="submitResume">提交简历</el-button>
       </el-row>
-      <el-descriptions title="" direction="vertical" border style="margin-top: 20px">
+      <el-descriptions v-if="resume" title="" direction="vertical" border style="margin-top: 20px">
         <el-descriptions-item label="姓名">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.name }}</span>
           <el-input v-else v-model="resumeForm.name" placeholder="请输入姓名" />
         </el-descriptions-item>
         <el-descriptions-item label="性别">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.sex === "1" ? "♂ 男" : "♀︎ 女" }}</span>
           <el-radio-group v-else v-model="resumeForm.sex">
-            <el-radio :value="1">♂ 男</el-radio>
-            <el-radio :value="0">♀︎ 女</el-radio>
+            <el-radio value="1">♂ 男</el-radio>
+            <el-radio value="0">♀︎ 女</el-radio>
           </el-radio-group>
         </el-descriptions-item>
         <el-descriptions-item :rowspan="3" :width="250" label="照片" align="center">
-          <el-image v-if="!edit" style="width: 200px; height: 280px" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+          <el-image v-if="!edit" style="width: 200px; height: 280px" :src="resume.photo" fit="cover" />
           <el-upload v-else class="uploader" action="" :show-file-list="false" :auto-upload="false" @change="uploadPhoto">
             <el-image v-if="resumeForm.photo" style="width: 200px; height: 280px" :src="resumeForm.photo" fit="cover" />
             <el-icon v-else class="uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-descriptions-item>
         <el-descriptions-item label="年龄">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.age }}岁</span>
           <el-input v-else placeholder="请输入年龄" v-model="resumeForm.age" />
         </el-descriptions-item>
 
         <el-descriptions-item label="电话">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.phone }}</span>
           <el-input v-else v-model="resumeForm.phone" placeholder="请输入电话号码" />
         </el-descriptions-item>
 
         <el-descriptions-item label="邮箱">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.email }}</span>
           <el-input v-else v-model="resumeForm.email" placeholder="请输入邮箱地址" />
         </el-descriptions-item>
         <el-descriptions-item label="微信">
-          <span v-if="!edit">张三</span>
-          <el-input v-else v-model="resumeForm.wechat" placeholder="请输入微信号" />
+          <span v-if="!edit">{{ resume.weChat }}</span>
+          <el-input v-else v-model="resumeForm.weChat" placeholder="请输入微信号" />
         </el-descriptions-item>
         <el-descriptions-item label="QQ">
-          <span v-if="!edit">张三</span>
+          <span v-if="!edit">{{ resume.qq }}</span>
           <el-input v-else v-model="resumeForm.qq" placeholder="请输入QQ号" />
         </el-descriptions-item>
         <el-descriptions-item label="学校">南昌大学（211） </el-descriptions-item>
         <el-descriptions-item label="比赛证书">查看更多 ></el-descriptions-item>
       </el-descriptions>
       <div class="education">
-        <h4>🏆 教育信息</h4>
+        <el-row align="middle" justify="space-between"
+          ><h4>🏆 教育经历</h4>
+          <el-button size="large" @click="openEducationEdit" type="primary" circle :icon="Plus" />
+        </el-row>
         <div class="detail">
           <div class="top">
             <div class="logo">
@@ -63,6 +66,7 @@
           <div class="major">信息管理与信息系统</div>
           <div class="desc">主修课程：javascript高级程序设计，网页开发与设计，数据库原理，数据结构，java高级程序设计，web程序设计等等。</div>
         </div>
+        <EducationEdit v-model="educationShow" />
       </div>
       <div class="expertise">
         <h4>🏆 专业技能</h4>
@@ -82,8 +86,11 @@
 
 <script setup lang="ts">
 import Project from "./components/projectItem.vue"
-import { ref } from "vue"
-import { addResumeAPI } from "@/api/admin/resume"
+import EducationEdit from "./components/educationEdit.vue"
+import { ref, onMounted } from "vue"
+import { addResumeAPI, getResumeAPI } from "@/api/admin/resume"
+import { ElMessage } from "element-plus"
+import { Plus } from "@element-plus/icons-vue"
 
 // 当前编辑状态
 const edit = ref(false)
@@ -91,6 +98,7 @@ const edit = ref(false)
 // 开启编辑
 const editResume = () => {
   edit.value = true
+  resumeForm.value = { ...resume.value }
 }
 
 // 提交简历
@@ -103,17 +111,20 @@ const submitResume = async () => {
   }
 
   const res = await addResumeAPI(formData)
-  console.log(res)
+  if (res.code === 200) {
+    ElMessage.success("提交成功")
+    getResume()
+  }
 }
 
 // 个人信息表单
 const resumeForm = ref({
   name: "",
-  sex: 1,
+  sex: "1",
   age: 20,
   phone: "",
   email: "",
-  wechat: "",
+  weChat: "",
   qq: "",
   photo: "",
   file: null
@@ -126,6 +137,30 @@ const uploadPhoto = (file: any) => {
   resumeForm.value.file = file.raw
   console.log(file)
 }
+
+// 简历信息
+const resume = ref()
+
+// 获取简历信息
+const getResume = async () => {
+  const res = await getResumeAPI()
+  console.log(res)
+  if (res.code === 200) {
+    resume.value = res.data
+    console.log(resume.value)
+  }
+}
+
+// 教育信息编辑弹框
+const educationShow = ref(false)
+
+// 打开教育编辑弹框
+const openEducationEdit = () => {
+  educationShow.value = true
+}
+onMounted(() => {
+  getResume()
+})
 </script>
 
 <style scoped lang="scss">

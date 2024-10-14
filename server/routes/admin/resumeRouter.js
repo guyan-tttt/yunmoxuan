@@ -7,4 +7,8 @@ const upload = multer({ dest: 'public/images/resume/' })
 // 添加简历  / 修改简历
 router.post("/add", upload.single('file'), resumeController.add)
 
+// 获取简历详情
+router.get("/detail", resumeController.detail)
+
+
 module.exports = router;
