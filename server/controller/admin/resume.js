@@ -31,6 +31,26 @@ const resumeController = {
             message: '查询成功',
             data: result
         })
+    },
+    addEducation: async(req,res) => {
+        if(req.file) {
+            req.body.logo = renameFile(src,src.mimetype.split("/")[1])
+        }
+        const education = {
+            name: req.body.name,
+            major: req.body.major,
+            logo: req.body.logo,
+            start_time: req.body.time[0],
+            end_time: req.body.time[1],
+            desc: req.body.desc,
+            bg: req.body.bgImg,
+            resume_id: req.body.resumeId
+        }
+        const result = await resumeService.addEducation(education)
+        res.send({
+            code: 200,
+            message: '添加成功'
+        })
     }
 }
 

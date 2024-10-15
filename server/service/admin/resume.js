@@ -21,6 +21,15 @@ const resumeService = {
        const list =  await ResumeModel.find({})
        list[0].photo = process.env.SERVER_BASE_URL + list[0].photo
        return list[0]
+    },
+    addEducation: async(data) => {
+        await ResumeModel.updateOne({
+            _id: data.resumeId
+        }, {
+            $push: {
+                educationInfo: data
+            }
+        })
     }
 }
 

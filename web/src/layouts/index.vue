@@ -32,9 +32,7 @@ const classes = computed(() => {
 const cssVariableName = "--v3-tagsview-height"
 const v3TagsviewHeight = getCssVariableValue(cssVariableName)
 watchEffect(() => {
-  showTagsView.value
-    ? setCssVariableValue(cssVariableName, v3TagsviewHeight)
-    : setCssVariableValue(cssVariableName, "0px")
+  showTagsView.value ? setCssVariableValue(cssVariableName, v3TagsviewHeight) : setCssVariableValue(cssVariableName, "0px")
 })
 //#endregion
 

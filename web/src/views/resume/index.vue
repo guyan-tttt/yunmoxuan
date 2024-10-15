@@ -50,7 +50,7 @@
         <el-descriptions-item label="学校">南昌大学（211） </el-descriptions-item>
         <el-descriptions-item label="比赛证书">查看更多 ></el-descriptions-item>
       </el-descriptions>
-      <div class="education">
+      <div class="education" v-if="resume">
         <el-row align="middle" justify="space-between"
           ><h4>🏆 教育经历</h4>
           <el-button size="large" @click="openEducationEdit" type="primary" circle :icon="Plus" />
@@ -66,15 +66,15 @@
           <div class="major">信息管理与信息系统</div>
           <div class="desc">主修课程：javascript高级程序设计，网页开发与设计，数据库原理，数据结构，java高级程序设计，web程序设计等等。</div>
         </div>
-        <EducationEdit v-model="educationShow" />
+        <EducationEdit :resumeId="resume._id" v-model="educationShow" />
       </div>
-      <div class="expertise">
+      <div class="expertise" v-if="resume">
         <h4>🏆 专业技能</h4>
         <div class="list">
           <div class="item" v-for="item in 4" :key="item">⚡掌握Vue.js开发全家桶，Vue3,pinia,VueRouter及相关技术栈。</div>
         </div>
       </div>
-      <div class="project">
+      <div class="project" v-if="resume">
         <h4>🏆 项目经历</h4>
         <div class="list">
           <Project v-for="item in 3" :key="item" />
