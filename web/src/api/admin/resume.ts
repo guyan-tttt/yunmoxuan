@@ -9,3 +9,13 @@ export const addResumeAPI = (data: FormData) => {
 export const getResumeAPI = () => {
   return request.get<any, any>("/admin/resume/detail")
 }
+
+// 添加教育经历
+export const addEducationAPI = (data: FormData) => {
+  return request.post<any, any>("/admin/resume/addEducation", data)
+}
+
+// 获取教育经历
+export const getEducationAPI = (id: string) => {
+  return request.get<any, any>("/admin/resume/education?id=" + id)
+}

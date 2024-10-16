@@ -1,27 +1,27 @@
 <template>
   <div>
     <el-dialog v-model="dialogShow" title="添加教育经历" width="30%">
-      <el-form ref="formRef" :model="formData" :rules="rules" :label-width="100">
+      <el-form ref="formRef" :model="resumeData" :rules="rules" :label-width="100">
         <el-form-item label="学校名称" prop="name">
-          <el-input placeholder="请输入学校名称" v-model="formData.name" />
+          <el-input placeholder="请输入学校名称" v-model="resumeData.name" />
         </el-form-item>
         <el-form-item label="专业/学科" prop="major">
-          <el-input placeholder="请输入专业/学科" v-model="formData.major" />
+          <el-input placeholder="请输入专业/学科" v-model="resumeData.major" />
         </el-form-item>
         <el-form-item label="时间阶段" prop="time">
-          <el-date-picker type="yearrange" range-separator="至" v-model="formData.time" start-placeholder="开始时间" end-placeholder="结束时间" />
+          <el-date-picker type="yearrange" range-separator="至" v-model="resumeData.time" start-placeholder="开始时间" end-placeholder="结束时间" />
         </el-form-item>
         <el-form-item label="学校logo" prop="logo">
           <el-upload class="avatar-uploader" action="" :show-file-list="false" :auto-upload="false" :on-change="uploadImg">
-            <el-image v-if="formData.logo" class="avatar" :src="formData.logo" fit="cover" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <el-image v-if="resumeData.logo" class="avatar" :src="resumeData.logo" fit="cover" />
+            <el-icon v-else class="avatar-uploader-icon" size="30"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
         <el-form-item label="背景图片" prop="bgImg">
-          <el-input placeholder="请输入背景链接" v-model="formData.bgImg" />
+          <el-input placeholder="请输入背景链接" v-model="resumeData.bgImg" />
         </el-form-item>
         <el-form-item label="相关描述" prop="desc">
-          <el-input type="textarea" v-model="formData.desc" placeholder="请输入相关描述" />
+          <el-input type="textarea" v-model="resumeData.desc" placeholder="请输入相关描述" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submit">确定</el-button>
@@ -34,11 +34,14 @@
 
 <script setup lang="ts">
 import { ref, defineModel } from "vue"
-import { type UploadFile, type FormRules, type FormInstance } from "element-plus"
+import { type UploadFile, type FormRules, type FormInstance, ElMessage } from "element-plus"
+import { addEducationAPI } from "@/api/admin/resume"
 
 const props = defineProps<{
   resumeId: string
 }>()
+
+
 const dialogShow = defineModel({
   type: Boolean,
   default: false,
@@ -47,7 +50,7 @@ const dialogShow = defineModel({
   }
 })
 
-const formData = ref({
+const resumeData = ref({
   name: "",
   major: "",
   time: "",
@@ -68,7 +71,7 @@ const rules: FormRules = {
     {
       //@ts-ignore
       validator: (rule: any, value: any) => {
-        if (!value && formData.value.file == null) return Promise.reject("请上传学校logo")
+        if (!value && resumeData.value.file == null) return Promise.reject("请上传学校logo")
         return Promise.resolve()
       },
       trigger: "blur"
@@ -84,22 +87,31 @@ const formRef = ref<FormInstance>()
 const submit = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      formData.value.resumeId = props.resumeId
-
-      console.log(formData.value)
+      resumeData.value.resumeId = props.resumeId
+      const formData = new FormData()
+      for (const key in resumeData.value) {
+        //@ts-ignore
+        formData.append(key, resumeData.value[key])
+      }
+      const res = await addEducationAPI(formData)
+      console.log(res)
+      if (res.code === 200) {
+        ElMessage.success("添加成功")
+        cancel()
+      }
     }
   })
 }
 
 // 图片上传
 const uploadImg = (file: UploadFile) => {
-  formData.value.logo = URL.createObjectURL(file.raw as File)
-  formData.value.file = file.raw as any
+  resumeData.value.logo = URL.createObjectURL(file.raw as File)
+  resumeData.value.file = file.raw as any
 }
 
 const cancel = () => {
   dialogShow.value = false
-  formData.value = {
+  resumeData.value = {
     name: "",
     major: "",
     time: "",

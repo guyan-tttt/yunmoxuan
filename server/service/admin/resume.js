@@ -19,18 +19,35 @@ const resumeService = {
     },
     detail:async() => {
        const list =  await ResumeModel.find({})
-       list[0].photo = process.env.SERVER_BASE_URL + list[0].photo
-       return list[0]
+       if(list.length > 0) {
+            list[0].photo = process.env.SERVER_BASE_URL + list[0].photo
+            list[0].educationInfo = []
+            list[0].race = []
+            list[0].expertise = []
+            list[0].project = []
+            return list[0]
+       } 
+       return {}
     },
     addEducation: async(data) => {
         await ResumeModel.updateOne({
-            _id: data.resumeId
+            _id: data.resume_id
         }, {
             $push: {
                 educationInfo: data
             }
         })
+    },
+    education: async(id) => {
+        const list = await ResumeModel.findOne({ _id: id }).select("educationInfo")
+        return list.educationInfo.map((item) => {
+            return {
+                ...item,
+                logo: process.env.SERVER_BASE_URL + item.logo
+            }
+        })
     }
+
 }
 
 module.exports = resumeService

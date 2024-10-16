@@ -53,20 +53,30 @@
       <div class="education" v-if="resume">
         <el-row align="middle" justify="space-between"
           ><h4>🏆 教育经历</h4>
-          <el-button size="large" @click="openEducationEdit" type="primary" circle :icon="Plus" />
+          <div>
+            <el-button size="large" @click="openEducationEdit" type="primary" circle :icon="Plus" />
+            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" @drop="deleteEducation" />
+          </div>
         </el-row>
-        <div class="detail">
+        <div
+          @dragstart="dragStart($event, index)"
+          draggable="true"
+          class="detail"
+          v-for="(item, index) in education"
+          :key="index"
+          :style="{ backgroundImage: `url(${item.bg})` }"
+        >
           <div class="top">
             <div class="logo">
-              <img src="https://www.shanghairanking.cn/_uni/logo/25119833.png" />
+              <img :src="item.logo" />
             </div>
-            <div class="school">南昌大学</div>
-            <div class="time">2017.9··········2021.6</div>
+            <div class="school">{{ item.name }}</div>
+            <div class="time">{{ dayjs(item.start_time).format("YYYY.MM") }}··········{{ dayjs(item.end_time).format("YYYY.MM") }}</div>
           </div>
-          <div class="major">信息管理与信息系统</div>
-          <div class="desc">主修课程：javascript高级程序设计，网页开发与设计，数据库原理，数据结构，java高级程序设计，web程序设计等等。</div>
+          <div class="major">{{ item.major }}</div>
+          <div class="desc">{{ item.desc }}</div>
         </div>
-        <EducationEdit :resumeId="resume._id" v-model="educationShow" />
+        <EducationEdit :resumeId="resume._id" v-model="educationShow" @update:modelValue="getEducation" />
       </div>
       <div class="expertise" v-if="resume">
         <h4>🏆 专业技能</h4>
@@ -88,9 +98,10 @@
 import Project from "./components/projectItem.vue"
 import EducationEdit from "./components/educationEdit.vue"
 import { ref, onMounted } from "vue"
-import { addResumeAPI, getResumeAPI } from "@/api/admin/resume"
-import { ElMessage } from "element-plus"
-import { Plus } from "@element-plus/icons-vue"
+import { addResumeAPI, getResumeAPI, getEducationAPI } from "@/api/admin/resume"
+import { ElMessage, ElMessageBox } from "element-plus"
+import { Plus, DeleteFilled } from "@element-plus/icons-vue"
+import dayjs from "dayjs"
 
 // 当前编辑状态
 const edit = ref(false)
@@ -158,8 +169,37 @@ const educationShow = ref(false)
 const openEducationEdit = () => {
   educationShow.value = true
 }
-onMounted(() => {
-  getResume()
+
+// 获取教育信息
+const getEducation = async () => {
+  const res = await getEducationAPI(resume.value._id)
+  console.log(res)
+  if (res.code === 200) {
+    education.value = res.data
+  }
+}
+// 教育数据
+const education = ref([])
+
+// 拖拽开始
+const dragStart = (e: any, index: number) => {
+  e.dataTransfer.setData("text/plain", index)
+}
+// 教育删除
+const deleteEducation = (e: any) => {
+  e.preventDefault()
+  const index = e.dataTransfer.getData("text/plain")
+  ElMessageBox.confirm("确定删除吗？", "温馨提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    console.log(index)
+  })
+}
+onMounted(async () => {
+  await getResume()
+  getEducation()
 })
 </script>
 
@@ -176,7 +216,6 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-image: url(https://haowallpaper.com/link/common/file/getCroppingImg/786d50481e9c29b09d0ced4c83ca67f0786d50481e9c29b09d0ced4c83ca67f0);
   color: #fff;
   background-repeat: no-repeat;
   background-size: cover;
@@ -184,6 +223,7 @@ h4 {
   padding: 20px 40px;
   border-radius: 20px;
   box-shadow: 0 5px 10px #000;
+  margin-top: 20px;
   .top {
     width: 100%;
     display: flex;

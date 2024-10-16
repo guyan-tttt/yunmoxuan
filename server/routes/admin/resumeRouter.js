@@ -13,7 +13,8 @@ router.get("/detail", resumeController.detail)
 // 添加教育经历
 router.post("/addEducation", upload.single('file'),resumeController.addEducation)
 
-
+// 获取教育经历
+router.get("/education", resumeController.education)
 
 
 module.exports = router;
