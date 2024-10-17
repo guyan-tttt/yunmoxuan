@@ -16,5 +16,7 @@ router.post("/addEducation", upload.single('file'),resumeController.addEducation
 // 获取教育经历
 router.get("/education", resumeController.education)
 
+// 删除教育经历
+router.delete("/deleteEducation", resumeController.deleteEducation)
 
 module.exports = router;

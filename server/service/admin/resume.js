@@ -40,10 +40,22 @@ const resumeService = {
     },
     education: async(id) => {
         const list = await ResumeModel.findOne({ _id: id }).select("educationInfo")
-        return list.educationInfo.map((item) => {
+        return list.educationInfo.filter((item) => {
+            return item
+        }).map(item => {
             return {
                 ...item,
                 logo: process.env.SERVER_BASE_URL + item.logo
+            }
+        })
+    },
+    educationByIndex: async(id,index) => {
+        return (await ResumeModel.findOne({_id: id}).select("educationInfo")).educationInfo[parseInt(index) + 1]
+    },
+    deleteEducation: async(id,data) => {
+        return await ResumeModel.findByIdAndUpdate(data.resume_id, {
+            $pull: {
+                educationInfo: data
             }
         })
     }

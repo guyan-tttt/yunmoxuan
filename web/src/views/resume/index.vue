@@ -98,18 +98,19 @@
 import Project from "./components/projectItem.vue"
 import EducationEdit from "./components/educationEdit.vue"
 import { ref, onMounted } from "vue"
-import { addResumeAPI, getResumeAPI, getEducationAPI } from "@/api/admin/resume"
+import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI } from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { Plus, DeleteFilled } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
+import type { EducationInfo, ResumeInfo } from "@/types/admin/resume"
 
 // 当前编辑状态
-const edit = ref(false)
+const edit = ref<boolean>(false)
 
 // 开启编辑
 const editResume = () => {
   edit.value = true
-  resumeForm.value = { ...resume.value }
+  resumeForm.value = { ...resume.value } as ResumeInfo
 }
 
 // 提交简历
@@ -128,8 +129,19 @@ const submitResume = async () => {
   }
 }
 
+interface ResumeForm {
+  name: string
+  sex: string
+  age: number
+  phone: string
+  email: string
+  weChat: string
+  qq: string
+  photo: string
+  file: any
+}
 // 个人信息表单
-const resumeForm = ref({
+const resumeForm = ref<ResumeForm | ResumeInfo>({
   name: "",
   sex: "1",
   age: 20,
@@ -145,25 +157,23 @@ const resumeForm = ref({
 const uploadPhoto = (file: any) => {
   const url = URL.createObjectURL(file.raw)
   resumeForm.value.photo = url
-  resumeForm.value.file = file.raw
+  resumeForm.value.file = file.raw as any
   console.log(file)
 }
 
 // 简历信息
-const resume = ref()
+const resume = ref<ResumeInfo>()
 
 // 获取简历信息
 const getResume = async () => {
   const res = await getResumeAPI()
-  console.log(res)
   if (res.code === 200) {
     resume.value = res.data
-    console.log(resume.value)
   }
 }
 
 // 教育信息编辑弹框
-const educationShow = ref(false)
+const educationShow = ref<boolean>(false)
 
 // 打开教育编辑弹框
 const openEducationEdit = () => {
@@ -172,14 +182,15 @@ const openEducationEdit = () => {
 
 // 获取教育信息
 const getEducation = async () => {
-  const res = await getEducationAPI(resume.value._id)
-  console.log(res)
+  const res = await getEducationAPI(resume.value?._id as string)
   if (res.code === 200) {
     education.value = res.data
+    console.log(res)
   }
 }
+
 // 教育数据
-const education = ref([])
+const education = ref<EducationInfo[]>([])
 
 // 拖拽开始
 const dragStart = (e: any, index: number) => {
@@ -194,7 +205,12 @@ const deleteEducation = (e: any) => {
     cancelButtonText: "取消",
     type: "warning"
   }).then(async () => {
-    console.log(index)
+    const res = await deleteEducationAPI(resume.value?._id as string, index)
+    console.log(res)
+    if (res.code === 200) {
+      ElMessage.success("删除成功")
+      getEducation()
+    }
   })
 }
 onMounted(async () => {

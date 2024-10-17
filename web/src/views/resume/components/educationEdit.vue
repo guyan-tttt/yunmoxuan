@@ -41,7 +41,6 @@ const props = defineProps<{
   resumeId: string
 }>()
 
-
 const dialogShow = defineModel({
   type: Boolean,
   default: false,

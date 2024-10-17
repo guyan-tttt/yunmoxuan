@@ -1,6 +1,7 @@
 const resumeService = require('../../service/admin/resume')
 const renameFile = require("../../utils/renameFile")
-
+const fs = require('fs')
+const path = require('path')
 const resumeController = {
     add: async(req,res) => {
         // 1.判断参数是否为空
@@ -67,6 +68,23 @@ const resumeController = {
             code: 200,
             message: '查询成功',
             data: result
+        })
+    },
+    deleteEducation: async(req,res) => {
+        const index = req.query.index
+        const id = req.query.id
+
+        // 查询对应的数据并删除图片
+        const data = await resumeService.educationByIndex(id,index)
+        // 删除对应的图片
+        if(data.logo) {
+            fs.unlinkSync(path.join(__dirname, '../../public', data.logo))
+        }
+        const result = await resumeService.deleteEducation(id,data)
+        res.send({
+            code: 200,
+            message: '删除成功',
+            data
         })
     }
 }
