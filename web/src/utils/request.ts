@@ -47,6 +47,12 @@ request.interceptors.response.use(
       userStore.resetToken()
       router.push("/login")
     }
+    if (error.response.status === 400) {
+      ElMessage.error(error.response.data.message)
+    } else {
+      ElMessage.error("系统错误")
+    }
+
     // 对响应错误做点什么
     console.log(error)
 

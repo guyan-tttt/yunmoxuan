@@ -79,10 +79,17 @@
         <EducationEdit :resumeId="resume._id" v-model="educationShow" @update:modelValue="getEducation" />
       </div>
       <div class="expertise" v-if="resume">
-        <h4>🏆 专业技能</h4>
+        <el-row align="middle" justify="space-between"
+          ><h4>🏆专业技能</h4>
+          <div>
+            <el-button @click="openExpertiseEdit" size="large" type="primary" circle :icon="Plus" />
+            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" />
+          </div>
+        </el-row>
         <div class="list">
-          <div class="item" v-for="item in 4" :key="item">⚡掌握Vue.js开发全家桶，Vue3,pinia,VueRouter及相关技术栈。</div>
+          <span class="item" v-for="item in skill" :key="item">⚡{{ item }}</span>
         </div>
+        <ExpertiseEdit :resumeId="resume._id" v-model="expertiseShow" />
       </div>
       <div class="project" v-if="resume">
         <h4>🏆 项目经历</h4>
@@ -97,8 +104,9 @@
 <script setup lang="ts">
 import Project from "./components/projectItem.vue"
 import EducationEdit from "./components/educationEdit.vue"
+import ExpertiseEdit from "./components/expertiseEdit.vue"
 import { ref, onMounted } from "vue"
-import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI } from "@/api/admin/resume"
+import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI, getSkillAPI } from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { Plus, DeleteFilled } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
@@ -140,6 +148,7 @@ interface ResumeForm {
   photo: string
   file: any
 }
+
 // 个人信息表单
 const resumeForm = ref<ResumeForm | ResumeInfo>({
   name: "",
@@ -196,6 +205,7 @@ const education = ref<EducationInfo[]>([])
 const dragStart = (e: any, index: number) => {
   e.dataTransfer.setData("text/plain", index)
 }
+
 // 教育删除
 const deleteEducation = (e: any) => {
   e.preventDefault()
@@ -213,9 +223,30 @@ const deleteEducation = (e: any) => {
     }
   })
 }
+
+// 专业技能编辑弹框
+const expertiseShow = ref<boolean>(false)
+
+// 开启专业技能编辑弹框
+const openExpertiseEdit = () => {
+  expertiseShow.value = true
+}
+
+// 专业技能
+const skill = ref<string[]>([])
+
+// 获取专业技能列表
+const getSkill = async () => {
+  const res = await getSkillAPI(resume.value?._id as string)
+  if (res.code === 200) {
+    skill.value = res.data
+    console.log(res)
+  }
+}
 onMounted(async () => {
   await getResume()
   getEducation()
+  getSkill()
 })
 </script>
 
@@ -297,10 +328,10 @@ h4 {
       background-color: var(--primary-color);
       padding: 5px 10px;
       border-radius: 20px;
-      box-shadow: 1px 4px 10px #000;
-      text-shadow: 0 0 10px #000;
+      box-shadow: 1px 4px 10px #666;
+      text-shadow: 0 0 10px #666;
       color: #fff;
-      display: inline;
+      width: 300px;
     }
   }
 }

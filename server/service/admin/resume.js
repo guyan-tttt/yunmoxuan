@@ -58,6 +58,16 @@ const resumeService = {
                 educationInfo: data
             }
         })
+    },
+    addSkill: async({ id,value}) => {
+        return await ResumeModel.findByIdAndUpdate(id, {
+            $push: {
+                expertise: value
+            }
+        })
+    },
+    skill: async(id) => {
+        return (await ResumeModel.findOne({_id: id}).select("expertise")).expertise
     }
 
 }

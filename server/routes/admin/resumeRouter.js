@@ -19,4 +19,12 @@ router.get("/education", resumeController.education)
 // 删除教育经历
 router.delete("/deleteEducation", resumeController.deleteEducation)
 
+// 添加专业技能
+router.post("/addSkill", resumeController.addSkill)
+
+// 获取专业技能
+router.get("/skill", resumeController.skill)
+
+// // 删除专业技能
+// router.delete("/deleteSkill", resumeController.deleteSkill)
 module.exports = router;

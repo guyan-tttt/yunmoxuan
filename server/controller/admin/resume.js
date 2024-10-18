@@ -86,6 +86,38 @@ const resumeController = {
             message: '删除成功',
             data
         })
+    },
+    addSkill: async(req,res) => {
+        if(!req.body.id || !req.body.value) {
+            return  res.status(400).send({
+                code: 400,
+                message: '参数错误'
+            })
+            
+        }
+
+        const result = await resumeService.addSkill(req.body)
+        res.send({
+            code: 200,
+            message: '添加成功'
+        })
+        
+    },
+    skill: async(req,res) => {
+        const { id } = req.query
+        if(!id) {
+            return req.status(400).send({
+                code: 400,
+                message: '参数错误'
+            })
+        }
+        const result = await resumeService.skill(id)
+
+        res.send({
+            code: 200,
+            message: '查询成功',
+            data: result
+        })
     }
 }
 

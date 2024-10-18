@@ -9,7 +9,15 @@
           <el-input placeholder="请输入专业/学科" v-model="resumeData.major" />
         </el-form-item>
         <el-form-item label="时间阶段" prop="time">
-          <el-date-picker type="yearrange" range-separator="至" v-model="resumeData.time" start-placeholder="开始时间" end-placeholder="结束时间" />
+          <el-date-picker
+            :default-value="new Date()"
+            unlink-panels
+            type="monthrange"
+            range-separator="至"
+            v-model="resumeData.time"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+          />
         </el-form-item>
         <el-form-item label="学校logo" prop="logo">
           <el-upload class="avatar-uploader" action="" :show-file-list="false" :auto-upload="false" :on-change="uploadImg">

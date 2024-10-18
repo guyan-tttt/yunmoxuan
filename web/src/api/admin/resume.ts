@@ -22,5 +22,15 @@ export const getEducationAPI = (id: string) => {
 
 // 删除教育经历
 export const deleteEducationAPI = (id: string, index: number) => {
-  return request.delete(`/admin/resume/deleteEducation?id=${id}&index=${index}`)
+  return request.delete<any, ResponseData>(`/admin/resume/deleteEducation?id=${id}&index=${index}`)
+}
+
+// 添加技能
+export const addSkillAPI = (data: { id: string; value: string }) => {
+  return request.post<any, ResponseData>("/admin/resume/addSkill", data)
+}
+
+// 获取技能
+export const getSkillAPI = (id: string) => {
+  return request.get<any, any>(`/admin/resume/skill?id=${id}`)
 }
