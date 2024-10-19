@@ -59,7 +59,7 @@
           </div>
         </el-row>
         <div
-          @dragstart="dragStart($event, index)"
+          @dragstart="dragStartEducation($event, index)"
           draggable="true"
           class="detail"
           v-for="(item, index) in education"
@@ -83,19 +83,28 @@
           ><h4>🏆专业技能</h4>
           <div>
             <el-button @click="openExpertiseEdit" size="large" type="primary" circle :icon="Plus" />
-            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" />
+            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" @drop="deleteSkill" />
           </div>
         </el-row>
         <div class="list">
-          <span class="item" v-for="item in skill" :key="item">⚡{{ item }}</span>
+          <span class="item" v-for="(item, index) in skill" :key="item" draggable="true" @dragstart="dragStartSkill($event, index)"
+            >⚡{{ item }}</span
+          >
         </div>
         <ExpertiseEdit :resumeId="resume._id" v-model="expertiseShow" />
       </div>
       <div class="project" v-if="resume">
-        <h4>🏆 项目经历</h4>
+        <el-row align="middle" justify="space-between"
+          ><h4>🏆项目经历</h4>
+          <div>
+            <el-button size="large" type="primary" circle :icon="Plus" @click="openProjectEdit" />
+            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" />
+          </div>
+        </el-row>
         <div class="list">
           <Project v-for="item in 3" :key="item" />
         </div>
+        <projectEdit v-model="projectShow" />
       </div>
     </el-card>
   </div>
@@ -105,6 +114,8 @@
 import Project from "./components/projectItem.vue"
 import EducationEdit from "./components/educationEdit.vue"
 import ExpertiseEdit from "./components/expertiseEdit.vue"
+import projectEdit from "./components/projectEdit.vue"
+
 import { ref, onMounted } from "vue"
 import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI, getSkillAPI } from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
@@ -202,20 +213,24 @@ const getEducation = async () => {
 const education = ref<EducationInfo[]>([])
 
 // 拖拽开始
-const dragStart = (e: any, index: number) => {
-  e.dataTransfer.setData("text/plain", index)
+const dragStartEducation = (e: any, index: number) => {
+  e.dataTransfer.setData("text/plain", `${index}-education`)
 }
 
 // 教育删除
 const deleteEducation = (e: any) => {
   e.preventDefault()
-  const index = e.dataTransfer.getData("text/plain")
+  const type = (e.dataTransfer.getData("text/plain") as string).split("-")[1] as string
+  if (type !== "education") return
+
+  const index = (e.dataTransfer.getData("text/plain") as string).split("-")[0]
+
   ElMessageBox.confirm("确定删除吗？", "温馨提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
   }).then(async () => {
-    const res = await deleteEducationAPI(resume.value?._id as string, index)
+    const res = await deleteEducationAPI(resume.value?._id as string, parseInt(index))
     console.log(res)
     if (res.code === 200) {
       ElMessage.success("删除成功")
@@ -239,10 +254,33 @@ const skill = ref<string[]>([])
 const getSkill = async () => {
   const res = await getSkillAPI(resume.value?._id as string)
   if (res.code === 200) {
-    skill.value = res.data
+    skill.value = res.data.filter((item: string) => item !== "")
     console.log(res)
   }
 }
+
+// 拖拽开始
+const dragStartSkill = (e: any, index: number) => {
+  e.dataTransfer.setData("text/plain", `${index}-skill`)
+}
+
+// 删除技能
+const deleteSkill = (e: any) => {
+  const type = (e.dataTransfer.getData("text/plain") as string).split("-")[1] as string
+  if (type !== "skill") return
+  const index = (e.dataTransfer.getData("text/plain") as string).split("-")[0]
+  console.log(index)
+  console.log(type)
+}
+
+// 项目经历弹框
+const projectShow = ref<boolean>(false)
+
+// 打开项目经历弹框
+const openProjectEdit = () => {
+  projectShow.value = true
+}
+
 onMounted(async () => {
   await getResume()
   getEducation()
@@ -331,7 +369,7 @@ h4 {
       box-shadow: 1px 4px 10px #666;
       text-shadow: 0 0 10px #666;
       color: #fff;
-      width: 300px;
+      // width: 300px;
     }
   }
 }
