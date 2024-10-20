@@ -2,6 +2,7 @@ const resumeService = require('../../service/admin/resume')
 const renameFile = require("../../utils/renameFile")
 const fs = require('fs')
 const path = require('path')
+
 const resumeController = {
     add: async(req,res) => {
         // 1.判断参数是否为空
@@ -117,6 +118,65 @@ const resumeController = {
             code: 200,
             message: '查询成功',
             data: result
+        })
+    },
+    deleteSkill: async(req,res) => {
+        const { id, value } = req.query
+        if(!id || !value) {
+            return res.status(400).send({
+                code: 400,
+                message: '参数错误'
+            })
+        }
+        const result = await resumeService.deleteSkill(id,value)
+        res.send({
+            code: 200,
+            message: '删除成功'
+        })
+    },
+    addProject: async(req,res) => {
+        let {
+            name,
+            link,
+            bgImg,
+            logo,
+            desc,
+            time,
+            content
+        } = req.body
+        console.log(req.body);
+        if(!name || !bgImg || !desc || !time  || !content) {
+            return res.status(400).send({
+                code: 400,
+                message: '参数错误'
+            })
+        }
+        if(req.file) {
+            logo = renameFile(req.file,req.file.mimetype.split("/")[1])
+        } 
+        console.log(req.file);
+        const data = {
+            name,
+            link,
+            bgImg,
+            logo,
+            desc,
+            start_time: time.split(",")[0],
+            end_time: time.split(",")[1],
+            content
+        }
+        const result = await resumeService.addProject(data)
+        res.send({
+            code: 200,
+            message: '添加成功'
+        })
+    },
+    project: async(req,res) => {
+        const list = await resumeService.project()
+        res.send({
+            code: 200,
+            message: '查询成功',
+            data: list
         })
     }
 }

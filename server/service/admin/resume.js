@@ -1,4 +1,5 @@
 const ResumeModel = require("../../model/ResumeModel")
+const ProjectModel = require("../../model/ProjectModel")
 
 const resumeService = {
     add: async(data) => {
@@ -68,7 +69,25 @@ const resumeService = {
     },
     skill: async(id) => {
         return (await ResumeModel.findOne({_id: id}).select("expertise")).expertise
+    },
+    deleteSkill: async(id,value) => {
+        return await ResumeModel.findByIdAndUpdate(id, {
+            $pull: {
+                expertise: value
+            }
+        })
+    },
+    addProject: async(data) => {
+        return await ProjectModel.create(data)
+    },
+    project: async() => {
+       const list =  await ProjectModel.find({})
+       list.forEach(item => {
+         item.logo  = process.env.SERVER_BASE_URL + item.logo
+       })
+       return list
     }
+
 
 }
 

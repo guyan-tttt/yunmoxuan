@@ -1,41 +1,39 @@
 <template>
-  <div class="item">
+  <div
+    class="item"
+    :style="{
+      backgroundImage: `url(${props.data.bgImg})`
+    }"
+  >
     <div class="top">
-      <div class="name">
-        <img
-          src="https://haowallpaper.com/link/common/file/getCroppingImg/786d50481e9c29b09d0ced4c83ca67f0786d50481e9c29b09d0ced4c83ca67f0"
-          alt=""
-        />云墨轩（个人博客系统 + 小程序）
-      </div>
-      <div class="time">2024~至今</div>
+      <div class="name"><img :src="props.data.logo" alt="" />{{ props.data.name }}</div>
+      <div class="time">{{ dayjs(props.data.start_time).format("YYYY-MM") }} ~ {{ dayjs(props.data.end_time).format("YYYY-MM") }}</div>
     </div>
-    <div class="link">
+    <div class="link" v-if="props.data.link">
       <div class="name">🧬 项目链接</div>
-      <a href="">云墨轩</a>
+      <a href="">{{ props.data.link }}</a>
     </div>
-    <div class="tech">
-      <div class="title">⚔ 技术栈</div>
-      <div class="item-tech" v-for="item in 3" :key="item">
-        <div class="label">♦ 前端</div>
-        <div class="value">Vue3 + TypeScript + Pinia + axios + 宝塔nginx部署</div>
-      </div>
-    </div>
+
     <div class="desc">
-      开发阶段: \n 项目集成使用v-md-editor 与tudown 来实现markdown文档的编辑与逆解析。 项目使用UnoCss原子化来解决页面样式快速搭建。
-      使用WebSocrket实现前后端即时通信与管理端通知接受。 后端使用multer实现文件上传捕获保存。 前端使用高德地图api获取用户地理信息。
-      Web网站移动端部分功能适配。 使用highlight.js实现代码块高亮显示。 采用Mongoose 操作数据库。
+      {{ props.data.desc }}
     </div>
+    <div class="tech" v-html="props.data.content" />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import dayjs from "dayjs"
+
+const props = defineProps<{
+  data: any
+}>()
+</script>
 
 <style scoped lang="scss">
 .item {
   width: 100%;
   margin-top: 20px;
   width: 100%;
-  background-image: url(https://haowallpaper.com/link/common/file/getCroppingImg/786d50481e9c29b09d0ced4c83ca67f0786d50481e9c29b09d0ced4c83ca67f0);
   color: #fff;
   padding: 20px;
   background-repeat: no-repeat;

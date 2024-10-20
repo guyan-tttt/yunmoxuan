@@ -34,3 +34,18 @@ export const addSkillAPI = (data: { id: string; value: string }) => {
 export const getSkillAPI = (id: string) => {
   return request.get<any, any>(`/admin/resume/skill?id=${id}`)
 }
+
+// 删除技能
+export const deleteSkillAPI = (id: string, value: string) => {
+  return request.delete<any, ResponseData>(`/admin/resume/deleteSkill?id=${id}&value=${value}`)
+}
+
+// 添加项目
+export const addProjectAPI = (data: FormData) => {
+  return request.post<any, ResponseData>("/admin/resume/addProject", data)
+}
+
+// 获取项目
+export const getProjectAPI = () => {
+  return request.get<any, any>(`/admin/resume/project`)
+}

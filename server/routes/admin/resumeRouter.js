@@ -25,6 +25,13 @@ router.post("/addSkill", resumeController.addSkill)
 // 获取专业技能
 router.get("/skill", resumeController.skill)
 
-// // 删除专业技能
-// router.delete("/deleteSkill", resumeController.deleteSkill)
+// 删除专业技能
+router.delete("/deleteSkill", resumeController.deleteSkill)
+
+// 添加项目经验
+router.post("/addProject", upload.single('file'), resumeController.addProject)
+
+// 获取项目经验
+router.get("/project", resumeController.project)
+
 module.exports = router;

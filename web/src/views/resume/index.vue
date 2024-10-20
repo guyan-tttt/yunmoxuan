@@ -91,7 +91,7 @@
             >⚡{{ item }}</span
           >
         </div>
-        <ExpertiseEdit :resumeId="resume._id" v-model="expertiseShow" />
+        <ExpertiseEdit @update:modelValue="getSkill" :resumeId="resume._id" v-model="expertiseShow" />
       </div>
       <div class="project" v-if="resume">
         <el-row align="middle" justify="space-between"
@@ -102,7 +102,7 @@
           </div>
         </el-row>
         <div class="list">
-          <Project v-for="item in 3" :key="item" />
+          <Project v-for="item in projectData" :key="item._id" :data="item" />
         </div>
         <projectEdit v-model="projectShow" />
       </div>
@@ -117,7 +117,7 @@ import ExpertiseEdit from "./components/expertiseEdit.vue"
 import projectEdit from "./components/projectEdit.vue"
 
 import { ref, onMounted } from "vue"
-import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI, getSkillAPI } from "@/api/admin/resume"
+import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI, getSkillAPI, deleteSkillAPI, getProjectAPI } from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { Plus, DeleteFilled } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
@@ -267,10 +267,19 @@ const dragStartSkill = (e: any, index: number) => {
 // 删除技能
 const deleteSkill = (e: any) => {
   const type = (e.dataTransfer.getData("text/plain") as string).split("-")[1] as string
-  if (type !== "skill") return
   const index = (e.dataTransfer.getData("text/plain") as string).split("-")[0]
-  console.log(index)
-  console.log(type)
+  if (type !== "skill") return
+  ElMessageBox.confirm("确定删除吗？", "温馨提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    const res = await deleteSkillAPI(resume.value?._id as string, skill.value[parseInt(index)])
+    if (res.code === 200) {
+      ElMessage.success("删除成功")
+      getSkill()
+    }
+  })
 }
 
 // 项目经历弹框
@@ -281,10 +290,21 @@ const openProjectEdit = () => {
   projectShow.value = true
 }
 
+// 项目经历数据
+const projectData = ref<any[]>([])
+
+// 获取项目经历
+const getProject = async () => {
+  const res = await getProjectAPI()
+  if (res.code === 200) {
+    projectData.value = res.data
+  }
+}
 onMounted(async () => {
   await getResume()
   getEducation()
   getSkill()
+  getProject()
 })
 </script>
 

@@ -55,6 +55,8 @@ import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import "@vueup/vue-quill/dist/vue-quill.bubble.css"
 import { type FormInstance } from "element-plus"
+import { addProjectAPI } from "@/api/admin/resume"
+import { ElMessage } from "element-plus"
 
 const drawerShow = defineModel({
   type: Boolean,
@@ -79,7 +81,6 @@ const projectForm = ref({
 
 const rules = {
   name: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
-  link: [{ required: true, message: "请输入项目链接", trigger: "blur" }],
   logo: [
     {
       required: true,
@@ -106,7 +107,7 @@ const rules = {
 const uploadImg = (file: any) => {
   const url = URL.createObjectURL(file.raw)
   projectForm.value.logo = url
-  projectForm.value.file = file
+  projectForm.value.file = file.raw
 }
 
 // 富文本编辑器配置
@@ -147,7 +148,16 @@ const formRef = ref<FormInstance>()
 const submit = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      console.log(projectForm.value)
+      const formData = new FormData()
+      for (const key in projectForm.value) {
+        // @ts-ignore
+        formData.append(key, projectForm.value[key])
+      }
+      const res = await addProjectAPI(formData)
+      if (res.code === 200) {
+        ElMessage.success("添加成功")
+        drawerShow.value = false
+      }
     }
   })
 }
