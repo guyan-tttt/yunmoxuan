@@ -459,6 +459,36 @@ app.use(hljsVuePlugin)
 ### 9.个人资料
 ![image](./web/src/assets/docs/userinfo-home.png);
 
+### 10.音乐模块
+![image](./web/src/assets/docs/home-music.png);
+
+**功能介绍:**
+1. 音乐专辑分类
+![image](./web/src/assets/docs/home-music-category.png);
+- 点击页面歌单分类右侧更多，进入歌单分类列表。
+- 点击歌单分类列表左侧列表栏，显示该分类下的歌单列表。
+- 点击对应的歌单，进入该歌单详情页面。
+2. 音乐歌单分类
+![image](./web/src/assets/docs/home-music-gedan.png);
+3. 音乐歌手分类
+![image](./web/src/assets/docs/home-music-signer.png);
+4. 音乐详情
+![image](./web/src/assets/docs/home-music-details.png);
+- 点击歌曲，就会播放器中播放当前歌曲
+- 点击播放器进入播放详情页面
+5. 音乐播放
+![image](./web/src/assets/docs/home-music-play.png);
+- 点击播放条进入
+- 左侧下载按钮，下载当前歌曲
+- 右侧当前歌曲歌词
+- 底部控制条切换播放模式，播放列表，上一首，下一首，播放/暂停
+- 播放条可以控制播放进度条，音量条，暂停等。
+5. 音乐搜索
+![image](./web/src/assets/docs/home-music-search.png);
+- 输入搜索内容，按照搜索内容进行搜索
+- 点击搜索提示，进入搜索结果页面
+- 搜索历史为本地存储，点击清除按钮，清空搜索历史
+- 底部有热搜列表，点击热搜列表，进入搜索结果页面
 ## 📑 后端接口 
 <div align="center">
   <h2><a href="https://apifox.com/apidoc/shared-c6adb94b-1fdc-4dbd-9933-e7962342092e">🔍 极客空间</a></h2>
