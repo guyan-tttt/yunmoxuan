@@ -86,6 +86,12 @@ const resumeService = {
          item.logo  = process.env.SERVER_BASE_URL + item.logo
        })
        return list
+    },
+    projectById: async(id) => {
+        return await ProjectModel.findOne({_id: id})
+    },
+    deleteProject: async(id) => {
+        return await ProjectModel.deleteOne({_id: id})
     }
 
 

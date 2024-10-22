@@ -98,11 +98,11 @@
           ><h4>🏆项目经历</h4>
           <div>
             <el-button size="large" type="primary" circle :icon="Plus" @click="openProjectEdit" />
-            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" />
+            <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" @drop="deleteProject" />
           </div>
         </el-row>
         <div class="list">
-          <Project v-for="item in projectData" :key="item._id" :data="item" />
+          <Project draggable="true" @dragstart="dragStartProject($event, item._id)" v-for="item in projectData" :key="item._id" :data="item" />
         </div>
         <projectEdit v-model="projectShow" />
       </div>
@@ -117,7 +117,16 @@ import ExpertiseEdit from "./components/expertiseEdit.vue"
 import projectEdit from "./components/projectEdit.vue"
 
 import { ref, onMounted } from "vue"
-import { addResumeAPI, getResumeAPI, getEducationAPI, deleteEducationAPI, getSkillAPI, deleteSkillAPI, getProjectAPI } from "@/api/admin/resume"
+import {
+  addResumeAPI,
+  getResumeAPI,
+  getEducationAPI,
+  deleteEducationAPI,
+  getSkillAPI,
+  deleteSkillAPI,
+  getProjectAPI,
+  deleteProjectAPI
+} from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { Plus, DeleteFilled } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
@@ -299,6 +308,33 @@ const getProject = async () => {
   if (res.code === 200) {
     projectData.value = res.data
   }
+}
+
+// 删除项目拖住开始
+const dragStartProject = (e: any, id: string) => {
+  e.dataTransfer.setData("text/plain", `${id}-project`)
+}
+
+// 删除项目
+const deleteProject = (e: any) => {
+  console.log(e.dataTransfer.getData("text/plain"))
+
+  const [id, type] = (e.dataTransfer.getData("text/plain") as string).split("-")
+  console.log(id, type)
+
+  if (type !== "project") return
+  ElMessageBox.confirm("确定删除吗？", "温馨提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    if (!id) return
+    const res = await deleteProjectAPI(id)
+    if (res.code === 200) {
+      ElMessage.success("删除成功")
+      getProject()
+    }
+  })
 }
 onMounted(async () => {
   await getResume()

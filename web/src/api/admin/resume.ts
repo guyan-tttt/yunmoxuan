@@ -49,3 +49,8 @@ export const addProjectAPI = (data: FormData) => {
 export const getProjectAPI = () => {
   return request.get<any, any>(`/admin/resume/project`)
 }
+
+// 删除项目
+export const deleteProjectAPI = (id: string) => {
+  return request.delete<any, ResponseData>(`/admin/resume//deleteProject?id=${id}`)
+}

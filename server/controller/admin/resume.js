@@ -14,6 +14,14 @@ const resumeController = {
         } else {
             req.body.photo = renameFile(req.file,req.file.mimetype.split("/")[1])
         }
+        // 判断当前是否已经存在新数据，如果存在就需要删除phtoto
+        const data = await resumeService.detail()
+        if(data) {
+            if(data.photo) {
+                const url = data.photo.replace(process.env.SERVER_BASE_URL, "")
+                fs.unlinkSync(path.join(__dirname, '../../public', url))
+            }
+        }
         // console.log(req.body);
         const result = await resumeService.add(req.body)
 
@@ -177,6 +185,22 @@ const resumeController = {
             code: 200,
             message: '查询成功',
             data: list
+        })
+    },
+    deleteProject: async(req,res) => {
+        const { id } = req.query
+        if(!id) return res.status(400).send({
+            code: 400,
+            message: '参数错误'
+        })
+        const data = await resumeService.projectById(id)
+        if(data.logo) {
+            fs.unlinkSync(path.join(__dirname, '../../public', data.logo))
+        }
+        const result = await resumeService.deleteProject(id)
+        res.send({
+            code: 200,
+            message: '删除成功'
         })
     }
 }

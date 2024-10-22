@@ -34,4 +34,7 @@ router.post("/addProject", upload.single('file'), resumeController.addProject)
 // 获取项目经验
 router.get("/project", resumeController.project)
 
+// 删除项目经验
+router.delete("/deleteProject", resumeController.deleteProject)
+
 module.exports = router;
