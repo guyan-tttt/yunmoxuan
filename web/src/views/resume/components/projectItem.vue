@@ -11,7 +11,7 @@
     </div>
     <div class="link" v-if="props.data.link">
       <div class="name">🧬 项目链接</div>
-      <a href="">{{ props.data.link }}</a>
+      <a :href="props.data.link">{{ props.data.link }}</a>
     </div>
 
     <div class="desc">
@@ -80,28 +80,9 @@ const props = defineProps<{
       font-weight: 700;
     }
   }
-  .tech {
+  ::v-deep(.tech) {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    .title {
-      font-size: 20px;
-      text-shadow: 5px -5px 10px #000;
-      margin-top: 20px;
-      font-weight: 700;
-    }
-    .item-tech {
-      display: flex;
-      color: #f8f8f8;
-      .label {
-        font-size: 16px;
-        text-shadow: 5px -5px 10px #000;
-        margin-right: 20px;
-      }
-      .value {
-        font-size: 18px;
-      }
-    }
+    color: #333 !important;
   }
   .desc {
     font-size: 16px;

@@ -88,10 +88,20 @@ const resumeService = {
        return list
     },
     projectById: async(id) => {
-        return await ProjectModel.findOne({_id: id})
+        const res =  await ProjectModel.findOne({_id: id})
+        res.logo  = process.env.SERVER_BASE_URL + res.logo
+        return res
+
     },
     deleteProject: async(id) => {
         return await ProjectModel.deleteOne({_id: id})
+    },
+    // 修改项目经验
+    updateProject: async(data) => {
+        return await ProjectModel.findByIdAndUpdate(data.id, {
+            ...data,
+            updateTime: new Date()
+        })
     }
 
 

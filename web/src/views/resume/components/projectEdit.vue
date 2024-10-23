@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer v-model="drawerShow" title="添加项目经历" size="50%">
+    <el-drawer v-model="drawerShow" title="添加项目经历" size="50%" @closed="cancel">
       <el-form ref="formRef" :model="projectForm" :rules="rules" :label-width="100">
         <el-form-item label="项目名称" prop="name">
           <el-input placeholder="请输入项目名称" v-model="projectForm.name" />
@@ -42,7 +42,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submit">确定</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -50,12 +50,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineModel } from "vue"
+import { ref, defineModel, watch } from "vue"
 import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import "@vueup/vue-quill/dist/vue-quill.bubble.css"
 import { type FormInstance } from "element-plus"
-import { addProjectAPI } from "@/api/admin/resume"
+import { addProjectAPI, getProjectDetailAPI, updateProjectAPI } from "@/api/admin/resume"
 import { ElMessage } from "element-plus"
 
 const drawerShow = defineModel({
@@ -67,6 +67,23 @@ const drawerShow = defineModel({
     return val
   }
 })
+
+const props = defineProps<{
+  projectId: {
+    type: string
+    default: ""
+    required: false
+  }
+}>()
+
+watch(
+  () => props.projectId,
+  () => {
+    if (props.projectId) {
+      getProjectDetail()
+    }
+  }
+)
 
 const projectForm = ref({
   name: "",
@@ -143,7 +160,7 @@ const Options = {
 }
 
 const formRef = ref<FormInstance>()
-
+const quillRef = ref<any>()
 // 提交
 const submit = () => {
   formRef.value?.validate(async (valid: boolean) => {
@@ -153,13 +170,51 @@ const submit = () => {
         // @ts-ignore
         formData.append(key, projectForm.value[key])
       }
-      const res = await addProjectAPI(formData)
-      if (res.code === 200) {
-        ElMessage.success("添加成功")
-        drawerShow.value = false
+
+      if (props.projectId) {
+        // console.log("修改")
+        formData.append("id", props.projectId)
+        const res = await updateProjectAPI(formData)
+        console.log(res)
+
+        if (res.code === 200) {
+          ElMessage.success("修改成功")
+          cancel()
+        }
+      } else {
+        const res = await addProjectAPI(formData)
+        if (res.code === 200) {
+          ElMessage.success("添加成功")
+          cancel()
+        }
       }
     }
   })
+}
+
+// 获取项目详情
+const getProjectDetail = async () => {
+  const res = await getProjectDetailAPI(props.projectId)
+  if (res.code === 200) {
+    console.log(res)
+    projectForm.value = res.data
+    projectForm.value.time = [res.data.start_time, res.data.end_time]
+    console.log(projectForm.value)
+  }
+}
+
+const cancel = () => {
+  drawerShow.value = false
+  projectForm.value = {
+    name: "",
+    logo: "",
+    bgImg: "",
+    desc: "",
+    content: "",
+    time: []
+  }
+  formRef.value?.resetFields()
+  quillRef.value?.setContents("")
 }
 </script>
 

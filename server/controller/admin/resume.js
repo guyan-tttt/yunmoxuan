@@ -202,6 +202,57 @@ const resumeController = {
             code: 200,
             message: '删除成功'
         })
+    },
+    projectDetail: async(req,res) => {
+        const { id } = req.query
+        if(!id) return res.status(400).send({
+            code: 400,
+            message: '参数错误'
+        })
+        const result = await resumeService.projectById(id)
+        res.send({
+            code: 200,
+            message: '查询成功',
+            data: result
+        })
+
+    },
+    updateProject: async(req,res) => {
+        let { id, name, link,bgImg, logo,desc, time,content } = req.body
+        if(!id || !name || !bgImg || !desc || !time  || !content) {
+            return res.status(400).send({
+                code: 400,
+                message: '参数错误'
+            })
+        }
+        if(req.file) {
+            // 查询当前的图片并删除
+            const data = await resumeService.projectById(id)
+            if(data.logo) {
+                const src = data.logo.replace(process.env.SERVER_BASE_URL, "")
+                fs.unlinkSync(path.join(__dirname, '../../public', src))
+            }
+            logo = renameFile(req.file,req.file.mimetype.split("/")[1])
+        } else {
+            logo = logo.replace(process.env.SERVER_BASE_URL, "")
+        }
+        const data = {
+            id,
+            name,
+            link,
+            bgImg,
+            logo,
+            desc,
+            start_time: time.split(",")[0],
+            end_time: time.split(",")[1],
+            content
+        }
+        const result = await resumeService.updateProject(data)
+        res.send({
+            code: 200,
+            message: '修改成功',
+            data
+        })
     }
 }
 

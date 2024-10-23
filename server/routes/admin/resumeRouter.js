@@ -37,4 +37,10 @@ router.get("/project", resumeController.project)
 // 删除项目经验
 router.delete("/deleteProject", resumeController.deleteProject)
 
+// 获取项目经验详情
+router.get("/projectDetail", resumeController.projectDetail)
+
+// 修改项目经验
+router.put("/updateProject", upload.single('file'), resumeController.updateProject)
+
 module.exports = router;

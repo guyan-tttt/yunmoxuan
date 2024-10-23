@@ -97,14 +97,14 @@
         <el-row align="middle" justify="space-between"
           ><h4>🏆项目经历</h4>
           <div>
-            <el-button size="large" type="primary" circle :icon="Plus" @click="openProjectEdit" />
+            <el-button size="large" type="primary" circle :icon="Plus" @click="openProjectEdit" @dragover.prevent="() => {}" @drop="editProject" />
             <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" @drop="deleteProject" />
           </div>
         </el-row>
         <div class="list">
           <Project draggable="true" @dragstart="dragStartProject($event, item._id)" v-for="item in projectData" :key="item._id" :data="item" />
         </div>
-        <projectEdit v-model="projectShow" />
+        <projectEdit :projectId="editProjectId" v-model="projectShow" @update:modelValue="initProject" />
       </div>
     </el-card>
   </div>
@@ -335,6 +335,24 @@ const deleteProject = (e: any) => {
       getProject()
     }
   })
+}
+
+// 当前需要修复改的id
+const editProjectId = ref<string>("")
+
+// 修改项目
+const editProject = (e: any) => {
+  const [id, type] = (e.dataTransfer.getData("text/plain") as string).split("-")
+  // console.log(id, type);
+  if (type === "project") {
+    editProjectId.value = id
+    projectShow.value = true
+  }
+}
+
+const initProject = () => {
+  getProject()
+  editProjectId.value = ""
 }
 onMounted(async () => {
   await getResume()
