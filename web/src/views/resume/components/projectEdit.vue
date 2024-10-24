@@ -69,11 +69,7 @@ const drawerShow = defineModel({
 })
 
 const props = defineProps<{
-  projectId: {
-    type: string
-    default: ""
-    required: false
-  }
+  projectId: string
 }>()
 
 watch(
@@ -92,7 +88,7 @@ const projectForm = ref({
   file: null,
   bgImg: "",
   desc: "",
-  time: "",
+  time: [],
   content: ""
 })
 
@@ -198,6 +194,7 @@ const getProjectDetail = async () => {
   if (res.code === 200) {
     console.log(res)
     projectForm.value = res.data
+    //@ts-ignore
     projectForm.value.time = [res.data.start_time, res.data.end_time]
     console.log(projectForm.value)
   }
@@ -211,7 +208,9 @@ const cancel = () => {
     bgImg: "",
     desc: "",
     content: "",
-    time: []
+    time: [],
+    link: "",
+    file: null
   }
   formRef.value?.resetFields()
   quillRef.value?.setContents("")

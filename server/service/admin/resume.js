@@ -1,5 +1,6 @@
 const ResumeModel = require("../../model/ResumeModel")
 const ProjectModel = require("../../model/ProjectModel")
+const ImageModel = require("../../model/ImageModel")
 
 const resumeService = {
     add: async(data) => {
@@ -102,6 +103,9 @@ const resumeService = {
             ...data,
             updateTime: new Date()
         })
+    },
+    uploadProjectImage: async(imgs) => {
+        return await ImageModel.insertMany(imgs)
     }
 
 

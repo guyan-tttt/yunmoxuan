@@ -3,6 +3,7 @@ var router = express.Router();
 const resumeController = require('../../controller/admin/resume')
 const multer  = require('multer')
 const upload = multer({ dest: 'public/images/resume/' })
+const upload2 = multer({ dest: 'public/images/project/' })
 
 // 添加简历  / 修改简历
 router.post("/add", upload.single('file'), resumeController.add)
@@ -42,5 +43,14 @@ router.get("/projectDetail", resumeController.projectDetail)
 
 // 修改项目经验
 router.put("/updateProject", upload.single('file'), resumeController.updateProject)
+
+// 上传项目图片
+router.post("/uploadProjectImage", upload2.array('files',5), resumeController.uploadProjectImage)
+
+// 获取项目图片列表
+router.get("/projectImage", resumeController.projectImage)
+
+// 删除项目图片
+// router.delete("/deleteProjectImage", resumeController.deleteProjectImage)
 
 module.exports = router;

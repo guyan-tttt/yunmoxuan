@@ -64,3 +64,18 @@ export const getProjectDetailAPI = (id: string) => {
 export const updateProjectAPI = (data: FormData) => {
   return request.put<any, any>("/admin/resume//updateProject", data)
 }
+
+// 上传项目截图
+export const uploadProjectImageAPI = (data: FormData) => {
+  return request.post<any, any>("/admin/resume/uploadProjectImage", data)
+}
+
+// 获取项目截图
+export const getProjectImageAPI = (id: string) => {
+  return request.get<any, any>(`/admin/resume/projectImage?projectId=${id}`)
+}
+
+// 删除项目截图
+export const deleteProjectImageAPI = (id: string) => {
+  return request.delete<any, ResponseData>(`/admin/resume/deleteProjectImage?id=${id}`)
+}

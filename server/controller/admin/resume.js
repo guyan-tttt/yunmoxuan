@@ -1,5 +1,6 @@
 const resumeService = require('../../service/admin/resume')
 const renameFile = require("../../utils/renameFile")
+const imageService = require('../../service/admin/image')
 const fs = require('fs')
 const path = require('path')
 
@@ -252,6 +253,38 @@ const resumeController = {
             code: 200,
             message: '修改成功',
             data
+        })
+    },
+    uploadProjectImage: async(req,res) => {
+        const { projectId } = req.body
+        const imgs  = req.files.map(item => {
+            return {
+                name: "项目截图",
+                src: renameFile(item, item.mimetype.split("/")[1]),
+                categoryID: projectId,
+                categoryName: "项目截图",
+                createTime: new Date(),
+                updateTime: new Date()
+            }
+        })
+        const result = await resumeService.uploadProjectImage(imgs)
+        res.send({
+            code: 200,
+            message: '上传成功'
+        })
+    },
+    projectImage: async(req,res) => {
+        const { projectId }  = req.query
+        if(!projectId) return res.status(400).send({
+            code: 400,
+            message: '参数错误'
+        })
+
+        const result = await imageService.list(projectId)
+        res.send({
+            code: 200,
+            message: '查询成功',
+            data: result
         })
     }
 }

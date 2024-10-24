@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card style="width: 70%; margin: 0 auto">
+    <el-card style="width: 70%; margin: 0 auto; overflow: none">
       <el-row align="middle" justify="space-between"
         ><h4>🏆 个人信息</h4>
         <el-button v-if="!edit" type="primary" @click="editResume">编辑简历</el-button>
@@ -102,9 +102,17 @@
           </div>
         </el-row>
         <div class="list">
-          <Project draggable="true" @dragstart="dragStartProject($event, item._id)" v-for="item in projectData" :key="item._id" :data="item" />
+          <Project
+            @contextmenu.prevent="uploadImage(item._id)"
+            draggable="true"
+            @dragstart="dragStartProject($event, item._id)"
+            v-for="item in projectData"
+            :key="item._id"
+            :data="item"
+          />
         </div>
         <projectEdit :projectId="editProjectId" v-model="projectShow" @update:modelValue="initProject" />
+        <projectImageEdit :projectId="uploadId" v-model="projectImgShow" @update:modelValue="initProject" />
       </div>
     </el-card>
   </div>
@@ -115,7 +123,7 @@ import Project from "./components/projectItem.vue"
 import EducationEdit from "./components/educationEdit.vue"
 import ExpertiseEdit from "./components/expertiseEdit.vue"
 import projectEdit from "./components/projectEdit.vue"
-
+import projectImageEdit from "./components/projectImageEdit.vue"
 import { ref, onMounted } from "vue"
 import {
   addResumeAPI,
@@ -354,6 +362,18 @@ const initProject = () => {
   getProject()
   editProjectId.value = ""
 }
+
+// 项目图片弹框
+const projectImgShow = ref<boolean>(false)
+
+const uploadId = ref("")
+
+// 开启上传图片弹框
+const uploadImage = (id: string) => {
+  projectImgShow.value = true
+  uploadId.value = id
+  console.log(id)
+}
 onMounted(async () => {
   await getResume()
   getEducation()
@@ -482,5 +502,9 @@ h4 {
   width: 178px;
   // height: 178px;
   text-align: center;
+}
+
+::v-deep(.el-card) {
+  overflow: visible;
 }
 </style>
