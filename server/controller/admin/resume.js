@@ -286,6 +286,27 @@ const resumeController = {
             message: '查询成功',
             data: result
         })
+    },
+    deleteImgList: async(req,res) => {
+        const { imgList } = req.body
+        if(!imgList | imgList.length === 0) return res.status(400).send({
+            code: 400,
+            message: '参数错误'
+        })
+        // 获取删除的图片的路径
+        const imgSrc = await imageService.getSrcByIds(imgList)
+        // 删除图片
+        imgSrc.forEach(item => {
+            fs.unlinkSync(path.join(__dirname, '../../public', item.src))
+        })
+        // 删除数据库中的图片
+        await imageService.deleteImgList(imgList)
+
+        res.send({
+            code: 200,
+            message: '删除成功'
+        })
+
     }
 }
 

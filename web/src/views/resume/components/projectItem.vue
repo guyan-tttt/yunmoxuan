@@ -1,5 +1,5 @@
 <template>
-  <div class="book" :class="{ active }" @click="active = !active">
+  <div class="book" :class="{ active }" @click="changeActive">
     <div
       class="item cover"
       :style="{
@@ -33,6 +33,8 @@
           :preview-src-list="imgList.map((item: any) => item.src)"
           :initial-index="index"
           @click.stop="() => {}"
+          @contextmenu.prevent.stop="deleteImg(item._id)"
+          :class="{ active: deleteImgList.includes(item._id) }"
         />
       </div>
     </div>
@@ -41,15 +43,16 @@
 
 <script setup lang="ts">
 import dayjs from "dayjs"
-import { ref, onMounted, watch } from "vue"
+import { ref, onMounted } from "vue"
 import { getProjectImageAPI } from "@/api/admin/resume"
+import type { ImageItem } from "@/types/admin/image"
 const props = defineProps<{
   data: any
 }>()
 
 const projectItem = ref<HTMLElement | null>(null)
 
-const imgHeight = ref(0)
+const imgHeight = ref<number>(0)
 
 onMounted(() => {
   imgHeight.value = projectItem.value?.clientHeight || 0
@@ -59,29 +62,46 @@ onMounted(() => {
 })
 
 // 获取到图片列表
-const imgList = ref([])
+const imgList = ref<ImageItem[]>([])
 
 const getImgList = async () => {
   const res = await getProjectImageAPI(props.data._id)
   console.log(res)
   if (res.code === 200) {
     imgList.value = res.data
-    console.log(res)
   } else {
     console.log("获取图片列表失败")
   }
 }
-watch(
-  () => props.data,
-  () => {
-    if (props.data) {
-      getImgList()
-    }
-  }
-)
+
+const emit = defineEmits(["deleteImg", "update:modelValue"])
 
 // 当前是否激活
-const active = ref(false)
+const active = ref<boolean>(false)
+
+// 切换激活
+const changeActive = () => {
+  active.value = !active.value
+  deleteImgList.value = []
+  emit("deleteImg", deleteImgList.value)
+  if (active.value) {
+    getImgList()
+  }
+}
+// 删除图片列表
+const deleteImgList = ref<string[]>([])
+
+// 删除图片
+const deleteImg = (id: string) => {
+  console.log(id)
+
+  if (!deleteImgList.value.includes(id)) {
+    deleteImgList.value.push(id)
+  } else {
+    deleteImgList.value = deleteImgList.value.filter((item) => item !== id)
+  }
+  emit("deleteImg", deleteImgList.value)
+}
 </script>
 
 <style scoped lang="scss">
@@ -152,7 +172,7 @@ const active = ref(false)
   position: relative;
   border-radius: 10px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 40px;
   // height: 300px;
   -webkit-box-shadow: 1px 1px 12px #000;
   box-shadow: 1px 1px 12px #000;
@@ -201,7 +221,8 @@ const active = ref(false)
   .list {
     display: flex;
     flex-wrap: wrap;
-    // justify-content: space-between;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding: 0 20px;
     gap: 10px;
@@ -215,6 +236,10 @@ const active = ref(false)
       margin-top: 10px;
       border-radius: 10px;
       box-shadow: 0 0 10px #999;
+      transition: all 0.5s;
+      &.active {
+        box-shadow: 0 0 15px red;
+      }
     }
   }
 }

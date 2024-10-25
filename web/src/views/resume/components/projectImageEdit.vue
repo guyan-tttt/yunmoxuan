@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus"
+import { ElMessage, type UploadFile } from "element-plus"
 import { ref, defineModel } from "vue"
 import { uploadProjectImageAPI } from "@/api/admin/resume"
 const dialogShow = defineModel({
@@ -43,7 +43,7 @@ const props = defineProps({
   }
 })
 
-const fileList = ref([])
+const fileList = ref<UploadFile[]>([])
 
 // 上传图片
 const uploadImage = () => {

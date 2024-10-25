@@ -99,6 +99,7 @@
           <div>
             <el-button size="large" type="primary" circle :icon="Plus" @click="openProjectEdit" @dragover.prevent="() => {}" @drop="editProject" />
             <el-button size="large" type="danger" circle :icon="DeleteFilled" @dragover.prevent="() => {}" @drop="deleteProject" />
+            <el-button size="large" type="danger" circle :icon="PictureFilled" @click="deleteImg" />
           </div>
         </el-row>
         <div class="list">
@@ -109,6 +110,7 @@
             v-for="item in projectData"
             :key="item._id"
             :data="item"
+            @deleteImg="selectImg"
           />
         </div>
         <projectEdit :projectId="editProjectId" v-model="projectShow" @update:modelValue="initProject" />
@@ -133,12 +135,13 @@ import {
   getSkillAPI,
   deleteSkillAPI,
   getProjectAPI,
-  deleteProjectAPI
+  deleteProjectAPI,
+  deleteProjectImageAPI
 } from "@/api/admin/resume"
 import { ElMessage, ElMessageBox } from "element-plus"
-import { Plus, DeleteFilled } from "@element-plus/icons-vue"
+import { Plus, DeleteFilled, PictureFilled } from "@element-plus/icons-vue"
 import dayjs from "dayjs"
-import type { EducationInfo, ResumeInfo } from "@/types/admin/resume"
+import type { EducationInfo, ResumeInfo, ProjectInfo } from "@/types/admin/resume"
 
 // 当前编辑状态
 const edit = ref<boolean>(false)
@@ -272,7 +275,6 @@ const getSkill = async () => {
   const res = await getSkillAPI(resume.value?._id as string)
   if (res.code === 200) {
     skill.value = res.data.filter((item: string) => item !== "")
-    console.log(res)
   }
 }
 
@@ -308,7 +310,7 @@ const openProjectEdit = () => {
 }
 
 // 项目经历数据
-const projectData = ref<any[]>([])
+const projectData = ref<ProjectInfo[]>([])
 
 // 获取项目经历
 const getProject = async () => {
@@ -366,14 +368,34 @@ const initProject = () => {
 // 项目图片弹框
 const projectImgShow = ref<boolean>(false)
 
-const uploadId = ref("")
+const uploadId = ref<string>("")
 
 // 开启上传图片弹框
 const uploadImage = (id: string) => {
   projectImgShow.value = true
   uploadId.value = id
-  console.log(id)
 }
+
+// 删除图片
+const deleteImgList = ref<string[]>([])
+
+// 选择图片
+const selectImg = (imgList: string[]) => {
+  deleteImgList.value = imgList
+}
+
+// 删除图片
+const deleteImg = async () => {
+  if (deleteImgList.value.length === 0) return ElMessage.warning("请选择图片")
+  const res = await deleteProjectImageAPI({
+    imgList: deleteImgList.value
+  })
+  if (res.code === 200) {
+    ElMessage.success("删除成功")
+    initProject()
+  }
+}
+
 onMounted(async () => {
   await getResume()
   getEducation()

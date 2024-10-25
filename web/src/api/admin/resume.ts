@@ -1,5 +1,14 @@
 import request from "@/utils/request"
-import type { ResponseData, ResumeInfoResponseData, EducationInfoResponseData } from "@/types/admin/resume"
+import type {
+  ResponseData,
+  ResumeInfoResponseData,
+  EducationInfoResponseData,
+  ExpertiseResponseData,
+  ProjectInfoResponseData,
+  ProjectDetailResponseData
+} from "@/types/admin/resume"
+import type { ImageListResponse } from "@/types/admin/image"
+
 // 添加/修改简历
 export const addResumeAPI = (data: FormData) => {
   return request.post<any, ResponseData>("/admin/resume/add", data)
@@ -32,7 +41,7 @@ export const addSkillAPI = (data: { id: string; value: string }) => {
 
 // 获取技能
 export const getSkillAPI = (id: string) => {
-  return request.get<any, any>(`/admin/resume/skill?id=${id}`)
+  return request.get<any, ExpertiseResponseData>(`/admin/resume/skill?id=${id}`)
 }
 
 // 删除技能
@@ -47,7 +56,7 @@ export const addProjectAPI = (data: FormData) => {
 
 // 获取项目
 export const getProjectAPI = () => {
-  return request.get<any, any>(`/admin/resume/project`)
+  return request.get<any, ProjectInfoResponseData>(`/admin/resume/project`)
 }
 
 // 删除项目
@@ -57,25 +66,25 @@ export const deleteProjectAPI = (id: string) => {
 
 // 获取项目
 export const getProjectDetailAPI = (id: string) => {
-  return request.get<any, any>(`/admin/resume/projectDetail?id=${id}`)
+  return request.get<any, ProjectDetailResponseData>(`/admin/resume/projectDetail?id=${id}`)
 }
 
 // 更新项目
 export const updateProjectAPI = (data: FormData) => {
-  return request.put<any, any>("/admin/resume//updateProject", data)
+  return request.put<any, ResponseData>("/admin/resume//updateProject", data)
 }
 
 // 上传项目截图
 export const uploadProjectImageAPI = (data: FormData) => {
-  return request.post<any, any>("/admin/resume/uploadProjectImage", data)
+  return request.post<any, ResponseData>("/admin/resume/uploadProjectImage", data)
 }
 
 // 获取项目截图
 export const getProjectImageAPI = (id: string) => {
-  return request.get<any, any>(`/admin/resume/projectImage?projectId=${id}`)
+  return request.get<any, ImageListResponse>(`/admin/resume/projectImage?projectId=${id}`)
 }
 
 // 删除项目截图
-export const deleteProjectImageAPI = (id: string) => {
-  return request.delete<any, ResponseData>(`/admin/resume/deleteProjectImage?id=${id}`)
+export const deleteProjectImageAPI = (data: { imgList: string[] }) => {
+  return request.post<any, ResponseData>(`/admin/resume/deleteImgList`, data)
 }

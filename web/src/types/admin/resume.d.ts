@@ -43,3 +43,30 @@ export interface EducationInfo {
 export interface EducationInfoResponseData extends ResponseData {
   data: EducationInfo[]
 }
+
+// 专业技能返回数据项
+export interface ExpertiseResponseData extends ResponseData {
+  data: string[]
+}
+
+// 项目经验数据项
+export interface ProjectInfo {
+  bgImg: string
+  content: string
+  desc: string
+  end_time: string
+  link?: string
+  logo: string
+  name: string
+  start_time: string
+  _id: string
+}
+
+// 项目经验返回数据项
+export interface ProjectInfoResponseData extends ResponseData {
+  data: ProjectInfo[]
+}
+// 获取项目详情
+export interface ProjectDetailResponseData extends ResponseData {
+  data: ProjectInfo
+}

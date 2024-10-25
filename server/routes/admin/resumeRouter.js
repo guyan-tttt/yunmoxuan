@@ -51,6 +51,6 @@ router.post("/uploadProjectImage", upload2.array('files',5), resumeController.up
 router.get("/projectImage", resumeController.projectImage)
 
 // 删除项目图片
-// router.delete("/deleteProjectImage", resumeController.deleteProjectImage)
+router.post("/deleteImgList", resumeController.deleteImgList)
 
 module.exports = router;

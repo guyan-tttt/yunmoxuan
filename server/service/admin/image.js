@@ -37,6 +37,12 @@ const imageService = {
             data,
             total
         }
+    },
+    getSrcByIds: async(ids) => {
+        return await imageModel.find({_id: {$in : ids}}).select('src')
+    },
+    deleteImgList: async(ids) => {
+        return await imageModel.deleteMany({_id: {$in : ids}})
     }
 }
 
