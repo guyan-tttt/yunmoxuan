@@ -196,8 +196,16 @@ const resumeController = {
         })
         const data = await resumeService.projectById(id)
         if(data.logo) {
-            fs.unlinkSync(path.join(__dirname, '../../public', data.logo))
+            const src = data.logo.replace(process.env.SERVER_BASE_URL, "")
+            fs.unlinkSync(path.join(__dirname, '../../public',src))
         }
+        // 查询所有的数据并删除对应的图片
+        const list = await imageService.list(id)
+        list.forEach(item => {
+            const src = item.src.replace(process.env.SERVER_BASE_URL, "")
+            fs.unlinkSync(path.join(__dirname, '../../public', src))
+            console.log(src);
+        })
         const result = await resumeService.deleteProject(id)
         res.send({
             code: 200,

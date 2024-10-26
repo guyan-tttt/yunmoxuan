@@ -39,7 +39,7 @@
         <el-tab-pane :name="1"> <Info :data="webInfoStore.authorInfo as any" :tagList="webInfoStore.tagInfo" /> </el-tab-pane>
         <el-tab-pane :name="2"><Journal /></el-tab-pane>
         <el-tab-pane :name="3">未开发</el-tab-pane>
-        <el-tab-pane :name="4">未开发</el-tab-pane>
+        <el-tab-pane :name="4"><Resume /></el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -49,7 +49,7 @@
 import { ref } from "vue"
 import Info from "./components/Info.vue"
 import Journal from "./components/Journal.vue"
-
+import Resume from "./components/Resume.vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
 
 // 前台信息仓库
@@ -74,7 +74,7 @@ const navList = ref<{ id: number; name: string; icon: string }[]>([
   },
   {
     id: 4,
-    name: "文章",
+    name: "简历",
     icon: "Management"
   }
 ])
