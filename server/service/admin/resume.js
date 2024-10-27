@@ -106,6 +106,29 @@ const resumeService = {
     },
     uploadProjectImage: async(imgs) => {
         return await ImageModel.insertMany(imgs)
+    },
+    getWebResumeDetail: async() => {
+        const list = await ResumeModel.find({})
+        const data = list.length > 0 ? list[0] : {}
+        if(data) {
+            data.photo = process.env.SERVER_BASE_URL + data.photo
+        }
+        data.educationInfo = data.educationInfo.filter((item) => {
+            return item !== ""
+        })
+        data.educationInfo.forEach(item => {
+            item.logo = process.env.SERVER_BASE_URL + item.logo
+        })
+        data.expertise = data.expertise.filter((item) => {
+            return item !== ""
+        })
+        const projectList = await ProjectModel.find({}).select("_id name logo bgImg desc start_time end_time")
+        projectList.forEach(item => {
+            item.logo = process.env.SERVER_BASE_URL + item.logo
+        })
+        data.project = projectList
+
+        return data
     }
 
 

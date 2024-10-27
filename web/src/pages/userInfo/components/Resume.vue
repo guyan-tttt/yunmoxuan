@@ -4,82 +4,88 @@
       <el-row align="middle" justify="space-between"><h4>🏆 个人信息</h4> </el-row>
       <el-descriptions title="" direction="vertical" border style="margin-top: 20px">
         <el-descriptions-item label="姓名">
-          <span>vdsvsvdsv</span>
+          <span>{{ projectData?.name }}</span>
         </el-descriptions-item>
         <el-descriptions-item label="性别">
-          <span>♂ 男</span>
+          <span>{{ projectData?.sex === "0" ? "男" : "女" }}</span>
         </el-descriptions-item>
         <el-descriptions-item :rowspan="3" :width="250" label="照片" align="center">
-          <el-image
-            style="width: 200px; height: 280px"
-            src="https://haowallpaper.com/link/common/file/getCroppingImg/15755452612383040"
-            fit="cover"
-          />
+          <el-image style="width: 200px; height: 280px; border-radius: 20px" :src="projectData?.photo" fit="cover" />
         </el-descriptions-item>
         <el-descriptions-item label="年龄">
-          <span>54岁</span>
+          <span>{{ projectData?.age }}岁</span>
         </el-descriptions-item>
 
         <el-descriptions-item label="电话">
-          <span>52533333333</span>
+          <span>{{ projectData?.age }}</span>
         </el-descriptions-item>
 
         <el-descriptions-item label="邮箱">
-          <span>423424344442</span>
+          <span>{{ projectData?.email }}</span>
         </el-descriptions-item>
         <el-descriptions-item label="微信">
-          <span>g6346366666666666</span>
+          <span>{{ projectData?.weChat }}</span>
         </el-descriptions-item>
         <el-descriptions-item label="QQ">
-          <span>56346536366</span>
+          <span>{{ projectData?.qq }}</span>
         </el-descriptions-item>
-        <el-descriptions-item label="学校">南昌大学（211） </el-descriptions-item>
+        <el-descriptions-item label="学校"><el-tag type="primary">南昌大学（211） </el-tag></el-descriptions-item>
         <el-descriptions-item label="比赛证书">查看更多 ></el-descriptions-item>
       </el-descriptions>
       <div class="education">
         <el-row align="middle" justify="space-between"><h4>🏆 教育经历</h4> </el-row>
-        <div
-          class="detail"
-          v-for="(item, index) in 2"
-          :key="index"
-          :style="{ backgroundImage: `url(https://haowallpaper.com/link/common/file/getCroppingImg/15755452612383040)` }"
-        >
+        <div class="detail" v-for="(item, index) in projectData?.educationInfo" :key="index" :style="{ backgroundImage: `url(${item.bg})` }">
           <div class="top">
             <div class="logo">
-              <img src="https://haowallpaper.com/link/common/file/getCroppingImg/15755452612383040" />
+              <img :src="item.logo" fit="cover" />
             </div>
-            <div class="school">fdwfwfwf</div>
-            <div class="time">wffwfff··········fwfwf</div>
+            <div class="school">{{ item.name }}</div>
+            <div class="time">{{ dayjs(item.start_time).format("YYYY-MM") }}·········{{ dayjs(item.end_time).format("YYYY-MM") }}</div>
           </div>
-          <div class="major">fwfwwwwwwwwwwwww</div>
-          <div class="desc">fwwwwwwwwwwwwwwwwww</div>
+          <div class="major">{{ item.major }}</div>
+          <div class="desc">{{ item.desc }}</div>
         </div>
       </div>
       <div class="expertise">
         <el-row align="middle" justify="space-between"><h4>🏆专业技能</h4> </el-row>
         <div class="list">
-          <span class="item" v-for="(item, index) in 4" :key="item" draggable="true">⚡daaaaaaaaaaaaaaaaaaaaaaaaa</span>
+          <span class="item" v-for="item in projectData?.expertise" :key="item" draggable="true">⚡{{ item }}</span>
         </div>
       </div>
       <div class="project">
         <el-row align="middle" justify="space-between"><h4>🏆项目经历</h4> </el-row>
         <div class="list">
-          <!-- <Project
-            @contextmenu.prevent="uploadImage(item._id)"
-            draggable="true"
-            @dragstart="dragStartProject($event, item._id)"
-            v-for="item in projectData"
-            :key="item._id"
-            :data="item"
-            @deleteImg="selectImg"
-          /> -->
+          <ProjectCard v-for="item in projectData?.project" :key="item._id" :data="item" />
         </div>
       </div>
     </el-card>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ProjectCard from "./projectCard.vue"
+import { getResumeInfoAPI } from "@/api/web/resume"
+import { ref, onMounted } from "vue"
+import type { ResumeWebInfo } from "@/types/admin/resume"
+import dayjs from "dayjs"
+// 简历信息
+const projectData = ref<ResumeWebInfo>()
+
+// 获取简历
+const getResumeInfo = async () => {
+  const res = await getResumeInfoAPI()
+  if (res.code === 200) {
+    // console.log(res)
+    if (res.code === 200) {
+      projectData.value = res.data
+    }
+  }
+}
+
+onMounted(() => {
+  getResumeInfo()
+})
+</script>
 
 <style scoped lang="scss">
 h4 {
@@ -108,17 +114,17 @@ h4 {
     justify-content: space-between;
     align-items: center;
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         box-shadow: inset 0px -15px 30px #000;
       }
     }
     .school {
-      font-size: 30px;
+      font-size: 26px;
       font-weight: 700;
       text-shadow: 5px -5px 5px #000;
       flex: 1;

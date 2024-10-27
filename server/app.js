@@ -34,6 +34,7 @@ const pictureRouter = require("./routes/web/pictureRouter")
 const guestbookHomeRouter = require("./routes/web/guestbookRouter")
 const sourceHomeRouter = require("./routes/web/sourceRouter")
 const animationHomeRouter = require("./routes/web/animationRouter")
+const resumeHomeRouter = require("./routes/web/resumeRouter")
 // 前台路由导入
 
 // 导入websocket
@@ -69,6 +70,8 @@ app.use('/api/web/picture',pictureRouter)
 app.use('/api/web/guestbook',guestbookHomeRouter)
 app.use('/api/web/source',sourceHomeRouter)
 app.use("/api/web/animation",animationHomeRouter)
+app.use("/api/web/resume",resumeHomeRouter)
+
 // token校验
 app.use((req,res,next) => {
 

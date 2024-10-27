@@ -66,6 +66,7 @@ const submit = async () => {
   formData.append("projectId", props.projectId)
   const res = await uploadProjectImageAPI(formData)
   if (res.code === 200) {
+    ElMessage.success("上传成功")
     cancel()
   }
 }

@@ -52,7 +52,7 @@ export interface ExpertiseResponseData extends ResponseData {
 // 项目经验数据项
 export interface ProjectInfo {
   bgImg: string
-  content: string
+  content?: string
   desc: string
   end_time: string
   link?: string
@@ -69,4 +69,27 @@ export interface ProjectInfoResponseData extends ResponseData {
 // 获取项目详情
 export interface ProjectDetailResponseData extends ResponseData {
   data: ProjectInfo
+}
+
+// 获取简历信息返回
+export interface ResumeWebInfoResponseData extends ResponseData {
+  data: ResumeWebInfo
+}
+
+// 简历信息
+export interface ResumeWebInfo {
+  _id: string
+  name: string
+  age: number
+  educationInfo: EducationInfo[]
+  email: string
+  phone: string
+  photo: string
+  project: ProjectInfo[]
+  qq: string
+  weChat: string
+  sex: string
+  race: any[]
+  expertise: string[]
+  updateTime: string
 }

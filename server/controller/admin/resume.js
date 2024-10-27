@@ -315,6 +315,14 @@ const resumeController = {
             message: '删除成功'
         })
 
+    },
+    getWebResumeDetail: async(req,res) => {
+        const result = await resumeService.getWebResumeDetail()
+        res.send({
+            code: 200,
+            message: '查询成功',
+            data: result
+        })
     }
 }
 
