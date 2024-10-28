@@ -156,7 +156,6 @@ onMounted(() => {
       pointer !important;
   }
   &.active {
-    background-color: #fff;
     .el-menu-item {
       color: #000;
     }

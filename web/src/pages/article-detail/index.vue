@@ -41,7 +41,27 @@ const copy = (e: MouseEvent) => {
   //@ts-ignore
   const code = e.target.parentNode.parentNode.innerText
   // 复制到剪贴板(code)
-  navigator.clipboard.writeText(code)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code)
+  } else {
+    // 回退到使用 document.execCommand()
+    const textarea = document.createElement("textarea")
+    textarea.value = code
+    textarea.setAttribute("readonly", "") // 防止移动端文本编辑框弹出
+    textarea.style.position = "absolute"
+    textarea.style.left = "-9999px"
+    document.body.appendChild(textarea)
+    textarea.select()
+    try {
+      const successful = document.execCommand("copy")
+      const msg = successful ? "successful" : "unsuccessful"
+      console.log("Fallback: Copying text command was " + msg)
+    } catch (err) {
+      console.error("Fallback: Oops, unable to copy", err)
+    }
+    document.body.removeChild(textarea)
+  }
+
   ElMessage.success("复制成功")
 }
 // 页面路由对象

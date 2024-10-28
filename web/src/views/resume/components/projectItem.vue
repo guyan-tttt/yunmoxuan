@@ -231,8 +231,8 @@ const deleteImg = (id: string) => {
     padding-bottom: 20px;
     margin-top: 20px;
     .el-image {
-      width: 200px;
-      height: 120px;
+      width: 300px;
+      height: 180px;
       margin-top: 10px;
       border-radius: 10px;
       box-shadow: 0 0 10px #999;

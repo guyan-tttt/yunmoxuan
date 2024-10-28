@@ -1,8 +1,14 @@
 <template>
   <div class="div bg-white m-auto rounded-[1em] relative group p-2 z-0 overflow-hidden card">
-    <div class="h-[7em] w-[7em] bg-[#FDEE00] rounded-full absolute bottom-full -left-[3.5em] group-hover:scale-[600%] z-[-1] duration-[400ms]" />
-    <div class="h-[6em] w-[6em] bg-[#7CFC00] rounded-full absolute bottom-full -left-[3.5em] group-hover:scale-[450%] z-[-1] duration-[400ms]" />
-    <div class="h-[5em] w-[5em] bg-[#007FFF] rounded-full absolute bottom-full -left-[3.5em] group-hover:scale-[300%] z-[-1] duration-[400ms]" />
+    <div
+      class="h-[5em] w-[5em] bg-[#FDEE00] rounded-full absolute bottom-full left-[3.0em] top-[1.2em] group-hover:scale-[500%] z-[-1] duration-[400ms]"
+    />
+    <div
+      class="h-[5em] w-[5em] bg-[#7CFC00] rounded-full absolute bottom-full left-[3.0em] top-[1.2em] group-hover:scale-[350%] z-[-1] duration-[400ms]"
+    />
+    <div
+      class="h-[5em] w-[5em] bg-[#007FFF] rounded-full absolute bottom-full left-[3.0em] top-[1.2em] group-hover:scale-[200%] z-[-1] duration-[400ms]"
+    />
 
     <el-button
       class="text-[0.8em] absolute bottom-[0.8em] left-[1.4em] text-[#6C3082] group-hover:text-white duration-100"
@@ -25,7 +31,7 @@
     <div class="desc">简介：{{ props.data.desc }}</div>
     <Teleport to="#app">
       <div class="dialog">
-        <el-dialog class="no-header-dialog" v-model="dialog" width="60%" :show-close="false" style="padding: 0">
+        <el-dialog class="no-header-dialog" v-model="dialog" width="60%" :show-close="false" style="padding: 0" @closed="closeDialog">
           <div class="book" :class="{ active }" @click="changeActive">
             <div
               class="item cover"
@@ -121,6 +127,12 @@ const active = ref<boolean>(false)
 // 切换激活
 const changeActive = () => {
   active.value = !active.value
+}
+
+// 关闭对话框
+const closeDialog = () => {
+  dialog.value = false
+  active.value = false
 }
 </script>
 
