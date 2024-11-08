@@ -492,17 +492,17 @@ export const constWebRoutes = [
             }
           }
         ]
-      },
-      {
-        path: "friendship-link",
-        name: "FriendshipLink",
-        component: () => import("@/pages/friendshipLink/index.vue"),
-        meta: {
-          title: "友链",
-          index: 9,
-          icon: "home-friendship"
-        }
       }
+      // {
+      //   path: "friendship-link",
+      //   name: "FriendshipLink",
+      //   component: () => import("@/pages/friendshipLink/index.vue"),
+      //   meta: {
+      //     title: "友链",
+      //     index: 9,
+      //     icon: "home-friendship"
+      //   }
+      // }
     ]
   }
 ]

@@ -11,7 +11,9 @@ import {
   deleteArticlePermanentlyAPI,
   deleteArticleAll
 } from "@/api/admin/article"
+//// @ts-ignore
 import { InfoFilled, DeleteFilled, Edit, Grid, List, Checked, Delete } from "@element-plus/icons-vue"
+
 import { getCategoryAllAPI } from "@/api/admin/category"
 import { getAllTagsAPI } from "@/api/admin/tags"
 import type { CategoryItem } from "@/types/admin/category"
@@ -309,7 +311,7 @@ onMounted(() => {
   <div class="tag">
     <el-card>
       <el-segmented @change="onSegmentChange" v-model="segmentValue" :options="options" block>
-        <template #default="{ item }">
+        <template #default="{ item }: { item: any }">
           <el-row justify="center">
             <el-icon size="20" style="margin-right: 10px">
               <component :is="item.icon" />

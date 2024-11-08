@@ -193,7 +193,7 @@ const getProjectDetail = async () => {
   const res = await getProjectDetailAPI(props.projectId)
   if (res.code === 200) {
     console.log(res)
-    projectForm.value = res.data
+    projectForm.value = res.data as any
     //@ts-ignore
     projectForm.value.time = [res.data.start_time, res.data.end_time]
     console.log(projectForm.value)

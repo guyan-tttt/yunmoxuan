@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, defineProps, watch } from "vue"
-import * as echarts from "echarts"
+// import * as echarts from "echarts"
 import dayjs from "dayjs"
 // 图标元素
 const myChart = ref(null)

@@ -231,7 +231,7 @@ onMounted(async () => {
               照片展示
             </div>
           </el-row>
-          <el-segmented @change="navChange" v-model="currentCategory" :options="options" block />
+          <el-segmented @change="navChange" v-model="currentCategory" :options="options as any" block />
           <ImageList :data="imageList" @update="updateImageList" />
           <el-row justify="center">
             <div class="nomore" v-if="scrollDisabled">没有更多了………………</div>

@@ -1,6 +1,6 @@
 import { useLogMessageStore } from "@/store/modules/logmessage"
 import { ElNotification } from "element-plus"
-const ws = new WebSocket("ws://localhost:3001")
+const ws = new WebSocket("ws://jeek-space-blog.top:3001")
 ws.onopen = () => {}
 
 ws.onmessage = function (event) {
