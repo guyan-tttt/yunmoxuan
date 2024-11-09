@@ -5,6 +5,7 @@ import OfficialAccount from "./OfficialAccount.vue"
 import { useSettingsStore } from "@/store/modules/settings"
 import TimeCard from "./TimeCard.vue"
 import AlipayApp from "./AlipayApp.vue"
+import Battery from "./Battery.vue"
 
 // 前台信息仓库
 const webInfoStore = useWebInfoStore()
@@ -91,7 +92,8 @@ const openPreview = (tag: Tag) => {
   <AlipayApp />
   <!-- 微信公众号 -->
   <OfficialAccount />
-
+  <!-- 电量显示 -->
+  <Battery />
   <!-- 时间面板 -->
   <TimeCard />
   <!-- 文章分类 -->
@@ -173,6 +175,7 @@ const openPreview = (tag: Tag) => {
   margin-left: 20px;
   background-color: #ecf5ff;
   border-radius: 4px;
+  // padding: 0 10px;
   cursor:
     var(--cursor-pointer) 50 50,
     pointer !important;

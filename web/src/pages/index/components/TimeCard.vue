@@ -72,8 +72,6 @@ onMounted(() => {
   const nextYear = new Date().getFullYear() + 1
   //   计算两年之间的时间差
   const time = new Date(nextYear, 0, 1).getTime() - new Date().getTime()
-  console.log(time)
-  console.log(new Date(`2025-01-01`).getTime() - new Date().getTime())
 
   const date = Math.floor(time / 1000 / 60 / 60 / 24)
   const year2 = {

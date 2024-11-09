@@ -7,7 +7,7 @@
     <img loading="lazy" class="font" src="../../../assets/layouts/offical-account-2.png" />
     <img loading="lazy" class="back" src="../../../assets/layouts/offical-account-1.png" />
     <Teleport to="#app">
-      <el-dialog v-model="dialogVisible" width="30%">
+      <el-dialog v-model="dialogVisible" width="30%" style="min-width: 300px">
         <el-image class="w-full" :src="url" fit="cover" />
       </el-dialog>
     </Teleport>

@@ -80,12 +80,13 @@ const getNotice = async () => {
   }
 }
 // 页面挂载时获取用户信息
-onMounted(async () => {
-  await userStore.setUserInfo()
-  getDashboardStatistics()
-  getArticleStatistics()
-  getTrendsStatistics()
-  getNotice()
+onMounted(() => {
+  userStore.setUserInfo().then(() => {
+    getDashboardStatistics()
+    getArticleStatistics()
+    getTrendsStatistics()
+    getNotice()
+  })
 })
 </script>
 

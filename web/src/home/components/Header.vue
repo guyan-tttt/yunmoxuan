@@ -1,7 +1,7 @@
 <template>
   <header
     v-if="!settingsStore.isMobile"
-    class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600 animate__slideInDown animate__animated"
+    class="header-container bg-light-50 dark:bg-gray-800 dark:border-gray-600 animate__slideInDown animate__animated light:bg-white"
     :class="{ active: settingsStore.showNavBg || bgColor }"
   >
     <div class="container mx-auto">
@@ -36,9 +36,6 @@
             个人资料
           </el-menu-item>
         </el-sub-menu>
-        <el-menu-item>
-          <ThemeSwitch />
-        </el-menu-item>
       </el-menu>
     </div>
   </header>
@@ -49,7 +46,6 @@
 import { useRouter, useRoute } from "vue-router"
 import { ref, watch, computed, onMounted } from "vue"
 import { useUserStore } from "@/store/modules/user"
-import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import { useWindowScroll } from "@vueuse/core"
 import { useSettingsStore } from "@/store/modules/settings"
 import { useWebInfoStore } from "@/store/modules/webInfo"
@@ -156,6 +152,7 @@ onMounted(() => {
       pointer !important;
   }
   &.active {
+    background-color: #fff;
     .el-menu-item {
       color: #000;
     }

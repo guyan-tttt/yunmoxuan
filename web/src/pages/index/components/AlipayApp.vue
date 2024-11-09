@@ -6,7 +6,7 @@
   >
     <img loading="lazy" class="font" src="../../../assets/layouts/alipay-app.png" />
     <Teleport to="#app">
-      <el-dialog v-model="dialogVisible" width="30%">
+      <el-dialog v-model="dialogVisible" width="30%" style="min-width: 300px">
         <img class="w-full" src="../../../assets/layouts/app-code.jpg" fit="cover" />
       </el-dialog>
     </Teleport>
@@ -25,7 +25,7 @@ const changeDialogVisible = () => {
 <style scoped lang="scss">
 .alipay {
   width: 100%;
-  height: 120px;
+  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
