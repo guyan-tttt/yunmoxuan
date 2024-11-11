@@ -32,7 +32,7 @@ const changeDialogVisible = () => {
   position: relative;
   padding: 10px;
   overflow: hidden;
-  background-color: #07c160;
+  // background-color: #07c160;
   border-radius: 10px;
   img {
     width: 100%;
