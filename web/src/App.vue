@@ -26,7 +26,7 @@ initTheme()
 /* 定义滚动条的滑块样式 */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px !important; /* 滑块圆角 */
-  background-color: red;
+  /* background-color: red; */
   background-image: linear-gradient(
     45deg,
     rgba(178, 86, 240, 0.5) 25%,

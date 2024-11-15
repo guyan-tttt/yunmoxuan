@@ -49,6 +49,8 @@ VueMarkdownEditor.use(vuepressTheme, {
   Prism
 })
 
+import Loading from "@/components/Loading/index.vue"
+
 const app = createApp(App)
 
 /** 加载插件 */
@@ -61,6 +63,7 @@ initDirective(app)
 app.use(store).use(router).use(hljsVuePlugin).use(V3waterfall).use(vue3SeamlessScroll, { name: "scroll" })
 app.component("Vue3EmojiPicker", Vue3EmojiPicker)
 app.component("my-textarea", Textarea)
+app.component("Loading", Loading)
 app.use(VueMarkdownEditor)
 router.isReady().then(() => {
   app.mount("#app")

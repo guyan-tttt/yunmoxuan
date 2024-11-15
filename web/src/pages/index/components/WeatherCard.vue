@@ -123,7 +123,7 @@ onMounted(async () => {
   position: relative;
   padding: 25px;
   background:
-    radial-gradient(178.94% 106.41% at 26.42% 106.41%, #fff7b1 0%, rgba(255, 255, 255, 0) 71.88%)
+    radial-gradient(178.94% 106.41% at 26.42% 106.41%, #d4ebfa 0%, rgba(255, 255, 255, 0) 71.88%)
       /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
     #ffffff;
 

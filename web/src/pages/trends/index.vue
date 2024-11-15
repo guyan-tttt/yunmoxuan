@@ -9,9 +9,9 @@
       v-infinite-scroll="infiniteScroll"
       infinite-scroll-distance="100px"
       style="width: 80%; margin: 0 auto; position: relative; min-height: 100vh"
-      class="container mx-auto max-w-screen-xl mt-5"
+      class="mx-auto max-w-screen-xl mt-5"
     >
-      <el-timeline  style="max-width: 90%">
+      <el-timeline style="max-width: 90%">
         <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">
@@ -73,7 +73,7 @@
       <div class="nomore">没有更多了~</div>
     </el-card>
     <div v-else class="mt-4" v-infinite-scroll="infiniteScroll" infinite-scroll-distance="100px">
-      <el-timeline style="max-width: 90%" class="animate__fadeInUp animate__animated">
+      <el-timeline style="max-width: 95%" class="animate__fadeInUp animate__animated">
         <el-timeline-item v-for="i in trendsList" :key="i._id" color="#409eff" :timestamp="dayjs(i.createTime).format('YYYY/MM/DD')" placement="top">
           <el-row justify="space-between" align="middle">
             <el-col :span="24">

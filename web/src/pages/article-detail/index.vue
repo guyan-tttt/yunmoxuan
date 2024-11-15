@@ -9,6 +9,7 @@ import type { Tag } from "@/types/admin/tags"
 import Comment from "./components/Comment.vue"
 import { useWebInfoStore } from "@/store/modules/webInfo"
 import { useSettingsStore } from "@/store/modules/settings"
+import Loading from "@/components/Loading/index.vue"
 const settingsStore = useSettingsStore()
 
 // 为所有pre标签注册点击事件
@@ -70,11 +71,15 @@ const route = useRoute()
 // 文章信息
 const article = ref<ArticleDetailItem>()
 
+const loading = ref<boolean>(false)
+
 // 获取文章详情
 const getArticleDetail = async (id: string) => {
+  loading.value = true
   const res = await getArticleDetailAPI(id)
   if (res.code === 200) {
     article.value = res.data
+    loading.value = false
   }
 }
 
@@ -91,7 +96,7 @@ onUnmounted(() => {
 <template>
   <!-- 文章详情 -->
   <div class="mx-auto max-w-screen-xl mt-5 mb-3 article-list" :class="{ mobile: settingsStore.isMobile }">
-    <div class="grid grid-cols-4">
+    <div v-if="article" class="grid grid-cols-4">
       <div class="article col-span-4 px-3 mb-3">
         <div class="bg-white border border-gray-200 p-5 rounded-lg dark:bg-gray-800 dark:border-gray-700">
           <!-- 面包屑 -->
@@ -220,13 +225,18 @@ onUnmounted(() => {
         </el-card>
       </div>
     </div>
-    <!-- // 评论组件 -->
+    <Loading v-else />
   </div>
 </template>
 
 <style scoped lang="scss">
 .article-list {
+  min-height: calc(100vh - 300px);
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   &.mobile {
     font-size: 14px;
   }
@@ -255,7 +265,7 @@ onUnmounted(() => {
   margin-bottom: 20px;
 }
 .article {
-  width: 80%;
+  width: 97%;
   margin: 0 auto;
 }
 .item {

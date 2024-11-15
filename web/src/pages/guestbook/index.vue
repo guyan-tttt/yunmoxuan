@@ -115,7 +115,12 @@ onMounted(() => {
     <div class="bullet-wall">
       <BulletWall :data="bulletWallData" />
     </div>
-    <div class="message-wrap">
+    <div
+      class="message-wrap"
+      :style="{
+        padding: `0px ${settingsStore.isMobile ? '10px' : '10%'}`
+      }"
+    >
       <div class="content">
         <!-- 留言表单 -->
         <h2 style="margin-bottom: 20px">留言</h2>
@@ -145,7 +150,11 @@ onMounted(() => {
         </h2>
         <!-- 父级评论 -->
         <div class="list" v-for="item in guestbookList" :key="item._id">
-          <el-image class="avatar" v-if="item.avatar" :src="item.avatar" lazy fit="cover" />
+          <el-image class="avatar" v-if="item.avatar" :src="item.avatar" lazy fit="cover">
+            <template #placeholder>
+              <Loading />
+            </template>
+          </el-image>
           <span class="avatar" v-else>{{ item.nickname.substring(0, 1) }}</span>
           <div class="detail">
             <div class="top">

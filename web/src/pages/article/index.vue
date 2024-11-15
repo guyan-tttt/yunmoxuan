@@ -6,6 +6,7 @@ import { ArticleItem } from "@/types/admin/article"
 import { ElMessage } from "element-plus"
 import Banner from "@/components/Banner/Banner.vue"
 import { useSettingsStore } from "@/store/modules/settings"
+import ArticleMobileCard from "../index/components/articleCard.vue"
 
 // 设置对象
 const settings = useSettingsStore()
@@ -76,7 +77,12 @@ onUnmounted(() => {
     <Banner v-if="!settingsStore.isMobile" />
     <div class="mx-auto max-w-screen-xl mt-5" :class="{ container: !settingsStore.isMobile }">
       <div class="grid grid-cols-4">
-        <div class="col-span-4 px-3 article-list" :class="{ mobile: settingsStore.isMobile }" style="width: 80%; margin: 0 auto">
+        <div
+          v-if="!settingsStore.isMobile"
+          class="col-span-4 px-3 article-list"
+          :class="{ mobile: settingsStore.isMobile }"
+          style="width: 80%; margin: 0 auto"
+        >
           <ArticleCard
             v-cursor-pointer
             v-for="(item, index) in articleList"
@@ -85,6 +91,9 @@ onUnmounted(() => {
             :article="item"
             @addLike="addLike(item)"
           />
+        </div>
+        <div v-else class="col-span-4 px-3 article-list" :class="{ mobile: settingsStore.isMobile }" style="width: 80%; margin: 0 auto">
+          <ArticleMobileCard class="mb-3" v-cursor-pointer :index="index" v-for="(item, index) in articleList" :key="item._id" :article="item" />
         </div>
       </div>
     </div>

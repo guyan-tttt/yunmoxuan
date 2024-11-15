@@ -19,6 +19,20 @@
           ><SvgIcon :name="item.meta?.icon as string" />{{ item.meta?.title }}</router-link
         >
       </el-card>
+      <el-card class="mt-3">
+        <div class="loader">
+          <div
+            class="bg"
+            :class="{ active: charging }"
+            :style="{
+              width: `${level * 100}%`,
+              backgroundColor: `${level < 0.2 ? 'red' : 'var(--primary-color)'}`
+            }"
+          />
+          <div class="progress" />
+          <span class="num"> 当前电量:{{ level * 100 }}% {{ charging ? "⚡" : "" }}</span>
+        </div>
+      </el-card>
     </el-drawer>
   </header>
 </template>
@@ -26,6 +40,7 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue"
 import { constWebRoutes } from "@/router/index"
+import { useBattery } from "@vueuse/core"
 const drawer = ref(false)
 
 const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
@@ -34,6 +49,8 @@ const routesList = computed(() => {
   const list = constWebRoutes[0].children?.filter((item: any) => !item.meta!.hidden)
   return list.filter((item: any) => item.meta.title !== "音乐")
 })
+
+const { charging, level } = useBattery()
 </script>
 
 <style lang="scss" scoped>
@@ -85,9 +102,15 @@ h2 {
 ::v-deep(.menu) {
   background-color: #efefef;
   color: #409eff;
+  background-image: url(../../assets/layouts/index-bg.webp);
+  background-position: center center;
+  background-size: cover;
   h2 {
     font-family: "STKaiti";
     font-size: 30px;
+    margin: 0;
+    color: #fff;
+    margin-bottom: 10px;
   }
   .list {
     list-style: none;
@@ -110,6 +133,75 @@ h2 {
         border-top: 1px solid #efefef;
       }
     }
+  }
+}
+
+.loader {
+  width: 100%;
+  height: 50px;
+  background-color: #ececec;
+  border-radius: 10px;
+  border: 1px solid #ececec;
+  margin: 0 auto;
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-direction: column;
+  position: relative;
+  .bg {
+    width: 50%;
+    height: 50px;
+
+    background-color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    box-shadow: #409eff 0px 2px 5px 0px;
+    background-size: 40px 40px;
+    animation: 9s linear 0s infinite normal none running identifier;
+    @keyframes identifier {
+      0% {
+        background-position: 0px 0px;
+      }
+      100% {
+        background-position: 400px 0px;
+      }
+    }
+    &.active {
+      background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.5) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0.5) 75%,
+        transparent 75%,
+        transparent
+      );
+      animation: 9s linear 0s infinite normal none running identifier;
+    }
+  }
+  .nprogess {
+    width: 100%;
+    height: 50px;
+    background-color: #ececec;
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    border-radius: 20px;
+  }
+  .num {
+    width: 100%;
+    font-size: 18px;
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    filter: drop-shadow(0 0 1px #000);
+    color: #fff;
   }
 }
 </style>
