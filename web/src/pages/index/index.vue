@@ -38,7 +38,7 @@ const recommendArticleList = ref<ArticleItem[]>([])
 // 获取推荐文章
 const getRecommendArticle = async () => {
   const res = await getRecommendArticleAPI()
-  console.log(res)
+  // console.log(res)
 
   if (res.code === 200) {
     recommendArticleList.value = res.data

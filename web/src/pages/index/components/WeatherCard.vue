@@ -22,8 +22,9 @@ import { useAddress } from "@/hooks/useAddress"
 import { ref, onMounted } from "vue"
 import { getWeatherAPI } from "@/api/web/weather"
 import dayjs from "dayjs"
+import { ElMessage } from "element-plus"
 
-const data = ref({})
+const data = ref<any>({})
 const loading = ref(true)
 
 const weatherList = [
@@ -83,19 +84,33 @@ const weatherList = [
 const weather = ref<any>({})
 onMounted(async () => {
   loading.value = true
-  const address: any = await useAddress()
-  console.log(address)
-  data.value = address
-  const res = await getWeatherAPI({
-    city: "南昌",
-    province: "江西"
-  })
-  if (res.status === 200) {
-    // data.icon = weatherList[data.code - 100].icon
-    // console.log(res)
-    weather.value = res.data
-    weather.value.iconInfo = weatherList.find((item) => item.text === weather.value.weather1)
+  console.log("大大")
+  setTimeout(() => {
+    if (loading.value) {
+      loading.value = false
+      ElMessage.error("获取天气失败")
+    }
+  }, 5000)
+  try {
+    const address: any = await useAddress()
+    console.log(address, 123)
+    data.value = address.regeocode
+    const res = await getWeatherAPI({
+      city: data.value?.addressComponent?.city,
+      province: data.value?.addressComponent?.province
+    })
+    console.log(res)
+
+    if (res.status === 200) {
+      // data.icon = weatherList[data.code - 100].icon
+      // console.log(res)
+      weather.value = res.data
+      weather.value.iconInfo = weatherList.find((item) => item.text === weather.value.weather1)
+    }
+  } catch (e) {
+    console.log(e)
   }
+
   loading.value = false
 })
 

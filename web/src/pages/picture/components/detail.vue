@@ -16,7 +16,11 @@
               fit="cover"
               class="pir"
               hide-on-click-modal
-            />
+            >
+              <template #placeholder>
+                <Loading />
+              </template>
+            </el-image>
           </template>
           <el-tooltip class="box-item" effect="dark" content="详情" placement="top-start">
             <SvgIcon class="btn" name="info" @click="showDialog(item)" />
@@ -148,8 +152,6 @@ const download = (item: ImageItem) => {
     type: "warning"
   })
     .then(async () => {
-      console.log(item.src)
-
       FileSaver.saveAs(item.src, "图片.png")
     })
     .catch(() => {})

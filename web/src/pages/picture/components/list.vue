@@ -65,8 +65,8 @@ onMounted(() => {
       }
     }
     .img {
-      min-height: 133px;
-      background-color: transparent;
+      height: 133px;
+      background-color: #efefef;
       border-radius: 10px;
       .el-image {
         width: 100%;

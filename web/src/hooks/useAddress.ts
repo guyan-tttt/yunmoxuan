@@ -49,12 +49,20 @@ export const useAddress = async (position?: { Longitude: number; Latitude: numbe
       positionInfo.value.Latitude = position.Latitude
       getAddress(resolve, reject)
     } else {
-      navigator.geolocation.getCurrentPosition((info) => {
-        positionInfo.value.Longitude = info.coords.longitude
-        positionInfo.value.Latitude = info.coords.latitude
-        console.log(info, 1)
-        getAddress(resolve, reject)
-      })
+      navigator.geolocation.getCurrentPosition(
+        (info) => {
+          console.log(info)
+
+          positionInfo.value.Longitude = info.coords.longitude
+          positionInfo.value.Latitude = info.coords.latitude
+          console.log("浏览器读取地理位置")
+          getAddress(resolve, reject)
+        },
+        (err: any) => {
+          console.log("浏览器读取地理位置失败")
+          reject(err)
+        }
+      )
     }
   })
 }

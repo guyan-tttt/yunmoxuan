@@ -11,7 +11,7 @@
         }"
       />
       <div class="progress" />
-      <span class="num"> 当前电量:{{ level * 100 }}% {{ charging ? "⚡" : "" }}</span>
+      <span class="num"> 当前电量:{{ (level * 100).toFixed(0) }}% {{ charging ? "⚡" : "" }}</span>
     </div>
     <div class="list">
       <div class="item">
