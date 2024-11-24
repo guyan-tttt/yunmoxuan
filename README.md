@@ -288,6 +288,10 @@ app.use(hljsVuePlugin)
 ```
 通过以上操作在项目中如果有以pre标签包裹的代码块，就可以实现代码高亮。
 
+4. markdown 文档编辑
+本项目集成markdown编辑器，支持markdown文档编辑，预览，导出等功能。支持使用富文本和markdown两种方式编辑文章内容。
+
+
 ### 4.文章标签页面
 ![image](./web/src/assets/docs/tag.png)
 **功能介绍:**
@@ -373,7 +377,16 @@ app.use(hljsVuePlugin)
 6. 动漫修改删除
 7. 图片右击选择批量删除
 8. 动漫图片添加
-  
+
+
+### 11.个人简历页面
+![image](./web/src/assets/docs/journal.png)
+**功能介绍:**
+1. 个人简历信息展示
+2. 教育信息编辑与展示
+3. 个人技能编辑与展示
+4. 项目经验编辑与展示
+5. 项目截图上传
 
 
 

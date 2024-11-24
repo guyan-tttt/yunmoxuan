@@ -1,0 +1,8 @@
+{
+  "label": "前台页面",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "个人博客前台页面"
+  }
+}
