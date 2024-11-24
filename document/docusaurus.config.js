@@ -14,7 +14,7 @@ const config = {
   tagline: '个人博客系统',
   favicon: 'img/logo-home.ico',
 
-  baseUrl: '/',
+  baseUrl: '/yunmoxuan/',
 
   url: 'https://guyan-tttt.github.io', // GitHub Pages 的 URL
   organizationName: 'guyan-tttt', // GitHub 用户名或组织名
