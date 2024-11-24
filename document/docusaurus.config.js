@@ -14,17 +14,13 @@ const config = {
   tagline: '个人博客系统',
   favicon: 'img/logo-home.ico',
 
-  // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
-
+  url: 'https://guyan-tttt.github.io', // GitHub Pages 的 URL
+  organizationName: 'guyan-tttt', // GitHub 用户名或组织名
+  projectName: 'yunmoxuan', // 仓库名
+  deploymentBranch: 'My', // 部署分支，默认为 gh-pages
+  trailingSlash: false, // 官方文档建议设置成 true 或者 false
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
